@@ -1063,7 +1063,7 @@
     return {url:url.href,title:'',description:'',site:url.hostname,contentType:''};
   }
   window.AcervoCloud={
-    boot,checkPublished,fetchCards,save,saveMany,remove,restoreSnapshot,fetchProjects,saveProjects,
+    boot,checkPublished,pendingChanges,fetchCards,save,saveMany,remove,restoreSnapshot,fetchProjects,saveProjects,
     fetchDossiers,saveDossier,removeDossier,lookupMetadata,
     get user(){return user;},
     get warning(){return warning;}
@@ -1298,19 +1298,14 @@
   let sprint8LastDeleted=null;
   let sprint8UndoTimer=null;
   function sprint8BackupInfo(){
-    let touched=0;
-    try {
-      const parsed=JSON.parse(localStorage.getItem('acervo.local.edits.v10')||'null');
-      touched=(parsed&&typeof parsed.cards==='object'&&!Array.isArray(parsed.cards)?Object.keys(parsed.cards).length:0)
-        +(Array.isArray(parsed?.deleted)?parsed.deleted.length:0);
-    } catch {}
+    const touched=Cloud.pendingChanges();
     const banner=$('#sprint8Backup');
     const info=$('#sprint8BackupText');
     if(!banner||!info)return;
     banner.classList.toggle('has-changes',touched>0);
     info.textContent=touched?
-      touched+' alteração(ões) salvas neste aparelho. Exporte um JSON para protegê-las antes de limpar dados do navegador.':
-      'Os cards iniciais estão no GitHub. Use Exportar para guardar uma cópia das referências e dos dossiês.';
+      touched+' alteração(ões) pendentes neste aparelho. Faça um backup ou prepare o JSON para publicar pelo ChatGPT.':
+      'Sem diferenças locais em relação ao último JSON consultado. O GitHub continua sendo sua cópia publicada.';
   }
   function sprint8ShowUndo(card){
     sprint8LastDeleted={...card,tags:[...(card.tags||[])]};
