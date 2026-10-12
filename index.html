@@ -4,17 +4,27 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="theme-color" content="#173b36">
+  <meta name="color-scheme" content="light">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="ACERVO">
+  <meta name="mobile-web-app-capable" content="yes">
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="icon" type="image/svg+xml" href="./icons/icon.svg">
+  <link rel="apple-touch-icon" sizes="180x180" href="./icons/icon-180.png">
   <meta name="description" content="ACERVO — um lugar para guardar referências, organizar ideias e acompanhar pautas.">
   <title>ACERVO — Seu arquivo de ideias</title>
-  <link rel="stylesheet" href="assets/style.css?v=5">
+  <link rel="stylesheet" href="assets/style.css?v=6">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.3" defer></script>
-  <script src="assets/cloud.js?v=5" defer></script>
-  <script src="assets/app.js?v=5" defer></script>
-  <script src="assets/editorial.js?v=5" defer></script>
-  <script src="assets/chatgpt.js?v=5" defer></script>
-  <script src="assets/capture.js?v=5" defer></script>
+  <script src="assets/cloud.js?v=6" defer></script>
+  <script src="assets/app.js?v=6" defer></script>
+  <script src="assets/editorial.js?v=6" defer></script>
+  <script src="assets/chatgpt.js?v=6" defer></script>
+  <script src="assets/capture.js?v=6" defer></script>
+  <script src="assets/pwa.js?v=6" defer></script>
 </head>
 <body>
+  <div id="offlineIndicator" class="pwa-offline-banner" role="status" hidden>Sem conexão. O ACERVO precisa da internet para carregar ou salvar referências.</div>
   <div class="app-shell">
     <aside class="sidebar" aria-label="Navegação principal">
       <div class="brand"><div class="brand-symbol" aria-hidden="true">A<span>•</span></div><div class="brand-text">ACERVO <small>Seu arquivo de ideias</small></div></div>
@@ -40,6 +50,15 @@
         <button type="button" class="icon-button" id="backupBtn" aria-label="Exportar dados" title="Exportar backup JSON">⇩</button><button type="button" class="button button-primary top-add" id="addBtn"><span>＋</span> Novo card</button></div></header>
       <main class="main-content">
         <section class="hero"><div><div class="eyebrow"><span class="small-spark">✳</span> UM LUGAR PARA AS IDEIAS</div><h1 id="pageTitle">Tudo o que merece <em>ficar.</em></h1><p id="pageSubtitle">Uma boa matéria, uma provocação, uma pauta para depois. Guarde aqui e encontre quando precisar.</p></div><div class="hero-mark" aria-hidden="true"><span>✳</span><i></i></div></section>
+        <section id="pwaInstallBanner" class="pwa-install-banner" aria-label="Instalar aplicativo" hidden>
+          <img src="icons/icon-192.png" width="53" height="53" alt="">
+          <div class="pwa-install-copy">
+            <strong>Seu ACERVO na tela inicial.</strong>
+            <p>Abra com um toque, em uma experiência de aplicativo no iPhone.</p>
+          </div>
+          <button type="button" id="pwaInstallBtn" class="pwa-install-action">Como instalar ↗</button>
+          <button type="button" id="pwaDismissBtn" class="pwa-dismiss" aria-label="Dispensar sugestão de instalação">×</button>
+        </section>
         <section class="metrics" aria-label="Resumo do acervo"><div class="metric"><span>REFERÊNCIAS</span><strong id="metricTotal">0</strong><small>itens guardados</small></div><div class="metric"><span>PARA LER</span><strong id="metricInbox">0</strong><small>na caixa de entrada</small></div><div class="metric"><span>PAUTAS</span><strong id="metricPautas">0</strong><small>ideias em desenvolvimento</small></div><div class="metric metric-accent"><span>EM PRODUÇÃO</span><strong id="metricProducao">0</strong><small>em andamento ↗</small></div></section>
         <section class="quick-capture" id="quickCapture" aria-labelledby="quickCaptureTitle">
           <div class="quick-capture-head">
@@ -93,8 +112,12 @@
           <div class="demo-toolbar" id="demoToolbar"><span>✺ Alguns cards de exemplo ajudam a explorar o protótipo.</span><button id="clearDemos" type="button">Remover exemplos ↗</button></div>
         </section>
       </main>
-      <footer class="footer"><span>ACERVO © 2026</span><span>COLECIONE IDEIAS, NÃO ABAS ABERTAS.</span></footer>
+      <footer class="footer"><span>ACERVO © 2026</span><span>COLECIONE IDEIAS, NÃO ABAS ABERTAS.</span><button type="button" id="pwaInstallFooter" class="pwa-footer-link" hidden>Instalar aplicativo ↗</button></footer>
     </div>
+  </div>
+  <div id="pwaUpdateBar" class="pwa-update-bar" hidden role="status">
+    <span>Nova versão do ACERVO disponível.</span>
+    <button type="button" id="pwaUpdateBtn">Atualizar agora</button>
   </div>
   <nav class="mobile-nav" aria-label="Navegação no celular"><button class="mobile-item is-active" data-view="todos"><span>▦</span><small>Mural</small></button><button class="mobile-item" data-view="entrada"><span>↳</span><small>Entrada</small></button><button class="mobile-item" data-view="pauta"><span>≡</span><small>Pautas</small></button><button class="mobile-item" data-view="arquivo"><span>▤</span><small>Arquivo</small></button></nav>
   <button type="button" class="fab" id="mobileAdd" aria-label="Novo card">＋</button>
@@ -120,6 +143,17 @@
       <div id="tagsManageList" class="manage-list"></div>
     </section>
     <div class="editorial-dialog-actions"><button type="button" class="button button-primary" id="organizeDone">Pronto</button></div>
+  </dialog>
+  <dialog id="pwaInstructions" class="pwa-install-dialog" aria-labelledby="pwaGuideTitle">
+    <div class="pwa-dialog-top">
+      <img src="icons/icon-192.png" width="60" height="60" alt="">
+      <button type="button" id="pwaCloseDialog" aria-label="Fechar instruções">×</button>
+    </div>
+    <h2 id="pwaGuideTitle">ACERVO no seu iPhone</h2>
+    <p id="pwaInstructionText"></p>
+    <div class="pwa-steps" aria-label="Etapas de instalação"><span>Compartilhar</span><b>›</b><span>Adicionar à Tela de Início</span></div>
+    <p class="pwa-install-note">Depois de adicionar o ícone, abra o ACERVO pela tela inicial e entre na mesma conta de sempre.</p>
+    <button class="button button-primary" type="button" onclick="document.getElementById('pwaInstructions').close()">Entendi</button>
   </dialog>
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
 </body>
