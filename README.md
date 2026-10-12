@@ -140,3 +140,17 @@ Os scripts e CSS permanecem incorporados ao HTML independente para evitar proble
 - **Testes:** abertura com 34 cards, cálculo de 34 referências ativas e quatro acima da meta sugerida, marcação de favorita, filtro com uma referência, progressão Entrada → Selecionados → Pauta → Produção → Arquivo, queda do contador ativo de 34 para 33, exclusão automática da prioridade arquivada. O HTML e JSON preservam as 34 referências.
 
 O Sprint 11 está preservado em `acervo-sprint11.html`. A página principal e `acervo-sprint12.html` passam a ser as versões a manter sincronizadas quando publicarmos novos snapshots.
+
+## Sprint 13 — Destino das pautas: publicada, gravada ou descartada (2026-10-12)
+
+- **Versão atual:** https://pscfredteixeira.github.io/acervo/acervo-sprint13.html
+- A etapa **Arquivo** continua existindo, mas cada referência arquivada pode ter um `outcome`: `publicado` (publicação, gravação ou podcast), `descartado` (não aproveitado) ou vazio (ainda não classificado). As referências legadas sem resultado são compatíveis.
+- Ao tocar em **Concluir** ou mover uma referência para Arquivo pelo botão de avanço de etapa, abre um diálogo que pede o resultado. Data, link da publicação final e anotação são opcionais. Ao marcar `descartado`, o link final fica oculto e não é armazenado.
+- No Arquivo, use filtros **Todas**, **Publicadas ou gravadas**, **Descartadas** e **Sem resultado**, com contadores. Cada card arquivado traz seu resultado e permite **Editar resultado**; se houver URL de publicação, oferece **Ver publicação**.
+- O botão **Arquivar selecionados** e a ação em lote **Aplicar etapa → Arquivo** abrem o mesmo diálogo de resultado, aplicando o desfecho escolhido ao conjunto de cards numa gravação local única. Ao cancelar, nenhum card é movido.
+- Ao **reabrir** uma referência arquivada, resultado, data, link e anotação do desfecho são limpos para não atribuir um encerramento antigo ao trabalho reaberto. Os demais campos da referência permanecem intactos.
+- Os campos `outcome`, `outcomeDate`, `outcomeUrl` e `outcomeNote` são atributos opcionais de cada card, preservados em backup JSON e no fluxo **⇧ Publicar**. Não há banco, login ou chamada de gravação ao GitHub a partir do navegador.
+- As referências arquivadas no GitHub antes desta versão continuam no arquivo como **Sem resultado**, sem alterações destrutivas.
+- Testes simulados: abertura com 34 cards; cancelar diálogo sem arquivar; salvar publicação com data/link/nota; filtrar por desfecho; reabrir e limpar resultado; arquivar 34 como descartadas em lote; simular falha no `localStorage` e confirmar ausência de alterações parciais.
+
+**Rollback:** `acervo-sprint12.html` e as versões anteriores ficam preservadas.
