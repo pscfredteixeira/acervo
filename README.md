@@ -121,3 +121,17 @@ No painel **Encontre conexões. Construa pautas.**:
 **Limites e transparência:** a análise é local e determinística, baseada em vocabulário, tags e coocorrência. Não utiliza modelo generativo, embeddings nem provedores externos de IA; não inventa fatos, títulos de artigos ou novos links. Resultados podem ser imprecisos quando o material tem pouco contexto ou vocabulário ambíguo. O aplicativo não examina a internet nem coleta novas matérias por conta própria.
 
 **Privacidade:** os cards protegidos são lidos após login via Supabase. O navegador só usa a chave publicável; nenhuma referência privada é escrita no GitHub Pages. Dossiês exigem duas a 24 referências já pertencentes à sua conta. Remover um card deixa sua referência ausente do dossiê até que ele seja editado.
+
+
+## Correção de sessão — 12/10/2026
+
+O ACERVO agora usa uma **chave de sessão exclusiva** no navegador, em vez de compartilhar o nome padrão com outros apps Supabase no mesmo domínio GitHub Pages.
+
+- Login persistente com `persistSession: true` e `autoRefreshToken: true`, enquanto os tokens forem válidos e o navegador preservar o armazenamento.
+- A atualização de sessão é feita automaticamente pelo Supabase; a senha não é salva pelo ACERVO.
+- O botão Sair usa `scope:'local'`, não desloga outros aparelhos deliberadamente.
+- Como a chave de armazenamento mudou, será necessário entrar **uma vez** após atualizar para esta versão.
+- Navegador Safari e web app instalado na Tela de Início do iPhone podem manter armazenamentos separados; entre uma vez em cada contexto.
+- A permanência **não tem prazo fixo garantido**: pode terminar se a sessão for revogada, o armazenamento apagado, o login expirar no servidor ou o usuário sair.
+
+A versão PWA 8 força atualização do cache de shell e do cliente de autenticação.
