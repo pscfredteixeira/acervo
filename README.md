@@ -87,3 +87,24 @@ Versão autônoma: https://pscfredteixeira.github.io/acervo/acervo-sprint9.html
 Fluxo editorial técnico e validações: `docs/PUBLICAR_ACERVO_VIA_CHATGPT.md`.
 
 Testes executados: inicialização com os 31 cards, exportação após uma exclusão (30 cards), simulação da publicação (30 confirmados e marcações redundantes limpas) e preservação de mudanças realizadas depois da exportação.
+
+## Sprint 10 — Captura expressa no iPhone (2026-10-12)
+
+A versão estática de `index.html` e `acervo-sprint10.html` contém o fluxo de captura expressa, sem login, Supabase, biblioteca externa ou servidor.
+
+- **Capturar**, no menu inferior do iPhone, leva diretamente ao formulário de captura.
+- Cole um link (inclusive texto compartilhado que contenha uma URL) e toque em **Preparar link**. O ACERVO detecta referências duplicadas e oferece abrir a ficha já salva.
+- O título pode ser **sugerido a partir do último segmento da URL**; isso não significa que o aplicativo leu a reportagem. Confira e corrija o texto.
+- Selecione **projeto** e, opcionalmente, tags; clique em **Guardar na Entrada** para salvar sem abrir o formulário completo. Ou clique em **Completar ficha** para incluir resumo e abordagem.
+- Na ficha normal, **Mais detalhes da referência** expande/oculta os campos de resumo e abordagem. Título, link, projeto, formato, etapa, tags e notas continuam disponíveis.
+- No mural, o seletor **Projeto** de cada card altera a classificação sem abrir uma ficha.
+- O ACERVO aceita o endereço `?url=LINK_CODIFICADO&title=TITULO_CODIFICADO`, adequado a um atalho do iOS que receba URLs pelo menu Compartilhar. O link é preparado para revisão, nunca gravado automaticamente.
+- As alterações são salvas em `localStorage` do aparelho, usando as mesmas chaves da versão 9. Para atualizar a fonte principal do GitHub, use **⇧ Publicar** e anexe o JSON à conversa do ChatGPT.
+
+A implantação preservou as referências adicionadas em paralelo durante o Sprint 10: o HTML principal e o JSON de origem contêm os mesmos **34 cards** no momento da publicação.
+
+**Versão atual:** https://pscfredteixeira.github.io/acervo/acervo-sprint10.html
+
+**Versões preservadas:** `acervo-sprint9.html`, `acervo-sprint8.html`, `acervo-direto.html`.
+
+Os scripts e CSS permanecem incorporados ao HTML independente para evitar problemas anteriores de cache e carregamento remoto.
