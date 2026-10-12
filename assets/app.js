@@ -13,7 +13,7 @@
   ];
   const $ = selector => document.querySelector(selector);
   const $$ = selector => [...document.querySelectorAll(selector)];
-  const state = {cards:[],view:'todos',project:'',type:'',tag:'',q:'',sort:'recent',editingId:null};
+  const state = {cards:[],projects:[...DEFAULT_PROJECTS],view:'todos',project:'',type:'',tag:'',q:'',sort:'recent',editingId:null};
   function load(){
     try {const saved=localStorage.getItem(KEY);if(saved!==null){const data=JSON.parse(saved);if(Array.isArray(data))return data.filter(validCard).map(normalizeCard);}}
     catch(e){console.error('Não foi possível ler o acervo salvo.',e);toast('Erro ao abrir dados locais. Não foram sobrescritos.');}
@@ -35,7 +35,7 @@
     $('#boardTitle').textContent=state.view==='todos'?'Mural de referências':STAGES[state.view];$('#pageSubtitle').textContent=state.view==='todos'?'Uma boa matéria, uma provocação, uma pauta para depois. Guarde aqui e encontre quando precisar.':'Filtre, organize e retome suas referências quando chegar a hora.';
   }
   function updateFilters(){const prevP=state.project,prevT=state.type;
-    const projects=[...new Set([...DEFAULT_PROJECTS,...state.cards.map(x=>x.project)])].filter(Boolean);
+    const projects=[...new Set([...state.projects,...state.cards.map(x=>x.project)])].filter(Boolean);
     $('#projectFilter').innerHTML='<option value="">Todos os projetos</option>'+projects.map(x=>`<option value="${esc(x)}">${esc(x)}</option>`).join('');$('#projectFilter').value=projects.includes(prevP)?prevP:'';state.project=$('#projectFilter').value;
     const types=[...new Set([...DEFAULT_TYPES,...state.cards.map(x=>x.type)])].filter(Boolean);
     $('#typeFilter').innerHTML='<option value="">Todos os formatos</option>'+types.map(x=>`<option value="${esc(x)}">${esc(x)}</option>`).join('');$('#typeFilter').value=types.includes(prevT)?prevT:'';state.type=$('#typeFilter').value;
@@ -51,9 +51,13 @@
     if(q&&!([x.title,x.url,x.description,x.angle,x.project,x.type,x.notes,...x.tags].join(' ').toLocaleLowerCase('pt-BR').includes(q)))return false;
     return true;
   });return items.sort((a,b)=>state.sort==='oldest'?new Date(a.createdAt)-new Date(b.createdAt):state.sort==='az'?a.title.localeCompare(b.title,'pt-BR'):new Date(b.createdAt)-new Date(a.createdAt))}
-  function makeCard(x){const safeUrl=secureUrl(x.url);return `<article class="reference-card" data-id="${esc(x.id)}">${x.demo?'<span class="demo-badge">EXEMPLO</span>':''}<div class="card-top"><span class="category-dot"></span><span class="format-label">${esc(x.type)}</span><span class="card-date">${fmtDate(x.createdAt)}</span><button class="favorite-button ${x.favorite?'on':''}" title="${x.favorite?'Retirar dos favoritos':'Marcar favorito'}" aria-label="${x.favorite?'Retirar dos favoritos':'Marcar favorito'}" data-action="favorite">${x.favorite?'★':'☆'}</button></div><h3>${esc(x.title)}</h3>${x.description?`<p class="card-description">${esc(x.description)}</p>`:''}${x.angle?`<div class="angle"><b>POSSÍVEL ABORDAGEM</b><br>${esc(x.angle)}</div>`:''}<div class="card-tags">${x.tags.map(t=>`<span>${esc(t)}</span>`).join('')}</div><div class="card-divider"></div><div class="card-footer"><span class="project-name"><i></i>${esc(x.project)}</span><span class="stage-badge ${esc(x.status)}">${esc(STAGES[x.status])}</span></div><div class="card-footer" style="margin-top:10px"><span></span><div class="card-actions">${safeUrl?`<a href="${esc(safeUrl)}" target="_blank" rel="noopener noreferrer">Abrir ↗</a>`:''}<button class="edit-btn" data-action="edit" title="Editar card">Editar</button><button class="delete-btn" data-action="delete" title="Excluir card">Excluir</button></div></div></article>`}
-  function render(){updateNav();updateFilters();const items=visibleCards();$('#board').innerHTML=items.map(makeCard).join('');$('#resultCount').textContent=items.length;$('#emptyState').hidden=items.length!==0;$('#board').hidden=items.length===0;$('#emptyMessage').textContent=state.cards.length?'Não encontramos cards com os filtros escolhidos.':'Quando você salvar uma ideia, ela aparecerá neste espaço.';$('#clearFilters').hidden=!(state.q||state.tag||state.project||state.type);$('#demoToolbar').hidden=!state.cards.some(c=>c.demo);}
-  function openForm(id=null){state.editingId=id;const x=state.cards.find(c=>c.id===id);$('#cardForm').reset();$('#dialogTitle').textContent=x?'Editar referência':'Guardar nova referência';$('#saveCard').textContent=x?'Salvar alterações ↗':'Guardar referência ↗';$('#fieldTitle').value=x?.title||'';$('#fieldUrl').value=x?.url||'';$('#fieldDescription').value=x?.description||'';$('#fieldAngle').value=x?.angle||'';$('#fieldProject').value=DEFAULT_PROJECTS.includes(x?.project)?x.project:'Psicaótica';$('#fieldType').value=DEFAULT_TYPES.includes(x?.type)?x.type:'Outro';$('#fieldStatus').value=x?.status||'entrada';$('#fieldTags').value=x?.tags.join(', ')||'';$('#fieldNotes').value=x?.notes||'';$('#cardDialog').showModal();setTimeout(()=>$('#fieldTitle').focus(),50)}
+  function makeCard(x){const safeUrl=secureUrl(x.url);return `<article class="reference-card" data-id="${esc(x.id)}">${x.demo?'<span class="demo-badge">EXEMPLO</span>':''}<div class="card-top"><span class="category-dot"></span><span class="format-label">${esc(x.type)}</span><span class="card-date">${fmtDate(x.createdAt)}</span><button class="favorite-button ${x.favorite?'on':''}" title="${x.favorite?'Retirar dos favoritos':'Marcar favorito'}" aria-label="${x.favorite?'Retirar dos favoritos':'Marcar favorito'}" data-action="favorite">${x.favorite?'★':'☆'}</button></div><h3>${esc(x.title)}</h3>${x.description?`<p class="card-description">${esc(x.description)}</p>`:''}${x.angle?`<div class="angle"><b>POSSÍVEL ABORDAGEM</b><br>${esc(x.angle)}</div>`:''}<div class="card-tags">${x.tags.map(t=>`<span>${esc(t)}</span>`).join('')}</div><div class="card-divider"></div><div class="card-footer"><span class="project-name"><i></i>${esc(x.project)}</span><span class="stage-badge ${esc(x.status)}">${esc(STAGES[x.status])}</span></div><div class="card-footer" style="margin-top:10px"><span></span><div class="card-actions">${safeUrl?`<a href="${esc(safeUrl)}" target="_blank" rel="noopener noreferrer">Abrir ↗</a>`:''}<button class="edit-btn" data-action="details" title="Abrir ficha completa">Detalhes</button><button class="edit-btn" data-action="edit" title="Editar card">Editar</button><button class="delete-btn" data-action="delete" title="Excluir card">Excluir</button></div></div></article>`}
+  function render(){updateNav();updateFilters();const items=visibleCards();$('#board').innerHTML=items.map(makeCard).join('');$('#resultCount').textContent=items.length;$('#emptyState').hidden=items.length!==0;$('#board').hidden=items.length===0;$('#emptyMessage').textContent=state.cards.length?'Não encontramos cards com os filtros escolhidos.':'Quando você salvar uma ideia, ela aparecerá neste espaço.';$('#clearFilters').hidden=!(state.q||state.tag||state.project||state.type);$('#demoToolbar').hidden=!state.cards.some(c=>c.demo);
+    window.AcervoEditorial?.afterRender?.(items,state);}
+  function openForm(id=null){state.editingId=id;const x=state.cards.find(c=>c.id===id);
+    const projects=[...new Set([...state.projects,...state.cards.map(c=>c.project)])].filter(Boolean);
+    $('#fieldProject').innerHTML=projects.map(p=>`<option value="${esc(p)}">${esc(p)}</option>`).join('');
+    $('#cardForm').reset();$('#dialogTitle').textContent=x?'Editar referência':'Guardar nova referência';$('#saveCard').textContent=x?'Salvar alterações ↗':'Guardar referência ↗';$('#fieldTitle').value=x?.title||'';$('#fieldUrl').value=x?.url||'';$('#fieldDescription').value=x?.description||'';$('#fieldAngle').value=x?.angle||'';$('#fieldProject').value=x?.project&&projects.includes(x.project)?x.project:(projects.includes('Psicaótica')?'Psicaótica':projects[0]);$('#fieldType').value=DEFAULT_TYPES.includes(x?.type)?x.type:'Outro';$('#fieldStatus').value=x?.status||'entrada';$('#fieldTags').value=x?.tags.join(', ')||'';$('#fieldNotes').value=x?.notes||'';$('#cardDialog').showModal();setTimeout(()=>$('#fieldTitle').focus(),50)}
   function closeForm(){if($('#cardDialog').open)$('#cardDialog').close();state.editingId=null}
   async function saveForm(e){e.preventDefault();const title=$('#fieldTitle').value.trim();if(!title){toast('Escreva um título para guardar a referência.');$('#fieldTitle').focus();return;}let url=$('#fieldUrl').value.trim();if(url&&!/^https?:\/\//i.test(url)){url='https://'+url;}if(url&&!secureUrl(url)){toast('Confira o link: use um endereço http ou https válido.');$('#fieldUrl').focus();return;}url=secureUrl(url);
     const duplicate=url&&state.cards.find(x=>x.id!==state.editingId&&x.url&&x.url===url);if(duplicate&&!confirm('Já existe uma referência com este link. Deseja guardar mesmo assim?'))return;
@@ -75,12 +79,19 @@
   async function syncFromCloud(){
     if(!Cloud.user)return;
     $('#syncStatus').textContent='Sincronizando…';
-    try{state.cards=(await Cloud.fetchCards()).map(normalizeCard);render();$('#syncStatus').textContent='● Sincronizado';}
+    try{
+      const [cards,projects]=await Promise.all([Cloud.fetchCards(),Cloud.fetchProjects()]);
+      state.cards=cards.map(normalizeCard);
+      state.projects=projects||[...new Set([...DEFAULT_PROJECTS,...state.cards.map(c=>c.project)])];
+      render();$('#syncStatus').textContent='● Sincronizado';
+    }
     catch(error){$('#syncStatus').textContent='Falha na conexão';toast('Erro ao sincronizar: '+error.message);}
   }
   async function readyForUser(user){
     $('#syncStatus').textContent='Sincronizando…';
-    state.cards=(await Cloud.fetchCards()).map(normalizeCard);
+    const [initialCards,savedProjects]=await Promise.all([Cloud.fetchCards(),Cloud.fetchProjects()]);
+    state.cards=initialCards.map(normalizeCard);
+    state.projects=savedProjects||[...new Set([...DEFAULT_PROJECTS,...state.cards.map(c=>c.project)])];
     const localRaw=localStorage.getItem(KEY);
     const migrationFlag='acervo.cloud.imported.v1.'+user.id;
     if(localRaw!==null&&!localStorage.getItem(migrationFlag)){
@@ -112,7 +123,7 @@
     $('#searchInput').addEventListener('input',e=>{state.q=e.target.value;render()});$('#projectFilter').addEventListener('change',e=>{state.project=e.target.value;render()});$('#typeFilter').addEventListener('change',e=>{state.type=e.target.value;render()});$('#sortSelect').addEventListener('change',e=>{state.sort=e.target.value;render()});$('#clearFilters').addEventListener('click',resetFilters);
     $('#projectList').addEventListener('click',e=>{const b=e.target.closest('[data-project]');if(b){state.project=state.project===b.dataset.project?'':b.dataset.project;render()}});
     $('#tagFilters').addEventListener('click',e=>{const b=e.target.closest('[data-tag]');if(b){state.tag=state.tag===b.dataset.tag?'':b.dataset.tag;render()}});
-    $('#board').addEventListener('click',async e=>{const b=e.target.closest('[data-action]');const card=e.target.closest('[data-id]');if(!b||!card)return;const x=state.cards.find(c=>c.id===card.dataset.id);if(!x)return;if(b.dataset.action==='edit')openForm(x.id);if(b.dataset.action==='favorite'){const next={...x,favorite:!x.favorite,updatedAt:new Date().toISOString()};
+    $('#board').addEventListener('click',async e=>{const b=e.target.closest('[data-action]');const card=e.target.closest('[data-id]');if(!b||!card)return;const x=state.cards.find(c=>c.id===card.dataset.id);if(!x)return;if(b.dataset.action==='edit')openForm(x.id);if(b.dataset.action==='details')window.AcervoEditorial?.showDetails?.(x.id);if(b.dataset.action==='favorite'){const next={...x,favorite:!x.favorite,updatedAt:new Date().toISOString()};
       try{await Cloud.save(next);Object.assign(x,next);render();toast(x.favorite?'Referência favoritada.':'Favorito removido.');}
       catch(error){toast('Erro ao sincronizar: '+error.message);}
     }if(b.dataset.action==='delete'&&confirm(`Excluir "${x.title}"?\n\nEssa ação não poderá ser desfeita.`)){try{await Cloud.remove(x.id);state.cards=state.cards.filter(c=>c.id!==x.id);render();toast('Referência excluída da nuvem.');}
@@ -126,5 +137,35 @@
     $('#noticeClose').addEventListener('click',()=>{$('#localNotice').hidden=true;localStorage.setItem(NOTICE_KEY,'1')});
     document.addEventListener('keydown',e=>{if(e.ctrlKey||e.metaKey||e.altKey)return;if(e.key==='/'&&!['INPUT','TEXTAREA','SELECT'].includes(document.activeElement?.tagName)&&!$('#cardDialog').open){e.preventDefault();$('#searchInput').focus();}if(e.key.toLowerCase()==='n'&&!['INPUT','TEXTAREA','SELECT'].includes(document.activeElement?.tagName)&&!$('#cardDialog').open){e.preventDefault();openForm()}});
   }
+  async function moveCard(id,status){
+    if(!(status in STAGES)||status==='todos')throw Error('Etapa inválida.');
+    const card=state.cards.find(c=>c.id===id);
+    if(!card)throw Error('Referência não encontrada.');
+    if(card.status===status)return;
+    const next={...card,status,updatedAt:new Date().toISOString()};
+    await Cloud.save(next);
+    Object.assign(card,next);render();toast('Etapa atualizada: '+STAGES[status]+'.');
+  }
+  async function updateMany(cards){
+    if(!cards?.length)return;
+    await Cloud.saveMany(cards);
+    const byId=new Map(cards.map(c=>[c.id,c]));
+    state.cards=state.cards.map(c=>byId.get(c.id)||c);
+    render();
+  }
+  async function saveProjectList(projects){
+    await Cloud.saveProjects(projects);
+    state.projects=[...projects];
+    if(!projects.includes(state.project))state.project='';
+    render();
+  }
+  window.AcervoApp={
+    get cards(){return state.cards.map(c=>({...c,tags:[...c.tags]}));},
+    get projects(){return [...state.projects];},
+    get currentView(){return state.view;},
+    get stages(){return {...STAGES};},
+    edit:openForm, render, changeView, moveCard, updateMany, saveProjectList,
+    message:toast, escape:esc
+  };
   init();
 })();
