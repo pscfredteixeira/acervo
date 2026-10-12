@@ -26,7 +26,8 @@
       <button class="auth-submit" id="authSubmit" type="submit">Entrar no ACERVO ↗</button>
     </form>
     <div class="auth-bottom"><button type="button" id="authMode">Criar uma conta</button><span>·</span><button type="button" id="authForgot">Esqueci a senha</button></div>
-    <small class="auth-foot">Acesso protegido. Suas referências não ficam públicas no GitHub.</small>
+    <button type="button" id="authRetry" class="auth-retry" hidden>Tentar carregar meus cards novamente</button>
+    <small class="auth-foot">Use sua conta do ACERVO (Supabase), não a senha do GitHub. A sessão permanece neste navegador enquanto válida.</small>
   </div>`;
   document.body.appendChild(gate);
   const element = id => document.getElementById(id);
@@ -54,6 +55,7 @@
     element('authError').textContent = '';
     busy(false);
   }
+  element('authRetry').addEventListener('click',()=>{if(user){element('authRetry').hidden=true;openUser(user);}});
   element('authMode').addEventListener('click', () => setMode(mode === 'signup' ? 'login' : 'signup'));
   element('authForgot').addEventListener('click', async () => {
     if (!client) return showGate('Erro ao carregar a conexão. Atualize a página.');
@@ -93,6 +95,7 @@
     const token = ++bootToken;
     user = nextUser;
     gate.hidden = false;
+    element('authRetry').hidden=true;
     element('authError').textContent = 'Carregando seus cards sincronizados…';
     busy(true);
     try {
@@ -102,7 +105,8 @@
       hideGate();
     } catch (error) {
       console.error('Erro ao carregar ACERVO', error);
-      element('authError').textContent = 'Erro ao carregar seus cards: ' + error.message + '. Atualize a página.';
+      element('authError').textContent = 'Seu login foi aceito, mas os cards não carregaram: ' + error.message;
+      element('authRetry').hidden=false;
     } finally {busy(false);}
     })();
     openingPromise=work;
