@@ -52,7 +52,7 @@
     return true;
   });return items.sort((a,b)=>state.sort==='oldest'?new Date(a.createdAt)-new Date(b.createdAt):state.sort==='az'?a.title.localeCompare(b.title,'pt-BR'):new Date(b.createdAt)-new Date(a.createdAt))}
   function makeCard(x){const safeUrl=secureUrl(x.url);return `<article class="reference-card" data-id="${esc(x.id)}">${x.demo?'<span class="demo-badge">EXEMPLO</span>':''}<div class="card-top"><span class="category-dot"></span><span class="format-label">${esc(x.type)}</span>${x.origin==="chatgpt"?'<span class="chat-origin">CHATGPT</span>':""}<span class="card-date">${fmtDate(x.createdAt)}</span><button class="favorite-button ${x.favorite?'on':''}" title="${x.favorite?'Retirar dos favoritos':'Marcar favorito'}" aria-label="${x.favorite?'Retirar dos favoritos':'Marcar favorito'}" data-action="favorite">${x.favorite?'★':'☆'}</button></div><h3>${esc(x.title)}</h3>${x.description?`<p class="card-description">${esc(x.description)}</p>`:''}${x.angle?`<div class="angle"><b>POSSÍVEL ABORDAGEM</b><br>${esc(x.angle)}</div>`:''}<div class="card-tags">${x.tags.map(t=>`<span>${esc(t)}</span>`).join('')}</div><div class="card-divider"></div><div class="card-footer"><span class="project-name"><i></i>${esc(x.project)}</span><span class="stage-badge ${esc(x.status)}">${esc(STAGES[x.status])}</span></div><div class="card-footer" style="margin-top:10px"><span></span><div class="card-actions">${safeUrl?`<a href="${esc(safeUrl)}" target="_blank" rel="noopener noreferrer">Abrir ↗</a>`:''}<button class="edit-btn" data-action="details" title="Abrir ficha completa">Detalhes</button><button class="edit-btn" data-action="edit" title="Editar card">Editar</button><button class="delete-btn" data-action="delete" title="Excluir card">Excluir</button></div></div></article>`}
-  function render(){updateNav();updateFilters();const items=visibleCards();$('#board').innerHTML=items.map(makeCard).join('');$('#resultCount').textContent=items.length;$('#emptyState').hidden=items.length!==0;$('#board').hidden=items.length===0;$('#emptyMessage').textContent=state.cards.length?'Não encontramos cards com os filtros escolhidos.':'Quando você salvar uma ideia, ela aparecerá neste espaço.';$('#clearFilters').hidden=!(state.q||state.tag||state.project||state.type);$('#demoToolbar').hidden=!state.cards.some(c=>c.demo);
+  function render(){updateNav();updateFilters();const items=visibleCards();$('#board').innerHTML=items.map(makeCard).join('');$('#resultCount').textContent=items.length;$('#emptyState').hidden=items.length!==0;$('#board').hidden=items.length===0;$('#emptyMessage').textContent=state.cards.length?'Não encontramos cards com os filtros escolhidos.':'Quando você salvar uma ideia, ela aparecerá neste espaço.';$('#clearFilters').hidden=!(state.q||state.tag||state.project||state.type);$('#demoToolbar').hidden=!state.cards.some(c=>c.demo);window.AcervoInsights?.onCardsChanged?.();
     window.AcervoEditorial?.afterRender?.(items,state);}
   function openForm(id=null){state.editingId=id;const x=state.cards.find(c=>c.id===id);
     const projects=[...new Set([...state.projects,...state.cards.map(c=>c.project)])].filter(Boolean);
@@ -127,9 +127,10 @@
     render();
     window.AcervoChat?.refresh?.();
     window.AcervoCapture?.onReady?.();
+    window.AcervoInsights?.onReady?.();
   }
   function init(){state.cards=[];$('#localNotice').hidden=true;render();
-    Cloud.boot({onReady:readyForUser,onLogout:()=>{state.cards=[];$('#userEmail').textContent='';$('#syncStatus').textContent='Desconectado';render();window.AcervoChat?.reset?.();window.AcervoCapture?.onLogout?.();}})
+    Cloud.boot({onReady:readyForUser,onLogout:()=>{state.cards=[];$('#userEmail').textContent='';$('#syncStatus').textContent='Desconectado';render();window.AcervoChat?.reset?.();window.AcervoCapture?.onLogout?.();window.AcervoInsights?.onLogout?.();}})
       .catch(error=>toast('Erro de autenticação: '+error.message));
     $('#logoutBtn').addEventListener('click',async()=>{try{await Cloud.logout();}catch(error){toast('Falha ao sair: '+error.message)}});
     $('#refreshBtn').addEventListener('click',syncFromCloud);
