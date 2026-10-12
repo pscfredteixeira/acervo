@@ -183,6 +183,41 @@
     if(data?.error)throw new Error(data.error);
     return data;
   }
+  async function fetchDossiers() {
+    requireUser();
+    const {data,error}=await client.from('acervo_dossiers').select('id,title,angle,notes,card_ids,created_at,updated_at')
+      .order('updated_at',{ascending:false}).limit(300);
+    if(error)throw error;
+    return (data||[]).map(row=>({
+      id:row.id,title:row.title,angle:row.angle,notes:row.notes,
+      cardIds:row.card_ids||[],createdAt:row.created_at,updatedAt:row.updated_at
+    }));
+  }
+  async function saveDossier(input) {
+    const ids=[...new Set((input.cardIds||[]).map(String))];
+    const title=String(input.title||'').trim().slice(0,160);
+    if(!title||ids.length<2||ids.length>24)throw Error('Informe o título e selecione de 2 a 24 referências.');
+    // Validação de pertencimento: as referências devem existir e ser da conta autenticada.
+    const {data:owned,error:verifyError}=await client.from(DB).select('id')
+      .eq('user_id',requireUser()).in('id',ids);
+    if(verifyError)throw verifyError;
+    if(owned?.length!==ids.length)throw Error('Uma ou mais referências não estão disponíveis na sua conta.');
+    const row={
+      user_id:requireUser(),title,angle:String(input.angle||'').slice(0,1400),
+      notes:String(input.notes||'').slice(0,3500),card_ids:ids,updated_at:new Date().toISOString()
+    };
+    if(input.id)row.id=input.id;
+    const {data,error}=await client.from('acervo_dossiers').upsert(row,{onConflict:'user_id,id'})
+      .select('id,title,angle,notes,card_ids,created_at,updated_at').single();
+    if(error)throw error;
+    return {id:data.id,title:data.title,angle:data.angle,notes:data.notes,cardIds:data.card_ids,createdAt:data.created_at,updatedAt:data.updated_at};
+  }
+  async function removeDossier(id) {
+    const {data,error}=await client.from('acervo_dossiers').delete().eq('user_id',requireUser())
+      .eq('id',id).select('id');
+    if(error)throw error;
+    if(!data?.length)throw Error('Dossiê não encontrado.');
+  }
   async function fetchChatgptSettings() {
     const {data,error}=await client.from('acervo_chatgpt_settings')
       .select('enabled,linked_at').eq('user_id',requireUser()).maybeSingle();
@@ -206,6 +241,6 @@
     const {error}=await client.auth.signOut();
     if (error) throw error;
   }
-  window.AcervoCloud={boot,fetchCards,save,saveMany,fetchProjects,saveProjects,fetchChatgptSettings,setChatgptEnabled,lookupMetadata,remove,logout, get user(){return user}};
+  window.AcervoCloud={boot,fetchCards,save,saveMany,fetchProjects,saveProjects,fetchChatgptSettings,setChatgptEnabled,lookupMetadata,fetchDossiers,saveDossier,removeDossier,remove,logout, get user(){return user}};
   showGate();
 })();
