@@ -1793,165 +1793,171 @@
   bind();
 })();
 
-/* assets/capture-v10.js */
+/* assets/capture-sprint10.js */
 (() => {
   'use strict';
-  const $=selector=>document.querySelector(selector);
+  const $=q=>document.querySelector(q);
   const App=window.AcervoApp;
-  const Cloud=window.AcervoCloud;
   const form=$('#quickCaptureForm');
   const urlField=$('#quickCaptureUrl');
-  const fetchBtn=$('#quickFetchBtn');
+  const titleInput=$('#quickTitleInput');
+  const projectInput=$('#quickProjectInput');
+  const tagsInput=$('#quickTagsInput');
   const pasteBtn=$('#quickPasteBtn');
+  const fetchBtn=$('#quickFetchBtn');
+  const quickSaveBtn=$('#quickSaveBtn');
+  const fullBtn=$('#quickReviewBtn');
   const resultBox=$('#quickCaptureResult');
   const status=$('#quickCaptureStatus');
-  const reviewBtn=$('#quickReviewBtn');
   let staged=null;
-  let busy=false;
-  let fromShare='';
-  let generation=0;
+  let incoming=null;
+  let saving=false;
 
-  function normalizeLink(raw) {
-    let value=String(raw||'').trim();
-    if(!value)throw Error('Cole um link para começar.');
-    if(!/^https?:\/\//i.test(value))value='https://'+value;
-    const url=new URL(value);
+  function normalizeLink(text) {
+    let raw=String(text||'').trim();
+    if(!raw)throw Error('Cole um link antes de continuar.');
+    const match=raw.match(/https?:\/\/[^\s<>"']+/i);
+    if(match)raw=match[0];
+    else if(!/^[a-z\d.-]+\.[a-z]{2,}(?:[\/?#]|$)/i.test(raw))throw Error('Informe um endereço http ou https.');
+    else raw='https://'+raw;
+    raw=raw.replace(/[),;.!]+$/g,'');
+    const url=new URL(raw);
     if(!['http:','https:'].includes(url.protocol)||url.username||url.password||url.href.length>3000)
-      throw Error('Informe um endereço público http ou https válido.');
+      throw Error('Informe um link público http ou https, sem credenciais.');
     url.hash='';
     return url.href;
   }
-  function fingerprint(raw){
-    const u=new URL(raw);
-    u.hash='';
-    for(const [key] of u.searchParams) {
-      if(/^utm_/i.test(key)||['fbclid','gclid','igshid','mc_cid','mc_eid'].includes(key.toLowerCase()))
+  function fingerprint(value){
+    const u=new URL(value);u.hash='';
+    for(const key of [...u.searchParams.keys()])
+      if(/^utm_/i.test(key)||['fbclid','gclid','igshid','mc_cid'].includes(key.toLowerCase()))
         u.searchParams.delete(key);
-    }
-    return u.href.replace(/\/$/,'');
+    return u.href.endsWith('/')?u.href.slice(0,-1):u.href;
   }
-  function existingCard(url) {
-    let fp;
-    try {fp=fingerprint(url)} catch {return null}
-    return App.cards.find(card=>{
-      try{return card.url&&fingerprint(card.url)===fp;}catch{return false}
+  function existing(url){
+    const fp=fingerprint(url);
+    return App.cards.find(c=>{
+      try{return c.url&&fingerprint(c.url)===fp;}catch{return false;}
     });
   }
-  function notify(message,isError=false){
+  function suggestTitle(url){
+    const u=new URL(url);
+    let slug=u.pathname.split('/').filter(Boolean).pop()||'';
+    try{slug=decodeURIComponent(slug)}catch{}
+    slug=slug.replace(/\.(html?|php|aspx?)$/i,'').replace(/[-_+]+/g,' ')
+      .replace(/\s+/g,' ').trim();
+    if(!slug||slug.length<6||/^[0-9a-f]{8}[-\da-f]+$/i.test(slug)||/^\d+$/.test(slug)||
+       ['article','post','watch','p','materia','noticia'].includes(slug.toLowerCase()))return '';
+    return (slug[0].toLocaleUpperCase('pt-BR')+slug.slice(1)).slice(0,180);
+  }
+  function notify(message,error=false){
     status.textContent=message;
-    status.classList.toggle('capture-error',isError);
+    status.classList.toggle('capture-error',error);
   }
-  function preview(data,fallbackMessage=''){
-    staged={...data};
-    const url=new URL(staged.url);
-    $('#quickResultSite').textContent=data.site||url.hostname.replace(/^www\./,'');
-    $('#quickResultTitle').textContent=data.title||'Título ainda não identificado';
-    $('#quickResultDescription').textContent=data.description||'Você pode preencher o resumo depois.';
-    $('#quickResultHint').textContent=fallbackMessage || (
-      data.title?'Encontramos metadados da página. Confira antes de guardar.':
-      'Digite um título no formulário. O ACERVO não faz leitura externa sem servidor.'
-    );
-    resultBox.hidden=false;
-    reviewBtn.disabled=false;
+  function updateProjects(preferred){
+    const list=[...new Set([...App.projects,...App.cards.map(c=>c.project).filter(Boolean)])];
+    projectInput.innerHTML='';
+    for(const name of list){
+      const option=document.createElement('option');
+      option.value=name;option.textContent=name;
+      projectInput.appendChild(option);
+    }
+    projectInput.value=list.includes(preferred)?preferred:
+      (list.includes('Psicaótica')?'Psicaótica':list[0]||'Outros');
   }
-  async function consult(raw){
-    if(busy)return;
+  function consult(raw,title=''){
+    if(saving)return;
     let url;
     try{url=normalizeLink(raw);}
-    catch(error){return notify(error.message,true);}
-    if(!Cloud.user) {
-      fromShare=url;
-      urlField.value=url;
-      return notify('Não foi possível abrir o ACERVO neste aparelho.',true);
-    }
-    const existing=existingCard(url);
-    if(existing){
-      staged=null;
-      resultBox.hidden=true;
-      notify('Essa referência já está guardada no ACERVO. Abrindo sua ficha.');
-      window.AcervoEditorial?.showDetails?.(existing.id);
+    catch(error){notify(error.message,true);return;}
+    const duplicate=existing(url);
+    if(duplicate){
+      staged=null;resultBox.hidden=true;
+      notify('Este link já existe no seu ACERVO. Abrindo a ficha da referência.');
+      window.AcervoEditorial?.showDetails?.(duplicate.id);
       return;
     }
-    busy=true;
-    const turn=++generation;
-    fetchBtn.disabled=true;
-    pasteBtn.disabled=true;
-    reviewBtn.disabled=true;
-    resultBox.hidden=true;
-    notify('Preparando link para o seu card…');
-    try {
-      const data=await Cloud.lookupMetadata(url);
-      if(turn!==generation)return;
-      const finalUrl=normalizeLink(data.url||url);
-      const duplicate=existingCard(finalUrl);
-      if(duplicate){
-        notify('O endereço final já existe no seu ACERVO. Abrindo o card.');
-        window.AcervoEditorial?.showDetails?.(duplicate.id);
-        return;
-      }
-      preview({
-        url:finalUrl,
-        title:typeof data.title==='string'?data.title.slice(0,180):'',
-        description:typeof data.description==='string'?data.description.slice(0,1500):'',
-        site:typeof data.site==='string'?data.site.slice(0,100):'',
-        contentType:typeof data.contentType==='string'?data.contentType:''
-      });
-      notify(data.title?'Dados encontrados. Confira e revise o card antes de guardar.':
-        'Link preparado. Complete o título e o resumo antes de salvar.');
-    }catch(error){
-      if(turn!==generation)return;
-      preview({url,title:'',description:'',site:new URL(url).hostname,contentType:''},
-        'Seu link está pronto. Preencha título e resumo no formulário.');
-      notify('O link está pronto, mas o preenchimento é manual: '+(error?.message||'site indisponível'),true);
-    }finally{
-      if(turn===generation){busy=false;fetchBtn.disabled=false;pasteBtn.disabled=false;}
-    }
+    staged={url};
+    urlField.value=url;
+    updateProjects(projectInput.value);
+    const suggested=String(title||'').trim().slice(0,180)||suggestTitle(url);
+    titleInput.value=suggested;
+    tagsInput.value='';
+    $('#quickResultSite').textContent=new URL(url).hostname.replace(/^www\./,'');
+    $('#quickResultHint').textContent=title.trim()?
+      'Título recebido do compartilhamento. Confirme antes de salvar.':
+      suggested?'Título sugerido a partir da URL, não da leitura da matéria. Revise antes de salvar.':
+      'Não foi possível deduzir um título do link. Digite um título antes de guardar.';
+    resultBox.hidden=false;
+    quickSaveBtn.disabled=false;fullBtn.disabled=false;
+    notify('Pronto: escolha um projeto e guarde na Entrada, ou complete a ficha.');
+    if(!suggested)titleInput.focus();
   }
-  form.addEventListener('submit',e=>{
-    e.preventDefault();
-    consult(urlField.value);
-  });
-  pasteBtn.addEventListener('click',async()=>{
+  async function quickSave(){
+    if(saving||!staged)return;
+    const title=titleInput.value.trim();
+    if(!title){notify('Digite um título antes de guardar.',true);titleInput.focus();return;}
+    if(existing(staged.url)){notify('Este link já está no ACERVO.',true);return;}
+    saving=true;quickSaveBtn.disabled=true;fullBtn.disabled=true;
     try{
-      if(!navigator.clipboard?.readText)throw Error('Use a opção Colar do teclado.');
+      await App.addQuickCard({
+        url:staged.url,title,project:projectInput.value,
+        tags:tagsInput.value.split(',').map(x=>x.trim()).filter(Boolean).slice(0,25)
+      });
+      resultBox.hidden=true;staged=null;urlField.value='';
+      notify('Salvo na Caixa de entrada deste aparelho. Exporte um backup para manter uma cópia.');
+    }catch(error){notify('Não foi possível guardar: '+error.message,true);}
+    finally{saving=false;quickSaveBtn.disabled=false;fullBtn.disabled=false;}
+  }
+  function fullEdit(){
+    if(!staged)return;
+    const title=titleInput.value.trim();
+    try{
+      App.prepareCapturedCard({
+        url:staged.url,title,project:projectInput.value,
+        tags:tagsInput.value.split(',').map(x=>x.trim()).filter(Boolean).slice(0,25)
+      });
+      notify('Complete os dados desejados na ficha e toque em Guardar.');
+    }catch(error){notify(error.message,true);}
+  }
+  async function paste(){
+    try{
+      if(!navigator.clipboard?.readText)throw Error('Use Colar no teclado do iPhone.');
       const text=(await navigator.clipboard.readText()).trim();
       if(!text)throw Error('A área de transferência está vazia.');
       urlField.value=text;
       consult(text);
-    }catch(error){notify('Não foi possível ler o link copiado. Cole o endereço no campo: '+error.message,true);urlField.focus();}
-  });
-  reviewBtn.addEventListener('click',()=>{
-    if(!staged)return;
-    try{
-      App.prepareCapturedCard(staged);
-      notify('Revise os campos e toque em Guardar referência para salvar.');
-    }catch(error){notify(error.message,true);}
-  });
-  async function onReady(){
-    if(fromShare){
-      const url=fromShare;
-      fromShare='';
-      urlField.value=url;
-      $('#quickCapture').scrollIntoView({block:'center',behavior:'smooth'});
-      await consult(url);
+    }catch(error){
+      notify('Não consegui ler o conteúdo copiado. Toque no campo e use Colar: '+error.message,true);
+      urlField.focus();
     }
   }
-  function onLogout(){
-    ++generation;
-    staged=null;busy=false;resultBox.hidden=true;
-    fetchBtn.disabled=false;pasteBtn.disabled=false;
-    notify('Cole um link para criar uma nova referência.');
-  }
+  form.addEventListener('submit',e=>{e.preventDefault();consult(urlField.value);});
+  pasteBtn.addEventListener('click',paste);
+  quickSaveBtn.addEventListener('click',quickSave);
+  fullBtn.addEventListener('click',fullEdit);
+
   const params=new URLSearchParams(location.search);
-  const share=params.get('url');
-  if(share){
-    fromShare=share;
-    urlField.value=share;
-    // URLs compartilhadas não permanecem na barra nem no histórico.
-    history.replaceState(history.state,'',location.pathname+location.hash);
+  const shareUrl=params.get('url')||params.get('link')||'';
+  const shareText=params.get('text')||'';
+  const shareTitle=params.get('title')||'';
+  if(shareUrl||/https?:\/\/\S+/i.test(shareText)){
+    incoming={raw:shareUrl||shareText,title:shareTitle};
+    urlField.value=incoming.raw;
+    try{history.replaceState(history.state,'',location.pathname+location.hash);}catch{}
   }
+  function onReady(){
+    if(!incoming)return;
+    const shared=incoming;incoming=null;
+    // Aguardar a montagem do mural para detectar duplicatas corretamente.
+    setTimeout(()=>{
+      $('#quickCapture').scrollIntoView({block:'start',behavior:'smooth'});
+      consult(shared.raw,shared.title);
+    },80);
+  }
+  function onLogout(){}
   window.AcervoCapture={onReady,onLogout,consult};
-  if(Cloud.user)onReady();
+  if(window.AcervoCloud.user)onReady();
 })();
 
 /* assets/insights-core.js */
