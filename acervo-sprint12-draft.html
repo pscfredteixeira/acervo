@@ -1311,7 +1311,9 @@
     const popular=new Map();state.cards.forEach(c=>c.tags.forEach(t=>popular.set(t,(popular.get(t)||0)+1)));const sorted=[...popular].sort((a,b)=>b[1]-a[1]||a[0].localeCompare(b[0],'pt-BR')).map(x=>x[0]);if(state.tag&&!sorted.includes(state.tag))state.tag='';
     $('#tagFilters').innerHTML=(sorted.slice(0,10).length?sorted.slice(0,10).map(t=>`<button type="button" class="tag-chip ${state.tag===t?'active':''}" data-tag="${esc(t)}">${esc(t)}</button>`).join(''):'<span style="font-size:11px;color:#9ca69c">As tags aparecerão aqui.</span>');
   }
+  let sprint12FocusOnly=false;
   function visibleCards(){const q=state.q.trim().toLocaleLowerCase('pt-BR');let items=state.cards.filter(x=>{
+    if(sprint12FocusOnly&&(!x.favorite||x.status==='arquivo'))return false;
     if(state.view!=='todos'&&x.status!==state.view)return false;
     if(state.project&&x.project!==state.project)return false;
     if(state.type&&x.type!==state.type)return false;
@@ -1327,7 +1329,7 @@
       ${[...new Set([...state.projects,x.project])].map(p=>`<option value="${esc(p)}" ${p===x.project?'selected':''}>${esc(p)}</option>`).join('')}
     </select></label><span class="stage-badge ${esc(x.status)}">${esc(STAGES[x.status])}</span></div><div class="card-footer" style="margin-top:10px"><span></span><div class="card-actions">${safeUrl?`<a href="${esc(safeUrl)}" target="_blank" rel="noopener noreferrer">Abrir ↗</a>`:''}<button class="edit-btn" data-action="details" title="Abrir ficha completa">Detalhes</button><button class="edit-btn sprint8-advance" data-action="advance" title="Mover para a próxima etapa editorial">${x.status==='arquivo'?'Reabrir ↺':x.status==='producao'?'Concluir ✓':'Avançar →'}</button><button class="edit-btn" data-action="edit" title="Editar card">Editar</button><button class="delete-btn" data-action="delete" title="Excluir card">Excluir</button></div></div></article>`}
   function render(){updateNav();updateFilters();const items=visibleCards();$('#board').innerHTML=items.map(makeCard).join('');$('#resultCount').textContent=items.length;$('#emptyState').hidden=items.length!==0;$('#board').hidden=items.length===0;$('#emptyMessage').textContent=state.cards.length?'Não encontramos cards com os filtros escolhidos.':'Quando você salvar uma ideia, ela aparecerá neste espaço.';$('#clearFilters').hidden=!(state.q||state.tag||state.project||state.type);$('#demoToolbar').hidden=!state.cards.some(c=>c.demo);window.AcervoInsights?.onCardsChanged?.();
-    window.AcervoEditorial?.afterRender?.(items,state);sprint8BackupInfo();sprint11RefreshToolbar();}
+    window.AcervoEditorial?.afterRender?.(items,state);sprint8BackupInfo();sprint11RefreshToolbar();sprint12RenderFocus();}
   function openForm(id=null){state.editingId=id;const x=state.cards.find(c=>c.id===id);
     const projects=[...new Set([...state.projects,...state.cards.map(c=>c.project)])].filter(Boolean);
     $('#fieldProject').innerHTML=projects.map(p=>`<option value="${esc(p)}">${esc(p)}</option>`).join('');
@@ -1584,6 +1586,83 @@
         'Exclusão desfeita: '+cards.length+' referências recuperadas.');
     }catch(error){toast('Não foi possível recuperar: '+error.message);}
   }
+
+  function sprint12RenderFocus(){
+    const active=state.cards.filter(c=>c.status!=='arquivo'&&!c.demo);
+    const starred=active.filter(c=>c.favorite);
+    const priority={producao:0,pauta:1,selecionado:2,entrada:3};
+    starred.sort((a,b)=>(priority[a.status]??9)-(priority[b.status]??9)
+      ||(Date.parse(b.updatedAt||b.createdAt||0)-Date.parse(a.updatedAt||a.createdAt||0)));
+    const activeCount=active.length;
+    const panel=$('#sprint12Focus');
+    const capacity=panel.querySelector('.sprint12-indicator');
+    capacity.classList.toggle('over-limit',activeCount>30);
+    $('#sprint12ActiveCount').textContent=String(activeCount);
+    $('#sprint12CapacityNumber').textContent=activeCount+' / 30';
+    $('#sprint12CapacityMeter').setAttribute('aria-valuenow',String(Math.min(activeCount,30)));
+    $('#sprint12MeterFill').style.width=Math.min(100,activeCount/30*100)+'%';
+    $('#sprint12CapacityText').textContent=activeCount>30?
+      'Mais referências do que o limite sugerido':'Seu acervo em perspectiva';
+    const delta=activeCount-30;
+    $('#sprint12CapacityHint').textContent=delta>0?
+      'Há '+delta+' referência'+(delta===1?'':'s')+' acima da meta de 30. Arquive as concluídas ou revise o que não será usado.':
+      activeCount>=15?
+        'Dentro da faixa planejada de 15 a 30 referências. Mantenha o que tem destino editorial.':
+        'Um acervo menor também funciona: guarde somente o que pretende utilizar.';
+    $('#sprint12InboxCount').textContent='('+active.filter(c=>c.status==='entrada').length+')';
+    const total=starred.length,items=starred.slice(0,5);
+    const stages={entrada:'Na entrada',selecionado:'Selecionada',pauta:'Em pauta',producao:'Em produção'};
+    const nextStage={entrada:'selecionado',selecionado:'pauta',pauta:'producao',producao:'arquivo'};
+    const nextText={entrada:'Selecionar →',selecionado:'Virar pauta →',pauta:'Produzir →',producao:'Concluir ✓'};
+    $('#sprint12Priorities').innerHTML=total?items.map(c=>`
+      <article class="sprint12-focus-row" data-sprint12-id="${esc(c.id)}">
+        <div><strong>${esc(c.title)}</strong><small>${esc(c.project)} · ${esc(stages[c.status]||'Referência')}</small></div>
+        <div class="sprint12-row-actions">
+          <button type="button" data-sprint12-action="next" title="Avançar etapa">${esc(nextText[c.status]||'Avançar →')}</button>
+          <button type="button" data-sprint12-action="open">Ficha</button>
+          <button type="button" class="sprint12-unstar" data-sprint12-action="unstar" aria-label="Remover de prioridades">★</button>
+        </div>
+      </article>`).join('')+(total>5?
+      '<p class="sprint12-empty">Mais '+(total-5)+' prioridades. Use Mostrar prioritárias no mural para vê-las todas.</p>':''):
+      '<p class="sprint12-empty">Nenhuma prioridade definida. Toque na estrela ☆ de uma referência no mural para trazê-la até aqui.</p>';
+    for(const btn of [$('#sprint12ShowFavorites'),$('#sprint12ToggleFavorites')])
+      btn.setAttribute('aria-pressed',String(sprint12FocusOnly));
+    $('#sprint12ShowFavorites').textContent=sprint12FocusOnly?
+      '★ Voltar ao mural completo':'★ Mostrar prioritárias no mural';
+  }
+  function sprint12ClearSearch(){
+    state.view='todos';state.project='';state.type='';state.tag='';state.q='';
+    $('#searchInput').value='';
+  }
+  function sprint12ToggleView(force=null){
+    sprint12FocusOnly=force===null?!sprint12FocusOnly:!!force;
+    if(sprint12FocusOnly)sprint12ClearSearch();
+    render();
+    if(sprint12FocusOnly)$('#boardTitle').scrollIntoView({block:'start',behavior:'smooth'});
+  }
+  async function sprint12DoAction(button){
+    const row=button.closest('[data-sprint12-id]');
+    if(!row)return;
+    const id=row.dataset.sprint12Id;
+    const card=state.cards.find(c=>c.id===id&&c.status!=='arquivo');
+    if(!card)return;
+    const action=button.dataset.sprint12Action;
+    if(action==='open')return window.AcervoEditorial?.showDetails?.(id);
+    button.disabled=true;
+    try{
+      if(action==='unstar'){
+        const next={...card,favorite:false,updatedAt:new Date().toISOString()};
+        await Cloud.save(next);
+        Object.assign(card,next);render();
+        toast('Referência retirada das prioridades.');
+      }else if(action==='next'){
+        const target={entrada:'selecionado',selecionado:'pauta',pauta:'producao',producao:'arquivo'}[card.status];
+        if(!target)return;
+        await moveCard(id,target);
+      }
+    }catch(error){toast('Não foi possível atualizar a referência: '+error.message);}
+    finally{button.disabled=false;}
+  }
   function sprint11Items(){
     return state.cards.filter(c=>sprint11Selected.has(c.id));
   }
@@ -1657,6 +1736,19 @@
       toast('Não foi possível abrir o ACERVO: '+error.message);
     });
     $('#refreshBtn').addEventListener('click',()=>location.reload());
+    $('#sprint12ToggleFavorites').addEventListener('click',()=>sprint12ToggleView());
+    $('#sprint12ShowFavorites').addEventListener('click',()=>sprint12ToggleView());
+    $('#sprint12ReviewInbox').addEventListener('click',()=>{
+      sprint12FocusOnly=false;
+      sprint12ClearSearch();
+      state.view='entrada';
+      render();
+      $('#boardTitle').scrollIntoView({block:'start',behavior:'smooth'});
+    });
+    $('#sprint12Priorities').addEventListener('click',e=>{
+      const btn=e.target.closest('[data-sprint12-action]');
+      if(btn)sprint12DoAction(btn);
+    });
     $('#mobileCaptureJump').addEventListener('click',()=>{
       $('#quickCapture').scrollIntoView({block:'start',behavior:'smooth'});
       setTimeout(()=>$('#quickCaptureUrl').focus({preventScroll:true}),250);
