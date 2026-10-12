@@ -1760,6 +1760,100 @@
     }catch(error){toast('Não foi possível atualizar a referência: '+error.message);}
     finally{button.disabled=false;}
   }
+
+  let sprint13EditingIds=[];
+  let sprint13Busy=false;
+  function sprint13OutcomeName(value){
+    return value==='publicado'?'publicada ou gravada':value==='descartado'?'descartada':'sem resultado';
+  }
+  function sprint13RenderSummary(){
+    const archived=state.cards.filter(c=>c.status==='arquivo'&&!c.demo);
+    const summary=$('#sprint13ArchiveSummary');
+    summary.hidden=state.view!=='arquivo';
+    const amounts={
+      todos:archived.length,
+      publicado:archived.filter(c=>c.outcome==='publicado').length,
+      descartado:archived.filter(c=>c.outcome==='descartado').length,
+      pendente:archived.filter(c=>!c.outcome).length
+    };
+    $('#sprint13AllCount').textContent=amounts.todos;
+    $('#sprint13PublishedCount').textContent=amounts.publicado;
+    $('#sprint13DiscardedCount').textContent=amounts.descartado;
+    $('#sprint13PendingCount').textContent=amounts.pendente;
+    for(const b of summary.querySelectorAll('[data-sprint13-filter]'))
+      b.setAttribute('aria-pressed',String(b.dataset.sprint13Filter===sprint13Filter));
+  }
+  function sprint13ShowLink(){
+    $('#sprint13OutcomeLinkWrap').hidden=$('#sprint13OutcomeSelect').value!=='publicado';
+  }
+  function sprint13OpenOutcome(ids){
+    if(sprint13Busy)return;
+    const unique=[...new Set(ids)];
+    const cards=state.cards.filter(c=>unique.includes(c.id));
+    if(!cards.length)return;
+    sprint13EditingIds=cards.map(c=>c.id);
+    const single=cards.length===1?cards[0]:null;
+    $('#sprint13OutcomeTitle').textContent=single?.status==='arquivo'?
+      'Editar resultado da referência':(cards.length===1?'Encerrar referência':'Encerrar '+cards.length+' referências');
+    $('#sprint13OutcomeDescription').textContent=single?
+      single.title:'O mesmo resultado será aplicado aos '+cards.length+' cards selecionados.';
+    $('#sprint13OutcomeSelect').value=single?.outcome||'publicado';
+    $('#sprint13OutcomeDate').value=single?.outcomeDate||'';
+    $('#sprint13OutcomeLink').value=single?.outcomeUrl||'';
+    $('#sprint13OutcomeNote').value=single?.outcomeNote||'';
+    $('#sprint13OutcomeSave').textContent=cards.length===1?'Salvar resultado':'Salvar '+cards.length+' resultados';
+    sprint13ShowLink();
+    $('#sprint13OutcomeDialog').showModal();
+  }
+  function sprint13CloseOutcome(){
+    if(sprint13Busy)return;
+    $('#sprint13OutcomeDialog').close();
+    sprint13EditingIds=[];
+  }
+  async function sprint13SaveOutcome(event){
+    event.preventDefault();
+    if(sprint13Busy||!sprint13EditingIds.length)return;
+    const outcome=$('#sprint13OutcomeSelect').value;
+    if(!['publicado','descartado'].includes(outcome))return toast('Selecione um resultado válido.');
+    const rawDate=$('#sprint13OutcomeDate').value;
+    if(rawDate && !/^\d{4}-\d{2}-\d{2}$/.test(rawDate))
+      return toast('Confira a data.');
+    let finalLink='';
+    if(outcome==='publicado'){
+      const raw=$('#sprint13OutcomeLink').value.trim();
+      finalLink=secureUrl(raw);
+      if(raw&&!finalLink)return toast('Confira o endereço da publicação final.');
+    }
+    const note=$('#sprint13OutcomeNote').value.trim().slice(0,1200);
+    const set=new Set(sprint13EditingIds);
+    const now=new Date().toISOString();
+    const original=state.cards.filter(c=>set.has(c.id));
+    if(!original.length)return sprint13CloseOutcome();
+    const updates=original.map(c=>normalizeCard({...c,status:'arquivo',outcome,
+      outcomeDate:rawDate,outcomeUrl:finalLink,outcomeNote:note,updatedAt:now}));
+    sprint13Busy=true;
+    $('#sprint13OutcomeSave').disabled=true;
+    $('#sprint13OutcomeCancel').disabled=true;
+    try{
+      // Uma única gravação local. Em caso de falha, nenhum card da tela é alterado.
+      await Cloud.saveMany(updates);
+      const changed=new Map(updates.map(c=>[c.id,c]));
+      state.cards=state.cards.map(c=>changed.get(c.id)||c);
+      sprint11Selected.clear();
+      $('#sprint13OutcomeDialog').close();
+      sprint13EditingIds=[];
+      render();
+      toast(updates.length===1?
+        'Resultado registrado: '+sprint13OutcomeName(outcome)+'.':
+        updates.length+' referências encerradas como '+sprint13OutcomeName(outcome)+'.');
+    }catch(error){
+      toast('Não foi possível salvar o resultado: '+error.message);
+    }finally{
+      sprint13Busy=false;
+      $('#sprint13OutcomeSave').disabled=false;
+      $('#sprint13OutcomeCancel').disabled=false;
+    }
+  }
   function sprint11Items(){
     return state.cards.filter(c=>sprint11Selected.has(c.id));
   }
@@ -1816,7 +1910,12 @@
         sprint11ShowUndoCards(cards);
       }else{
         const now=new Date().toISOString();
-        const updated=cards.map(c=>({...c,[action==='stage'?'status':'project']:value,updatedAt:now}));
+        const updated=cards.map(c=>{
+          const next={...c,[action==='stage'?'status':'project']:value,updatedAt:now};
+          if(action==='stage'&&c.status==='arquivo'&&value!=='arquivo')
+            Object.assign(next,{outcome:'',outcomeDate:'',outcomeUrl:'',outcomeNote:''});
+          return next;
+        });
         await Cloud.saveMany(updated);
         const changed=new Map(updated.map(c=>[c.id,c]));
         state.cards=state.cards.map(c=>changed.get(c.id)||c);
@@ -1837,6 +1936,17 @@
       toast('Não foi possível abrir o ACERVO: '+error.message);
     });
     $('#refreshBtn').addEventListener('click',()=>location.reload());
+    $('#sprint13OutcomeClose').addEventListener('click',sprint13CloseOutcome);
+    $('#sprint13OutcomeCancel').addEventListener('click',sprint13CloseOutcome);
+    $('#sprint13OutcomeSelect').addEventListener('change',sprint13ShowLink);
+    $('#sprint13OutcomeForm').addEventListener('submit',sprint13SaveOutcome);
+    $('#sprint13ArchiveSummary').addEventListener('click',e=>{
+      const filter=e.target.closest('[data-sprint13-filter]');
+      if(!filter)return;
+      sprint13Filter=filter.dataset.sprint13Filter;
+      render();
+    });
+    $('#sprint13ResetFilter').addEventListener('click',()=>{sprint13Filter='todos';render();});
     $('#sprint12ToggleFavorites').addEventListener('click',()=>sprint12ToggleView());
     $('#sprint12ShowFavorites').addEventListener('click',()=>sprint12ToggleView());
     $('#sprint12ReviewInbox').addEventListener('click',()=>{
@@ -1959,8 +2069,10 @@
   }
   async function updateMany(cards){
     if(!cards?.length)return;
-    await Cloud.saveMany(cards);
-    const byId=new Map(cards.map(c=>[c.id,c]));
+    const adjusted=cards.map(c=>(c.status!=='arquivo'&&c.outcome)?
+      {...c,outcome:'',outcomeDate:'',outcomeUrl:'',outcomeNote:''}:c);
+    await Cloud.saveMany(adjusted);
+    const byId=new Map(adjusted.map(c=>[c.id,c]));
     state.cards=state.cards.map(c=>byId.get(c.id)||c);
     render();
   }
