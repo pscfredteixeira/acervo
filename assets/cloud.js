@@ -74,8 +74,8 @@
         : await client.auth.signInWithPassword({email, password});
       if (response.error) throw response.error;
       if (mode === 'signup' && !response.data.session) {
-        element('authError').textContent = 'Confira seu e-mail para confirmar a conta. Depois, volte e entre.';
         setMode('login');
+        element('authError').textContent = 'Confira seu e-mail para confirmar a conta. Depois, volte e entre.';
       } else if (response.data.user) {
         await openUser(response.data.user);
       }
