@@ -27,7 +27,7 @@
     </form>
     <div class="auth-bottom"><button type="button" id="authMode">Criar uma conta</button><span>·</span><button type="button" id="authForgot">Esqueci a senha</button></div>
     <button type="button" id="authRetry" class="auth-retry" hidden>Tentar carregar meus cards novamente</button>
-    <small class="auth-foot">Use sua conta do ACERVO (Supabase), não a senha do GitHub. A sessão permanece neste navegador enquanto válida.</small>
+    <small class="auth-foot">No iPhone, prefira abrir pelo Safari ou pelo ícone instalado. O navegador dentro do ChatGPT pode não conservar o login entre acessos.</small>
   </div>`;
   document.body.appendChild(gate);
   const element = id => document.getElementById(id);
@@ -37,6 +37,7 @@
   let openingPromise = null;
   function showGate(message = '') {
     gate.hidden = false;
+    element('authRetry').hidden = true;
     element('authError').textContent = message;
     document.querySelector('.app-shell')?.setAttribute('inert', '');
   }
