@@ -1,13 +1,13 @@
-/* ACERVO — Service Worker v10. Interface e JSON inicial públicos. Alterações locais ficam no navegador. */
-const CACHE = 'acervo-shell-v10-20261012-2';
+/* ACERVO — Service Worker v11. Interface e JSON inicial públicos. Alterações locais ficam no navegador. */
+const CACHE = 'acervo-shell-v11-20261012-1';
 const CORE = [
   './',
   './index.html',
   './offline.html',
   './manifest.webmanifest',
   './assets/style.css',
-  './assets/local-store-v10.js',
-  './assets/mural-v10.js',
+  './assets/local-store-v11.js',
+  './assets/mural-v11.js',
   './assets/editorial-v10.js',
   './assets/capture-v10.js',
   './assets/pwa.js',
