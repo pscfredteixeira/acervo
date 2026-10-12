@@ -4,3 +4,32 @@
 @media(max-width:360px){.hero h1{font-size:37px}.board-heading h2{font-size:25px}.toolbar select{font-size:9px}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
 [hidden]{display:none!important}
+
+/* Sprint 2 — conta, autenticação e sincronização */
+.cloud-controls{display:flex;align-items:center;gap:10px;margin-right:12px;min-width:0}
+.sync-status{font-size:10px;color:#4a8b6b;font-weight:800;white-space:nowrap}
+.user-email{font-size:10px;color:#85978b;max-width:165px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cloud-action{padding:7px 9px;background:#eff2eb;border:1px solid #e1e8df;border-radius:7px;color:#4b6e5d;font-size:11px;font-weight:800}
+.cloud-action:hover{background:#dfeae0}
+.auth-gate{position:fixed;inset:0;z-index:1000;background:linear-gradient(140deg,#e9efe7,#f8f7f2 55%,#e7e8de);display:grid;place-items:center;padding:22px;overflow:auto}
+.auth-gate[hidden]{display:none!important}
+.auth-panel{width:min(100%,430px);background:#fff;border:1px solid #e5e9e0;border-radius:19px;box-shadow:0 20px 80px #1a46361e;padding:clamp(25px,5vw,43px)}
+.auth-brand{font-family:Georgia,serif;font-size:35px;letter-spacing:-.1em;color:#173b36;line-height:1;margin:0 0 29px}
+.auth-brand span{color:#d66a4a}.auth-brand small{font-family:'DM Sans',Arial,sans-serif;font-weight:800;font-size:12px;letter-spacing:.2em;vertical-align:middle;margin-left:12px}
+.auth-overline{font-size:10px;letter-spacing:.16em;color:#c37556;font-weight:800}
+.auth-panel h1{font-family:'DM Serif Display',Georgia,serif;font-size:clamp(34px,5vw,46px);font-weight:400;line-height:1.07;margin:13px 0 17px;color:#21453a}
+.auth-panel h1 em{color:#c86e4d}
+.auth-panel p{font-size:13px;line-height:1.7;color:#788b7e;margin-bottom:28px}
+.auth-panel form{display:flex;flex-direction:column;gap:8px}
+.auth-panel label{font-size:11px;color:#446251;font-weight:800;margin-top:7px}
+.auth-panel input{width:100%;padding:13px 14px;border-radius:9px;background:#f9fbf8;border:1px solid #dbe6dc;color:#254739;font-size:14px;outline:none}
+.auth-panel input:focus{border-color:#6e9a80;box-shadow:0 0 0 3px #b9d1c544}
+.auth-submit{border:0;border-radius:9px;background:#173b36;color:#fff;font-size:13px;font-weight:800;padding:14px;margin-top:10px}
+.auth-submit:disabled{opacity:.6;cursor:wait}
+.auth-error{color:#a85943;min-height:18px;font-size:12px;line-height:1.5;margin-top:6px}
+.auth-bottom{display:flex;gap:12px;justify-content:center;align-items:center;margin:22px 0}
+.auth-bottom button{border:0;background:transparent;color:#466a57;font-weight:800;font-size:11px}
+.auth-bottom span{color:#ccd5cc}
+.auth-foot{display:block;text-align:center;font-size:10px;color:#97a59b;line-height:1.6}
+@media(max-width:980px){.user-email{display:none}.cloud-controls{gap:6px;margin-right:4px}}
+@media(max-width:720px){.topbar-actions{gap:6px}.cloud-controls{margin-right:0}.sync-status{font-size:9px}.cloud-action{font-size:10px;padding:7px}.cloud-controls #logoutBtn{display:none}.auth-panel{padding:30px 24px}}
