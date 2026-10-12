@@ -7,7 +7,7 @@ Aplicativo web para reunir matérias, links, referências e pautas encontradas e
 - ✅ Sprint 2: autenticação, persistência no Supabase, políticas RLS por usuário, sincronização ao abrir/retornar ao aplicativo e migração opcional dos cards locais.
 - ✅ Sprint 3: painel Fluxo editorial, transição de etapas (menu/arrastar), ficha detalhada, criação/renomeação/exclusão de projetos e gerenciamento de tags.
 - ✅ Sprint 4: integração opt-in com ChatGPT via conector Supabase, origem identificável nos cards e procedimento de captura mediante comando explícito.
-- ⏳ Sprint 5: captura rápida de links.
+- ✅ Sprint 5: colagem rápida, busca de metadados com Edge Function autenticada, revisão antes de salvar e captura via parâmetro de link.
 - ⏳ Sprint 6: PWA para iPhone.
 - ⏳ Sprint 7: inteligência editorial.
 
@@ -63,3 +63,16 @@ Procedimento SQL e validações: [docs/CAPTURA_CHATGPT.md](docs/CAPTURA_CHATGPT.
 ### Segurança
 
 `acervo_chatgpt_settings` mantém uma autorização por usuário; seu índice parcial exclusivo permite **uma conta ativa por projeto Supabase**. O navegador só utiliza chave publicável e autenticação com RLS. A operação enviada pelo ChatGPT utiliza a conexão administrativa do Supabase já autorizada pelo usuário, nunca credenciais no HTML. A consulta deve parar sem salvar caso não exista exatamente um destino ativo.
+
+## Sprint 5 — Captura rápida de links
+
+**Caminho rápido:** no ACERVO, cole o link no campo **Captura rápida** e toque em **Buscar dados**. O aplicativo tenta obter o título, a descrição e o nome do site. Em seguida, toque em **Revisar card**, escolha projeto, tags e etapa e confirme **Guardar no ACERVO**. Não há salvamento automático sem revisão.
+
+**Se o site não permitir leitura:** o aplicativo oferece o link preenchido e deixa que você complemente título e resumo manualmente. Paywalls, sites bloqueando automações, PDFs e páginas que exigem JavaScript podem não fornecer metadados.
+
+**No iPhone:** há um botão **Colar** para ler a área de transferência, quando permitido pelo iOS e Safari. É possível preparar uma automação do app Atalhos que abra esta URL, substituindo `LINK_CODIFICADO` pelo endereço codificado (URL encoded) do item compartilhado:
+`https://pscfredteixeira.github.io/acervo/?url=LINK_CODIFICADO`
+
+Ao abrir o ACERVO, a URL é removida da barra de endereços e, após login, o link é levado à captura rápida. Esse parâmetro **não salva automaticamente**: o usuário ainda revisa e confirma. A instalação como PWA não garante que o aplicativo apareça nativamente no menu Compartilhar do iOS; usar o app Atalhos é uma opção.
+
+**Backend:** Edge Function autenticada `acervo-link-preview`, fonte em `supabase/functions/acervo-link-preview/index.ts`. Extrai apenas Open Graph, Twitter Cards, descrição HTML ou `<title>`; não tenta resumir o texto completo da matéria. Inclui verificações de URLs públicas e DNS, limitação de tamanho/tempo e redirecionamentos verificados. Não existe chave secreta no cliente. A autenticação do gateway exige JWT de sessão.
