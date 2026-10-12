@@ -32,6 +32,8 @@
   const element = id => document.getElementById(id);
   let mode = 'login';
   let bootToken = 0;
+  let openingFor = null;
+  let openingPromise = null;
   function showGate(message = '') {
     gate.hidden = false;
     element('authError').textContent = message;
