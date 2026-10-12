@@ -104,20 +104,28 @@
   }
   async function readyForUser(user){
     $('#syncStatus').textContent='Sincronizando…';
-    const [initialCards,savedProjects]=await Promise.all([Cloud.fetchCards(),Cloud.fetchProjects()]);
+    // O mural não pode deixar de carregar se apenas as preferências falharem.
+    const initialCards=await Cloud.fetchCards();
+    let savedProjects=null;
+    try{savedProjects=await Cloud.fetchProjects();}
+    catch(error){console.warn('Falha ao carregar projetos; usando lista dos cards.',error);}
     state.cards=initialCards.map(normalizeCard);
     state.projects=savedProjects||[...new Set([...DEFAULT_PROJECTS,...state.cards.map(c=>c.project)])];
-    const localRaw=localStorage.getItem(KEY);
+    let localRaw=null;
+    try{localRaw=localStorage.getItem(KEY);}
+    catch(error){console.warn('Backup local inacessível; sincronização pela nuvem mantida.',error);}
     const migrationFlag='acervo.cloud.imported.v1.'+user.id;
-    if(localRaw!==null&&!localStorage.getItem(migrationFlag)){
+    let alreadyImported=false;
+    try{alreadyImported=!!localStorage.getItem(migrationFlag);}catch{}
+    if(localRaw!==null&&!alreadyImported){
       let oldCards=[];
       try{const parsed=JSON.parse(localRaw);if(Array.isArray(parsed))oldCards=parsed.filter(validCard).map(normalizeCard).filter(c=>!c.demo);}
       catch(error){console.warn('Backup antigo inválido e preservado',error);}
       const existing=new Set(state.cards.map(c=>c.id));
       const pending=oldCards.filter(c=>!existing.has(c.id));
-      if(!pending.length){localStorage.setItem(migrationFlag,'1');}
+      if(!pending.length){try{localStorage.setItem(migrationFlag,'1');}catch{}}
       else if(confirm(`Encontramos ${pending.length} card(s) que estavam salvos somente neste navegador.\n\nDeseja importar para o ACERVO sincronizado? Os dados locais originais serão preservados.`)){
-        await Cloud.saveMany(pending);localStorage.setItem(migrationFlag,'1');
+        await Cloud.saveMany(pending);try{localStorage.setItem(migrationFlag,'1');}catch{}
         state.cards=(await Cloud.fetchCards()).map(normalizeCard);
         toast(`${pending.length} referência(s) migrada(s) para a nuvem.`);
       }
