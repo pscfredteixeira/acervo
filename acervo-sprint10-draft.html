@@ -371,6 +371,10 @@
 }
 
 /* Sprint 10 — captura rápida mobile */
+.sprint10-share-help{margin:10px 0 0;font-size:11px;color:#6f8574;line-height:1.65}
+.sprint10-share-help summary{cursor:pointer;display:inline-block;color:#2c6548;font-weight:800;padding:6px 0}
+.sprint10-share-help p{margin:6px 0 0}
+.sprint10-share-help code{font-size:10px;overflow-wrap:anywhere}
 .sprint10-result{display:block;max-width:100%;padding:16px 18px}
 .sprint10-capture-fields{display:grid;gap:8px;width:100%}
 .sprint10-capture-fields label{font-weight:800;color:#3c694e;font-size:11px;margin-top:4px}
@@ -455,7 +459,11 @@
             <button id="quickPasteBtn" class="quick-paste" type="button">Colar</button>
             <button id="quickFetchBtn" type="submit" class="quick-fetch">Preparar link ↗</button>
           </form>
-          <div id="quickCaptureStatus" role="status" aria-live="polite" class="quick-capture-status">No iPhone, copie o endereço da matéria e toque em Colar. Depois, revise o card antes de guardar.</div>
+          <div id="quickCaptureStatus" role="status" aria-live="polite" class="quick-capture-status">No iPhone, copie o endereço da matéria e toque em Colar. Depois, revise o título.</div>
+          <details class="sprint10-share-help"><summary>Como guardar um link pelo iPhone?</summary>
+            <p>No Safari ou outro aplicativo, toque em <strong>Compartilhar → Copiar link</strong>. Abra o ACERVO, toque em <strong>Capturar → Colar</strong>, escolha o projeto e guarde. Se usar o app Atalhos, também pode abrir o ACERVO com <code>?url=LINK_CODIFICADO</code> e <code>&amp;title=TÍTULO_CODIFICADO</code>.</p>
+            <p>Não há leitura automática do conteúdo da matéria: o título sugerido vem somente do endereço, e você pode corrigir antes de salvar.</p>
+          </details>
           <div id="quickCaptureResult" class="quick-capture-result sprint10-result" hidden>
             <div class="sprint10-capture-fields">
               <span id="quickResultSite" class="quick-site"></span>
@@ -1431,6 +1439,10 @@
       toast('Não foi possível abrir o ACERVO: '+error.message);
     });
     $('#refreshBtn').addEventListener('click',()=>location.reload());
+    $('#mobileCaptureJump').addEventListener('click',()=>{
+      $('#quickCapture').scrollIntoView({block:'start',behavior:'smooth'});
+      setTimeout(()=>$('#quickCaptureUrl').focus({preventScroll:true}),250);
+    });
     $('#sprint10MoreFields').addEventListener('click',()=>{
       const panel=$('#sprint10OptionalFields');
       panel.hidden=!panel.hidden;
