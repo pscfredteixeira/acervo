@@ -36,7 +36,7 @@ Para tornar essas alterações duráveis no GitHub, o usuário usa **⇧ Publica
 - Não inserir novas matérias de pesquisas anteriores não incluídas no backup se o pedido for simplesmente publicar o estado do acervo.
 - Não sobrescrever o estado completo com uma lista mesclada que ressuscite cards excluídos.
 - Não apagar mudanças locais do navegador. A reconciliação ocorre no próprio aplicativo comparando a publicação com cada card.
-- Não editar `acervo-sprint11.html`, `acervo-sprint10.html`, `acervo-sprint9.html`, `acervo-sprint8.html` e `acervo-direto.html` (versões de recuperação), salvo se o usuário pedir.
+- Não editar `acervo-sprint12.html`, `acervo-sprint11.html`, `acervo-sprint10.html`, `acervo-sprint9.html`, `acervo-sprint8.html` e `acervo-direto.html` (versões de recuperação), salvo se o usuário pedir.
 
 ## Testes específicos realizados no Sprint 9
 
@@ -59,7 +59,7 @@ O usuário pode selecionar e excluir várias referências no navegador de uma s�
 
 ### Sprint 12 — publicação corrente
 
-Os arquivos ativos para atualizar ao receber novo snapshot JSON são **`index.html`** e **`acervo-sprint13.html`**, além de `data/cards.json`. Mantenha as versões anteriores `acervo-sprint11.html`, `acervo-sprint10.html`, `acervo-sprint9.html`, `acervo-sprint8.html` e `acervo-direto.html` inalteradas para rollback. Atualize o JSON incorporado, o HTML pré-renderizado dos cards e todos os contadores estáticos, sem resetar favoritos e etapas no snapshot. O painel do Sprint 12 calcula prioridades a partir de `favorite` e `status` no navegador e não exige alterações de esquema.
+Os arquivos ativos para atualizar ao receber novo snapshot JSON são **`index.html`** e **`acervo-sprint13.html`**, além de `data/cards.json`. Mantenha as versões anteriores `acervo-sprint12.html`, `acervo-sprint11.html`, `acervo-sprint10.html`, `acervo-sprint9.html`, `acervo-sprint8.html` e `acervo-direto.html` inalteradas para rollback. Atualize o JSON incorporado, o HTML pré-renderizado dos cards e todos os contadores estáticos, sem resetar favoritos e etapas no snapshot. O painel do Sprint 12 calcula prioridades a partir de `favorite` e `status` no navegador e não exige alterações de esquema.
 
 ### Sprint 13 — Campos de desfecho no snapshot
 
