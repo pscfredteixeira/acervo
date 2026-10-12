@@ -14,14 +14,16 @@
   <link rel="apple-touch-icon" sizes="180x180" href="./icons/icon-180.png">
   <meta name="description" content="ACERVO — um lugar para guardar referências, organizar ideias e acompanhar pautas.">
   <title>ACERVO — Seu arquivo de ideias</title>
-  <link rel="stylesheet" href="assets/style.css?v=6">
+  <link rel="stylesheet" href="assets/style.css?v=7">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.3" defer></script>
-  <script src="assets/cloud.js?v=6" defer></script>
-  <script src="assets/app.js?v=6" defer></script>
-  <script src="assets/editorial.js?v=6" defer></script>
-  <script src="assets/chatgpt.js?v=6" defer></script>
-  <script src="assets/capture.js?v=6" defer></script>
-  <script src="assets/pwa.js?v=6" defer></script>
+  <script src="assets/cloud.js?v=7" defer></script>
+  <script src="assets/app.js?v=7" defer></script>
+  <script src="assets/editorial.js?v=7" defer></script>
+  <script src="assets/chatgpt.js?v=7" defer></script>
+  <script src="assets/capture.js?v=7" defer></script>
+  <script src="assets/pwa.js?v=7" defer></script>
+  <script src="assets/insights-core.js?v=7" defer></script>
+  <script src="assets/insights.js?v=7" defer></script>
 </head>
 <body>
   <div id="offlineIndicator" class="pwa-offline-banner" role="status" hidden>Sem conexão. O ACERVO precisa da internet para carregar ou salvar referências.</div>
@@ -97,6 +99,42 @@
             <button id="chatgptToggle" type="button" class="chatgpt-connect-btn" disabled>Verificando…</button>
           </div>
         </section>
+        <section class="insights-lab" id="insightsLab" aria-labelledby="insightsTitle">
+          <div class="insights-heading">
+            <div><div class="section-overline">INTELIGÊNCIA EDITORIAL · SPRINT 7</div>
+              <h2 id="insightsTitle">Encontre conexões. <em>Construa pautas.</em></h2>
+              <p>Explore suas referências por assunto, inclusive quando usam palavras diferentes. Crie dossiês reunindo fontes e uma pergunta editorial.</p>
+            </div>
+            <span class="insights-method" title="Organização temática por vocabulário e tags — sem enviar suas referências para uma IA externa">Análise local por conceitos</span>
+          </div>
+          <form id="insightsSearchForm" class="insights-search-form">
+            <label for="insightsQuery" class="sr-only">Pesquisar no acervo por contexto</label>
+            <span aria-hidden="true">⌕</span>
+            <input id="insightsQuery" type="search" maxlength="180" placeholder="Ex.: solidão, desejo e aplicativos..." autocomplete="off">
+            <button type="submit">Explorar ↗</button>
+          </form>
+          <div class="insights-suggest">
+            <span>EXPERIMENTE</span>
+            <button type="button" data-insights-prompt="solidão e vínculos">Solidão e vínculos</button>
+            <button type="button" data-insights-prompt="religião e pertencimento">Fé e pertencimento</button>
+            <button type="button" data-insights-prompt="jogos desejo cultura">Jogos e desejo</button>
+          </div>
+          <div id="insightsResults" class="insights-results" aria-live="polite"></div>
+          <div id="insightsSelection" class="insights-selection" hidden>
+            <span id="insightsSelectedCount">0 referências selecionadas</span>
+            <button type="button" id="insightsClearSelected" class="insights-clear-btn">Limpar</button>
+            <button type="button" id="insightsCreateDossier" class="button button-primary">Criar dossiê ↗</button>
+          </div>
+          <div class="insights-two-col">
+            <div><div class="insights-subhead"><h3>Temas que se conectam</h3><small>A partir do que você guardou</small></div>
+              <div id="insightsThemes" class="insights-theme-list"></div>
+            </div>
+            <div><div class="insights-subhead"><h3>Seus dossiês</h3><small>Pautas reunidas e sincronizadas</small></div>
+              <div id="insightsDossiers" class="insights-dossier-list"></div>
+            </div>
+          </div>
+          <div id="insightsRelated" class="insights-related" hidden></div>
+        </section>
         <section class="board-section" aria-label="Mural de referências"><div class="board-heading"><div><div class="section-overline">SEU ESPAÇO DE DESCOBERTAS</div><h2 id="boardTitle">Mural de referências <span id="resultCount">0</span></h2></div><div class="board-header-actions"><button class="quiet-button organize-open" id="manageBtn" type="button">⚙ <span>Organizar</span></button><button class="quiet-button" id="exportBtn" type="button">⇩ <span>Exportar</span></button><button class="quiet-button" id="importBtn" type="button">⇧ <span>Importar</span></button><input type="file" id="fileInput" accept=".json,application/json" hidden></div></div>
           <div class="toolbar"><label class="searchbox"><span aria-hidden="true">⌕</span><input id="searchInput" type="search" placeholder="Busque por assunto, ideia, tag..." autocomplete="off" aria-label="Pesquisar referências"><kbd>/</kbd></label><select id="projectFilter" aria-label="Filtrar por projeto"><option value="">Todos os projetos</option></select><select id="typeFilter" aria-label="Filtrar por formato"><option value="">Todos os formatos</option></select><select id="sortSelect" aria-label="Ordenar itens"><option value="recent">Mais recentes</option><option value="oldest">Mais antigos</option><option value="az">Título A–Z</option></select></div>
           <div class="tag-strip"><span class="tag-prefix">TAGS</span><div id="tagFilters" class="tag-scroll"></div><button class="clear-filters" type="button" id="clearFilters" hidden>Limpar filtros ×</button></div>
@@ -154,6 +192,28 @@
     <div class="pwa-steps" aria-label="Etapas de instalação"><span>Compartilhar</span><b>›</b><span>Adicionar à Tela de Início</span></div>
     <p class="pwa-install-note">Depois de adicionar o ícone, abra o ACERVO pela tela inicial e entre na mesma conta de sempre.</p>
     <button class="button button-primary" type="button" id="pwaGotIt">Entendi</button>
+  </dialog>
+  <dialog id="insightsDossierDialog" class="editorial-dialog insights-dossier-dialog" aria-labelledby="insightsDossierTitle">
+    <form id="insightsDossierForm">
+      <div class="editorial-dialog-head"><div><div class="section-overline">NOVO DOSSIÊ EDITORIAL</div>
+        <h2 id="insightsDossierTitle">Organizar uma pauta</h2></div>
+        <button type="button" class="editorial-close" id="insightsDossierClose" aria-label="Fechar">×</button>
+      </div>
+      <div class="insights-dossier-form">
+        <label for="dossierTitleInput">Título da pauta</label>
+        <input id="dossierTitleInput" required maxlength="160" placeholder="Que assunto conecta estas referências?">
+        <label for="dossierAngleInput">Pergunta editorial / possível gancho</label>
+        <textarea id="dossierAngleInput" maxlength="1400" rows="3" placeholder="O que vale a pena investigar?"></textarea>
+        <label for="dossierNotesInput">Notas de desenvolvimento</label>
+        <textarea id="dossierNotesInput" maxlength="3500" rows="3" placeholder="Possíveis caminhos, entrevistas, referências..."></textarea>
+        <span class="insights-source-label">REFERÊNCIAS VINCULADAS</span>
+        <div id="dossierSourceList" class="insights-source-list"></div>
+      </div>
+      <div class="editorial-dialog-actions">
+        <button type="button" class="button button-light" id="insightsDossierCancel">Cancelar</button>
+        <button type="submit" class="button button-primary" id="insightsDossierSave">Salvar dossiê ↗</button>
+      </div>
+    </form>
   </dialog>
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
 </body>
