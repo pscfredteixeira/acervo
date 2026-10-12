@@ -1147,7 +1147,62 @@
     }catch(error){toast('Não foi possível salvar: '+error.message);}
     finally{button.disabled=false;}
   }
-  async function exportData(){const out={app:'ACERVO',version:10,exportedAt:new Date().toISOString(),cards:state.cards,projects:state.projects,dossiers:await Cloud.fetchDossiers()};const blob=new Blob([JSON.stringify(out,null,2)],{type:'application/json'});const href=URL.createObjectURL(blob);const a=document.createElement('a');a.href=href;a.download=`acervo-backup-${new Date().toISOString().slice(0,10)}.json`;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(href),3000);toast('Backup JSON exportado. Guarde o arquivo em local seguro.');}
+  async function exportData(forPublication=false){
+    const publish=forPublication===true;
+    const out={
+      app:'ACERVO',version:12,exportedAt:new Date().toISOString(),
+      cards:state.cards.map(x=>({...x,tags:[...(x.tags||[])]})),
+      projects:[...state.projects],
+      dossiers:await Cloud.fetchDossiers()
+    };
+    if(publish)out.publication={
+      repository:'pscfredteixeira/acervo',
+      branch:'main',
+      requestedPath:'data/cards.json',
+      method:'via-conversa-ChatGPT',
+      snapshotId:(crypto.randomUUID?.()||'acervo-'+Date.now()),
+      completeSnapshot:true
+    };
+    const blob=new Blob([JSON.stringify(out,null,2)],{type:'application/json'});
+    const href=URL.createObjectURL(blob);
+    const a=document.createElement('a');
+    a.href=href;
+    a.download=(publish?'acervo-para-publicar-':'acervo-backup-')+
+      new Date().toISOString().slice(0,10)+'.json';
+    document.body.appendChild(a);a.click();a.remove();
+    setTimeout(()=>URL.revokeObjectURL(href),15000);
+    toast(publish?'JSON pronto. Envie o arquivo nesta conversa do ChatGPT.':
+      'Backup completo exportado. Guarde o arquivo em local seguro.');
+    return out;
+  }
+  function sprint9SetStatus(message,type=''){
+    const el=$('#sprint9PublishStatus');
+    el.textContent=message;
+    el.classList.toggle('error',type==='error');
+    el.classList.toggle('success',type==='success');
+  }
+  async function sprint9CheckPublished(){
+    const button=$('#sprint9CheckPublished');
+    button.disabled=true;
+    sprint9SetStatus('Consultando o JSON publicado no GitHub…');
+    try{
+      const result=await Cloud.checkPublished();
+      if(result.matches){
+        sprint9SetStatus('Confirmado: seus '+result.remoteCount+
+          ' cards correspondem ao arquivo do GitHub. As alterações já publicadas foram reconciliadas neste aparelho.','success');
+      }else{
+        sprint9SetStatus('O GitHub tem '+result.remoteCount+' card(s), mas este aparelho tem '+
+          result.localCount+'. Existem diferenças que ainda precisam ser publicadas. Gere o JSON atualizado e envie aqui na conversa.','error');
+      }
+    }catch(error){
+      sprint9SetStatus('Não consegui consultar a publicação: '+error.message+
+        '. Sua versão local foi preservada.','error');
+    }finally{button.disabled=false;}
+  }
+  function sprint9OpenDialog(){
+    $('#sprint9PublishDialog').showModal();
+    sprint9SetStatus('Nenhum arquivo foi enviado ao GitHub. Prepare um JSON e anexe-o nesta conversa.');
+  }
   async function importData(file){
     if(!file)return;
     try{
@@ -1281,6 +1336,30 @@
     });
     $('#refreshBtn').addEventListener('click',()=>location.reload());
     $('#sprint8BackupNow').addEventListener('click',exportData);
+    $('#sprint9OpenPublish').addEventListener('click',sprint9OpenDialog);
+    $('#sprint9Close').addEventListener('click',()=>$('#sprint9PublishDialog').close());
+    $('#sprint9Download').addEventListener('click',async()=>{
+      const btn=$('#sprint9Download');
+      btn.disabled=true;
+      try{
+        const out=await exportData(true);
+        sprint9SetStatus('Arquivo preparado com '+out.cards.length+
+          ' cards. Anexe o JSON à conversa e peça para atualizar o GitHub.','success');
+      }catch(error){sprint9SetStatus('Falha ao preparar JSON: '+error.message,'error');}
+      finally{btn.disabled=false;}
+    });
+    $('#sprint9CheckPublished').addEventListener('click',sprint9CheckPublished);
+    $('#sprint9CopyPrompt').addEventListener('click',async()=>{
+      const textarea=$('#sprint9Prompt');
+      try {
+        await navigator.clipboard.writeText(textarea.value);
+        sprint9SetStatus('Mensagem copiada. Agora anexe o JSON nesta conversa.','success');
+      }catch{
+        textarea.focus();
+        textarea.select();
+        sprint9SetStatus('Selecione e copie a mensagem exibida. O acesso à área de transferência foi bloqueado.');
+      }
+    });
     $('#sprint8UndoBtn').addEventListener('click',sprint8UndoDelete);
     document.addEventListener('visibilitychange',()=>{if(!document.hidden&&Cloud.user)syncFromCloud()});
     listAll('[data-view]').forEach(b=>b.addEventListener('click',()=>changeView(b.dataset.view)));
