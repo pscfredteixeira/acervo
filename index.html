@@ -6,12 +6,13 @@
   <meta name="theme-color" content="#173b36">
   <meta name="description" content="ACERVO — um lugar para guardar referências, organizar ideias e acompanhar pautas.">
   <title>ACERVO — Seu arquivo de ideias</title>
-  <link rel="stylesheet" href="assets/style.css?v=4">
+  <link rel="stylesheet" href="assets/style.css?v=5">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.3" defer></script>
-  <script src="assets/cloud.js?v=4" defer></script>
-  <script src="assets/app.js?v=4" defer></script>
-  <script src="assets/editorial.js?v=4" defer></script>
-  <script src="assets/chatgpt.js?v=4" defer></script>
+  <script src="assets/cloud.js?v=5" defer></script>
+  <script src="assets/app.js?v=5" defer></script>
+  <script src="assets/editorial.js?v=5" defer></script>
+  <script src="assets/chatgpt.js?v=5" defer></script>
+  <script src="assets/capture.js?v=5" defer></script>
 </head>
 <body>
   <div class="app-shell">
@@ -40,6 +41,28 @@
       <main class="main-content">
         <section class="hero"><div><div class="eyebrow"><span class="small-spark">✳</span> UM LUGAR PARA AS IDEIAS</div><h1 id="pageTitle">Tudo o que merece <em>ficar.</em></h1><p id="pageSubtitle">Uma boa matéria, uma provocação, uma pauta para depois. Guarde aqui e encontre quando precisar.</p></div><div class="hero-mark" aria-hidden="true"><span>✳</span><i></i></div></section>
         <section class="metrics" aria-label="Resumo do acervo"><div class="metric"><span>REFERÊNCIAS</span><strong id="metricTotal">0</strong><small>itens guardados</small></div><div class="metric"><span>PARA LER</span><strong id="metricInbox">0</strong><small>na caixa de entrada</small></div><div class="metric"><span>PAUTAS</span><strong id="metricPautas">0</strong><small>ideias em desenvolvimento</small></div><div class="metric metric-accent"><span>EM PRODUÇÃO</span><strong id="metricProducao">0</strong><small>em andamento ↗</small></div></section>
+        <section class="quick-capture" id="quickCapture" aria-labelledby="quickCaptureTitle">
+          <div class="quick-capture-head">
+            <div class="quick-capture-symbol" aria-hidden="true">↗</div>
+            <div><div class="section-overline">SPRINT 5 · CAPTURA RÁPIDA</div>
+              <h2 id="quickCaptureTitle">Encontrou algo interessante? <em>Guarde.</em></h2>
+              <p>Cole o endereço de uma matéria, vídeo ou página. Tentaremos preencher o card para você revisar antes de salvar.</p>
+            </div>
+          </div>
+          <form id="quickCaptureForm" class="quick-capture-form">
+            <label for="quickCaptureUrl" class="sr-only">Endereço da matéria</label>
+            <input id="quickCaptureUrl" type="url" inputmode="url" autocomplete="url" autocapitalize="off"
+              spellcheck="false" placeholder="https://site.com.br/materia..." maxlength="3000" required>
+            <button id="quickPasteBtn" class="quick-paste" type="button">Colar</button>
+            <button id="quickFetchBtn" type="submit" class="quick-fetch">Buscar dados ↗</button>
+          </form>
+          <div id="quickCaptureStatus" role="status" aria-live="polite" class="quick-capture-status">Você também pode compartilhar um link pelo endereço do ACERVO.</div>
+          <div id="quickCaptureResult" class="quick-capture-result" hidden>
+            <div><span id="quickResultSite" class="quick-site"></span><h3 id="quickResultTitle"></h3><p id="quickResultDescription"></p>
+              <small id="quickResultHint"></small></div>
+            <button id="quickReviewBtn" type="button" class="button button-primary">Revisar card ↗</button>
+          </div>
+        </section>
         <section class="chatgpt-integration" aria-label="Integração com o ChatGPT" id="chatgptIntegration">
           <div class="chatgpt-intro">
             <div class="chatgpt-symbol" aria-hidden="true">✳</div>
