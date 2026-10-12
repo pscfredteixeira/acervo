@@ -66,3 +66,24 @@ Funcionalidades do Sprint 8:
 **Atenção:** editar ou excluir no aparelho NÃO altera automaticamente `data/cards.json` no repositório. Para consolidar uma nova versão no GitHub, exporte o JSON no app e envie nesta conversa pedindo atualização do arquivo. Limpar os dados do site antes de exportar pode causar perda de edições e exclusões não publicadas.
 
 O Sprint 8 foi desenvolvido separadamente, testado por execução simulada dos eventos do mural e depois publicado na raiz; a versão anterior `acervo-direto.html` permaneceu inalterada.
+
+
+## Sprint 9 — Publicação do ACERVO por conversa (2026-10-12)
+
+Versão principal: https://pscfredteixeira.github.io/acervo/
+
+Versão autônoma: https://pscfredteixeira.github.io/acervo/acervo-sprint9.html
+
+- Botão **⇧ Publicar** na barra superior e **Publicar no GitHub** no painel de backup.
+- Painel de três etapas: **Preparar JSON**, anexar arquivo nesta conversa e pedir para publicá-lo, depois **Verificar GitHub**.
+- Exportação de snapshot completo, com cards, projetos, dossiês e exclusões já aplicadas. Sem token ou integração automática com o GitHub pelo browser.
+- Conferência de versão remota pelo GitHub Pages com `cache: no-store` e parâmetro de verificação, usando `data/cards.json` publicado.
+- Reconciliação segura: sobreposições de cards iguais ao JSON remoto e exclusões já publicadas podem ser limpas do armazenamento local; edições realizadas **depois** da exportação continuam preservadas.
+- A identificação de diferenças inclui projetos e dossiês personalizados. Um backup antigo não elimina novas mudanças locais.
+- Continuamos usando um único HTML autônomo, com os 31 cards iniciais pré-renderizados e incorporados na página. As versões anteriores permanecem intactas para retorno.
+
+**Importante:** o GitHub só é atualizado quando o usuário realmente anexa o arquivo à conversa e pede a publicação. O app sozinho não escreve no GitHub. A operação é manualmente autorizada em cada entrega.
+
+Fluxo editorial técnico e validações: `docs/PUBLICAR_ACERVO_VIA_CHATGPT.md`.
+
+Testes executados: inicialização com os 31 cards, exportação após uma exclusão (30 cards), simulação da publicação (30 confirmados e marcações redundantes limpas) e preservação de mudanças realizadas depois da exportação.
