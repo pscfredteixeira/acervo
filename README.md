@@ -9,7 +9,7 @@ Aplicativo web para reunir matérias, links, referências e pautas encontradas e
 - ✅ Sprint 4: integração opt-in com ChatGPT via conector Supabase, origem identificável nos cards e procedimento de captura mediante comando explícito.
 - ✅ Sprint 5: colagem rápida, busca de metadados com Edge Function autenticada, revisão antes de salvar e captura via parâmetro de link.
 - ✅ Sprint 6: PWA instalável para iPhone e outros dispositivos, ícones nativos, navegação mobile e atualização de versão.
-- ⏳ Sprint 7: inteligência editorial.
+- ✅ Sprint 7: busca contextual baseada em conceitos e tags, temas recorrentes, conexões entre referências e dossiês editoriais persistidos no Supabase.
 
 ## Aplicativo
 Se o GitHub Pages estiver habilitado para a branch `main`, pasta `/ (root)`:
@@ -107,3 +107,17 @@ Quando há uma nova versão do aplicativo, o navegador pode mostrar uma faixa **
 - `offline.html`: página que não acessa dados privados.
 
 **Para verificar:** abrir o site no Safari, instalar na tela inicial, efetuar login e abrir uma referência; desconectar a rede e reiniciar o app para visualizar a página offline; reconectar e testar o botão Atualizar caso apareça.
+
+## Sprint 7 — Laboratório de pautas
+
+No painel **Encontre conexões. Construa pautas.**:
+- Pesquise conceitos como `solidão, desejo e aplicativos`. O sistema procura termos diretos nos títulos, tags, resumos e notas, além de relações com temas predefinidos.
+- Os resultados indicam **por que foram encontrados** e permitem abrir a ficha original ou explorar referências relacionadas.
+- A seção **Temas que se conectam** aparece a partir de duas ou mais referências reais sobre um mesmo eixo (ex.: fé/pertencimento, cultura e tecnologia). Os grupos não são artigos gerados; são agrupamentos das informações já salvas.
+- Marque pelo menos duas referências e clique em **Criar dossiê**. Preencha um título, uma pergunta editorial e suas notas. O dossiê fica salvo e sincronizado na sua conta, com links para os cards originais.
+- Também é possível criar um dossiê a partir de um tema identificado, editar um dossiê existente ou excluí-lo **sem apagar as referências**.
+- Os dossiês persistem na tabela `public.acervo_dossiers`, com RLS por usuário e permissão explícita apenas para usuários autenticados.
+
+**Limites e transparência:** a análise é local e determinística, baseada em vocabulário, tags e coocorrência. Não utiliza modelo generativo, embeddings nem provedores externos de IA; não inventa fatos, títulos de artigos ou novos links. Resultados podem ser imprecisos quando o material tem pouco contexto ou vocabulário ambíguo. O aplicativo não examina a internet nem coleta novas matérias por conta própria.
+
+**Privacidade:** os cards protegidos são lidos após login via Supabase. O navegador só usa a chave publicável; nenhuma referência privada é escrita no GitHub Pages. Dossiês exigem duas a 24 referências já pertencentes à sua conta. Remover um card deixa sua referência ausente do dossiê até que ele seja editado.
