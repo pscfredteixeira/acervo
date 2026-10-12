@@ -58,6 +58,21 @@
     const projects=[...new Set([...state.projects,...state.cards.map(c=>c.project)])].filter(Boolean);
     $('#fieldProject').innerHTML=projects.map(p=>`<option value="${esc(p)}">${esc(p)}</option>`).join('');
     $('#cardForm').reset();$('#dialogTitle').textContent=x?'Editar referência':'Guardar nova referência';$('#saveCard').textContent=x?'Salvar alterações ↗':'Guardar referência ↗';$('#fieldTitle').value=x?.title||'';$('#fieldUrl').value=x?.url||'';$('#fieldDescription').value=x?.description||'';$('#fieldAngle').value=x?.angle||'';$('#fieldProject').value=x?.project&&projects.includes(x.project)?x.project:(projects.includes('Psicaótica')?'Psicaótica':projects[0]);$('#fieldType').value=DEFAULT_TYPES.includes(x?.type)?x.type:'Outro';$('#fieldStatus').value=x?.status||'entrada';$('#fieldTags').value=x?.tags.join(', ')||'';$('#fieldNotes').value=x?.notes||'';$('#cardDialog').showModal();setTimeout(()=>$('#fieldTitle').focus(),50)}
+  function prepareCapturedCard(meta){
+    const original=String(meta.url||'');
+    const href=secureUrl(original);
+    if(!href)throw Error('O link não é válido.');
+    openForm();
+    $('#fieldUrl').value=href;
+    $('#fieldTitle').value=String(meta.title||'').slice(0,180);
+    $('#fieldDescription').value=String(meta.description||'').slice(0,1500);
+    $('#fieldStatus').value='entrada';
+    $('#fieldType').value=meta.contentType==='article'?'Reportagem':'Outro';
+    $('#dialogTitle').textContent='Revisar referência capturada';
+    $('#saveCard').textContent='Guardar no ACERVO ↗';
+    if(!meta.title)$('#fieldTitle').focus();
+    return true;
+  }
   function closeForm(){if($('#cardDialog').open)$('#cardDialog').close();state.editingId=null}
   async function saveForm(e){e.preventDefault();const title=$('#fieldTitle').value.trim();if(!title){toast('Escreva um título para guardar a referência.');$('#fieldTitle').focus();return;}let url=$('#fieldUrl').value.trim();if(url&&!/^https?:\/\//i.test(url)){url='https://'+url;}if(url&&!secureUrl(url)){toast('Confira o link: use um endereço http ou https válido.');$('#fieldUrl').focus();return;}url=secureUrl(url);
     const duplicate=url&&state.cards.find(x=>x.id!==state.editingId&&x.url&&x.url===url);if(duplicate&&!confirm('Já existe uma referência com este link. Deseja guardar mesmo assim?'))return;
@@ -111,9 +126,10 @@
     $('#syncStatus').textContent='● Sincronizado';
     render();
     window.AcervoChat?.refresh?.();
+    window.AcervoCapture?.onReady?.();
   }
   function init(){state.cards=[];$('#localNotice').hidden=true;render();
-    Cloud.boot({onReady:readyForUser,onLogout:()=>{state.cards=[];$('#userEmail').textContent='';$('#syncStatus').textContent='Desconectado';render();window.AcervoChat?.reset?.();}})
+    Cloud.boot({onReady:readyForUser,onLogout:()=>{state.cards=[];$('#userEmail').textContent='';$('#syncStatus').textContent='Desconectado';render();window.AcervoChat?.reset?.();window.AcervoCapture?.onLogout?.();}})
       .catch(error=>toast('Erro de autenticação: '+error.message));
     $('#logoutBtn').addEventListener('click',async()=>{try{await Cloud.logout();}catch(error){toast('Falha ao sair: '+error.message)}});
     $('#refreshBtn').addEventListener('click',syncFromCloud);
@@ -165,7 +181,7 @@
     get projects(){return [...state.projects];},
     get currentView(){return state.view;},
     get stages(){return {...STAGES};},
-    edit:openForm, render, changeView, moveCard, updateMany, saveProjectList,
+    edit:openForm, prepareCapturedCard, render, changeView, moveCard, updateMany, saveProjectList,
     message:toast, escape:esc
   };
   init();
