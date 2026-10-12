@@ -108,3 +108,21 @@ A implantação preservou as referências adicionadas em paralelo durante o Spri
 **Versões preservadas:** `acervo-sprint9.html`, `acervo-sprint8.html`, `acervo-direto.html`.
 
 Os scripts e CSS permanecem incorporados ao HTML independente para evitar problemas anteriores de cache e carregamento remoto.
+
+
+## Sprint 11 — Organização e limpeza em lote (2026-10-12)
+
+**Versão principal:** https://pscfredteixeira.github.io/acervo/
+
+**Versão independente:** https://pscfredteixeira.github.io/acervo/acervo-sprint11.html
+
+- Botão **Selecionar** no cabeçalho do mural. A seleção funciona no iPhone com caixas grandes nos próprios cards; **Selecionar visíveis** respeita a pesquisa e os filtros ativos.
+- Com vários cards selecionados, é possível **Aplicar etapa**, **Aplicar projeto**, **Arquivar selecionados** ou **Excluir selecionados** de uma vez.
+- A exclusão em lote exige confirmação; para 10 ou mais referências exige **confirmação dupla**. A gravação local é atômica: se falhar, nenhum card é removido da tela ou do armazenamento. Após excluir, há **Desfazer** durante 15 segundos para restaurar o lote inteiro.
+- A edição de etapa ou projeto em lote também utiliza uma só gravação no `localStorage` e não altera cards não selecionados. Depois de cada operação, a seleção é limpa.
+- A seleção e as ações se limitam ao navegador atual. **Nenhuma exclusão é publicada automaticamente no GitHub**: para consolidar os cards restantes, use **⇧ Publicar**, anexe o JSON ao ChatGPT e solicite a atualização da base.
+- O site permanece sem login, sem Supabase e com HTML independente. As 34 referências no GitHub foram preservadas no deploy; os 34 cards originais também permanecem no HTML como fallback offline.
+
+**Testes simulados:** selecionar 34 referências → avançar todas para Pautas → alterar projeto → excluir todas com duas confirmações → desfazer e recuperar as 34; falha intencional do armazenamento confirma ausência de alterações parciais.
+
+**Versões anteriores preservadas:** `acervo-sprint10.html`, `acervo-sprint9.html`, `acervo-sprint8.html`, `acervo-direto.html`.
