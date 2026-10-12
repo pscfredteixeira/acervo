@@ -683,6 +683,75 @@
       "origin": "chatgpt",
       "createdAt": "2026-10-12T15:23:31.361697Z",
       "updatedAt": "2026-10-12T15:23:31.361697Z"
+    },
+    {
+      "id": "c6b4f8a1-8d7e-4b53-9f21-0e7a6c5d4b31",
+      "title": "The Lost Civic Life of Movie Rental Stores",
+      "url": "https://thereader.mitpress.mit.edu/the-lost-civic-life-of-movie-rental-stores/",
+      "description": "Ensaio do MIT Press Reader sobre como as videolocadoras funcionavam também como espaços informais de convivência, conversa e encontro — uma forma de terceiro espaço que desapareceu com a mudança para o streaming.",
+      "angle": "O streaming substituiu a função comercial da locadora, mas o que aconteceu com sua função social e com os encontros cotidianos que ela produzia?",
+      "tags": [
+        "Solidão",
+        "Terceiro espaço",
+        "Convivência",
+        "Streaming",
+        "Histórico ChatGPT"
+      ],
+      "project": "Mundo Aberto",
+      "type": "Artigo",
+      "status": "entrada",
+      "favorite": false,
+      "notes": "Separada para o episódio do Mundo Aberto sobre solidão contemporânea, terceiros espaços e transformação da convivência.",
+      "demo": false,
+      "origin": "chatgpt",
+      "createdAt": "2026-10-12T16:45:05Z",
+      "updatedAt": "2026-10-12T16:45:05Z"
+    },
+    {
+      "id": "7f2a1d98-3c64-4e5b-a871-9b0c2d3e4f56",
+      "title": "“Influenciadores da solidão” não têm amigos, mas dizem ser felizes",
+      "url": "https://www.cnnbrasil.com.br/saude/influenciadores-da-solidao-nao-tem-amigos-mas-dizem-ser-felizes/",
+      "description": "Reportagem da CNN Brasil sobre criadores que transformam uma vida com poucos ou nenhum amigo em conteúdo, discutindo autonomia, solitude, isolamento social e o risco de romantizar a hiperindependência.",
+      "angle": "Quando estar sozinho deixa de ser apenas circunstância e vira identidade e conteúdo, onde fica a fronteira entre solitude escolhida e isolamento?",
+      "tags": [
+        "Solidão",
+        "Solitude",
+        "Redes sociais",
+        "Relacionamentos",
+        "Histórico ChatGPT"
+      ],
+      "project": "Mundo Aberto",
+      "type": "Reportagem",
+      "status": "entrada",
+      "favorite": false,
+      "notes": "Separada para o episódio do Mundo Aberto sobre solidão contemporânea, junto às pautas de terceiros espaços e Lonely Generation.",
+      "demo": false,
+      "origin": "chatgpt",
+      "createdAt": "2026-10-12T16:45:05Z",
+      "updatedAt": "2026-10-12T16:45:05Z"
+    },
+    {
+      "id": "a3d9e7c2-5b18-4f60-8a42-6c1d0e9f7b35",
+      "title": "‘There’s a lot of silence’: have we created a new ‘Lonely Generation’?",
+      "url": "https://www.theguardian.com/society/ng-interactive/2026/oct/04/young-generation-lonely-silence",
+      "description": "Reportagem do The Guardian sobre níveis elevados de solidão entre jovens e os fatores sociais associados, como desaparecimento de terceiros espaços, mudanças no trabalho e estudo, custo de vida, pandemia e mediação tecnológica das relações.",
+      "angle": "Estamos diante de uma geração que escolheu o isolamento ou de uma sociedade que reduziu as oportunidades cotidianas de convivência e tornou o encontro mais difícil?",
+      "tags": [
+        "Solidão",
+        "Juventude",
+        "Terceiro espaço",
+        "Tecnologia",
+        "Histórico ChatGPT"
+      ],
+      "project": "Mundo Aberto",
+      "type": "Reportagem",
+      "status": "entrada",
+      "favorite": false,
+      "notes": "Separada para fechar o episódio do Mundo Aberto sobre solidão contemporânea e conectar os casos individuais às mudanças estruturais da vida social.",
+      "demo": false,
+      "origin": "chatgpt",
+      "createdAt": "2026-10-12T16:45:05Z",
+      "updatedAt": "2026-10-12T16:45:05Z"
     }
   ]
 }
