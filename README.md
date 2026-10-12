@@ -126,3 +126,17 @@ Os scripts e CSS permanecem incorporados ao HTML independente para evitar proble
 **Testes simulados:** selecionar 34 referências → avançar todas para Pautas → alterar projeto → excluir todas com duas confirmações → desfazer e recuperar as 34; falha intencional do armazenamento confirma ausência de alterações parciais.
 
 **Versões anteriores preservadas:** `acervo-sprint10.html`, `acervo-sprint9.html`, `acervo-sprint8.html`, `acervo-direto.html`.
+
+
+## Sprint 12 — Foco editorial e acervo enxuto (2026-10-12)
+
+- **Versão atual:** https://pscfredteixeira.github.io/acervo/acervo-sprint12.html
+- **Painel de foco:** após o resumo de referências, exibe até cinco cards marcados com a estrela de favorito (★). Ordena referências em produção e em pauta antes dos selecionados e dos itens na entrada.
+- **Ações diretas:** avançar uma prioridade para a etapa seguinte (Selecionados → Pautas → Em produção → Arquivo), abrir a ficha completa ou retirar a estrela. Ao arquivar, o card deixa de aparecer no foco, mas continua disponível no Arquivo.
+- **Filtro Prioritárias:** no mural e no painel, mostra apenas cards marcados com estrela e ainda ativos. Ao entrar em outra etapa, o filtro é desativado para não ocultar itens.
+- **Acervo enxuto:** apresenta a quantidade de referências ativas, sem contar as já arquivadas, com parâmetro editorial de 15 a 30. Quando supera 30, informa quantas referências precisam ser revisadas ou concluídas. A meta é **informativa**, não impede adicionar cards.
+- **Revisar a entrada:** botão para abrir a Caixa de entrada, onde é possível usar Selecionar e as operações em lote do Sprint 11.
+- **Armazenamento:** usa somente os campos `favorite` e `status` que já existiam. Não adiciona login, Supabase, cookies nem outra base. Estrelas e mudanças de etapa persistem no `localStorage` até a publicação via JSON.
+- **Testes:** abertura com 34 cards, cálculo de 34 referências ativas e quatro acima da meta sugerida, marcação de favorita, filtro com uma referência, progressão Entrada → Selecionados → Pauta → Produção → Arquivo, queda do contador ativo de 34 para 33, exclusão automática da prioridade arquivada. O HTML e JSON preservam as 34 referências.
+
+O Sprint 11 está preservado em `acervo-sprint11.html`. A página principal e `acervo-sprint12.html` passam a ser as versões a manter sincronizadas quando publicarmos novos snapshots.
