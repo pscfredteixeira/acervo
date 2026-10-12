@@ -171,6 +171,18 @@
     },{onConflict:'user_id'});
     if(error)throw error;
   }
+  async function lookupMetadata(url) {
+    requireUser();
+    const {data,error}=await client.functions.invoke('acervo-link-preview',{body:{url}});
+    if(error) {
+      let message=error.message||'Erro ao consultar a página.';
+      try { if(error.context?.json) {const details=await error.context.json();message=details.error||message;} }
+      catch {}
+      throw new Error(message);
+    }
+    if(data?.error)throw new Error(data.error);
+    return data;
+  }
   async function fetchChatgptSettings() {
     const {data,error}=await client.from('acervo_chatgpt_settings')
       .select('enabled,linked_at').eq('user_id',requireUser()).maybeSingle();
@@ -194,6 +206,6 @@
     const {error}=await client.auth.signOut();
     if (error) throw error;
   }
-  window.AcervoCloud={boot,fetchCards,save,saveMany,fetchProjects,saveProjects,fetchChatgptSettings,setChatgptEnabled,remove,logout, get user(){return user}};
+  window.AcervoCloud={boot,fetchCards,save,saveMany,fetchProjects,saveProjects,fetchChatgptSettings,setChatgptEnabled,lookupMetadata,remove,logout, get user(){return user}};
   showGate();
 })();
