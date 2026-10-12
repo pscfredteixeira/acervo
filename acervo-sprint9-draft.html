@@ -915,12 +915,22 @@
     return cleared;
   }
   function pendingChanges(){
-    return Object.keys(overrides.cards).length+overrides.deleted.length;
+    let pending=Object.keys(overrides.cards).length+overrides.deleted.length;
+    const localProjects=read(PROJECTS_KEY,null);
+    const localDossiers=read(DOSSIERS_KEY,null);
+    if(Array.isArray(localProjects)&&!same(localProjects,seedProjects))pending++;
+    if(Array.isArray(localDossiers)&&!same(localDossiers,seedDossiers))pending++;
+    return pending;
   }
   function snapshotMatches(){
     const a=currentCards().map(c=>clone(c)).sort((x,y)=>String(x.id).localeCompare(String(y.id)));
     const b=seed.map(c=>clone(c)).sort((x,y)=>String(x.id).localeCompare(String(y.id)));
-    return same(a,b);
+    if(!same(a,b))return false;
+    const localProjects=read(PROJECTS_KEY,null);
+    const localDossiers=read(DOSSIERS_KEY,null);
+    if(Array.isArray(localProjects)&&!same(localProjects,seedProjects))return false;
+    if(Array.isArray(localDossiers)&&!same(localDossiers,seedDossiers))return false;
+    return true;
   }
   function useSnapshot(data){
     if(!data||!Array.isArray(data.cards)||data.cards.some(c=>!c||typeof c.id!=='string'||typeof c.title!=='string'))throw Error('JSON inválido.');
