@@ -47,6 +47,7 @@
         : 'Abra este endereço no Safari. Toque em Compartilhar, escolha “Adicionar à Tela de Início” e confirme.'
     ):'Abra o menu do navegador e escolha “Instalar aplicativo” ou “Adicionar à tela inicial”, se disponível.';
     guide.textContent=steps;
+    document.querySelector('.pwa-steps').hidden=!isIOS;
     if(!dialog.open)dialog.showModal();
   }
   async function requestInstall(){
@@ -112,6 +113,12 @@
     localStorage.setItem(SEEN_KEY,'1');
   });
   close.addEventListener('click',()=>dialog.close());
+  $('pwaGotIt').addEventListener('click',()=>dialog.close());
+  $('mobileCaptureJump').addEventListener('click',()=>{
+    location.hash='captura';
+    $('quickCapture')?.scrollIntoView({behavior:'smooth',block:'start'});
+    $('quickCaptureUrl')?.focus({preventScroll:true});
+  });
   dialog.addEventListener('click',event=>{if(event.target===dialog)dialog.close();});
   updateButton.addEventListener('click',()=>{
     if(!registration?.waiting)return;
