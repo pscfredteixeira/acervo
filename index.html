@@ -6,11 +6,12 @@
   <meta name="theme-color" content="#173b36">
   <meta name="description" content="ACERVO — um lugar para guardar referências, organizar ideias e acompanhar pautas.">
   <title>ACERVO — Seu arquivo de ideias</title>
-  <link rel="stylesheet" href="assets/style.css?v=3">
+  <link rel="stylesheet" href="assets/style.css?v=4">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.3" defer></script>
-  <script src="assets/cloud.js?v=3" defer></script>
-  <script src="assets/app.js?v=3" defer></script>
-  <script src="assets/editorial.js?v=3" defer></script>
+  <script src="assets/cloud.js?v=4" defer></script>
+  <script src="assets/app.js?v=4" defer></script>
+  <script src="assets/editorial.js?v=4" defer></script>
+  <script src="assets/chatgpt.js?v=4" defer></script>
 </head>
 <body>
   <div class="app-shell">
@@ -39,6 +40,21 @@
       <main class="main-content">
         <section class="hero"><div><div class="eyebrow"><span class="small-spark">✳</span> UM LUGAR PARA AS IDEIAS</div><h1 id="pageTitle">Tudo o que merece <em>ficar.</em></h1><p id="pageSubtitle">Uma boa matéria, uma provocação, uma pauta para depois. Guarde aqui e encontre quando precisar.</p></div><div class="hero-mark" aria-hidden="true"><span>✳</span><i></i></div></section>
         <section class="metrics" aria-label="Resumo do acervo"><div class="metric"><span>REFERÊNCIAS</span><strong id="metricTotal">0</strong><small>itens guardados</small></div><div class="metric"><span>PARA LER</span><strong id="metricInbox">0</strong><small>na caixa de entrada</small></div><div class="metric"><span>PAUTAS</span><strong id="metricPautas">0</strong><small>ideias em desenvolvimento</small></div><div class="metric metric-accent"><span>EM PRODUÇÃO</span><strong id="metricProducao">0</strong><small>em andamento ↗</small></div></section>
+        <section class="chatgpt-integration" aria-label="Integração com o ChatGPT" id="chatgptIntegration">
+          <div class="chatgpt-intro">
+            <div class="chatgpt-symbol" aria-hidden="true">✳</div>
+            <div><div class="section-overline">CAPTURA A PARTIR DAS CONVERSAS</div>
+              <h2>Do ChatGPT para o seu <em>ACERVO.</em></h2>
+              <p>Ative o recebimento e, quando encontrar uma matéria interessante, peça no ChatGPT para guardá-la. Título, link, resumo, abordagem e tags podem vir juntos.</p>
+              <div class="chatgpt-example">“Guarde esta matéria no ACERVO para o projeto Psicaótica.”</div>
+              <small>O envio é feito sob seu comando, em conversas com acesso à sua conexão Supabase. A integração não monitora todas as conversas automaticamente.</small>
+            </div>
+          </div>
+          <div class="chatgpt-connect">
+            <span id="chatgptStatus" class="chatgpt-status" role="status">Verificando configuração…</span>
+            <button id="chatgptToggle" type="button" class="chatgpt-connect-btn" disabled>Verificando…</button>
+          </div>
+        </section>
         <section class="board-section" aria-label="Mural de referências"><div class="board-heading"><div><div class="section-overline">SEU ESPAÇO DE DESCOBERTAS</div><h2 id="boardTitle">Mural de referências <span id="resultCount">0</span></h2></div><div class="board-header-actions"><button class="quiet-button organize-open" id="manageBtn" type="button">⚙ <span>Organizar</span></button><button class="quiet-button" id="exportBtn" type="button">⇩ <span>Exportar</span></button><button class="quiet-button" id="importBtn" type="button">⇧ <span>Importar</span></button><input type="file" id="fileInput" accept=".json,application/json" hidden></div></div>
           <div class="toolbar"><label class="searchbox"><span aria-hidden="true">⌕</span><input id="searchInput" type="search" placeholder="Busque por assunto, ideia, tag..." autocomplete="off" aria-label="Pesquisar referências"><kbd>/</kbd></label><select id="projectFilter" aria-label="Filtrar por projeto"><option value="">Todos os projetos</option></select><select id="typeFilter" aria-label="Filtrar por formato"><option value="">Todos os formatos</option></select><select id="sortSelect" aria-label="Ordenar itens"><option value="recent">Mais recentes</option><option value="oldest">Mais antigos</option><option value="az">Título A–Z</option></select></div>
           <div class="tag-strip"><span class="tag-prefix">TAGS</span><div id="tagFilters" class="tag-scroll"></div><button class="clear-filters" type="button" id="clearFilters" hidden>Limpar filtros ×</button></div>
