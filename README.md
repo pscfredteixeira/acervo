@@ -48,3 +48,21 @@ Os scripts de versões antigas (`assets/cloud.js`, `assets/chatgpt.js` etc.) e t
 Se você limpou os dados do navegador, os **31 cards iniciais** voltam a partir do GitHub, mas alterações ainda não exportadas/publicadas podem ser perdidas. Para restaurar um estado anterior completo, use **Importar** e escolha `SUBSTITUIR`.
 
 Este app não varre o histórico do ChatGPT nem recebe novas referências automaticamente; para adicionar cards ao JSON público via ChatGPT, é necessário pedir explicitamente a publicação no repositório.
+
+## Sprint 8 — Fluxo de produção (2026-10-12)
+
+**Página principal:** https://pscfredteixeira.github.io/acervo/
+
+**Versão autônoma do Sprint 8:** https://pscfredteixeira.github.io/acervo/acervo-sprint8.html
+
+**Versão anterior preservada para recuperação:** https://pscfredteixeira.github.io/acervo/acervo-direto.html
+
+Funcionalidades do Sprint 8:
+- **Avançar →** em cada card, com fluxo Entrada → Selecionados → Pautas → Em produção → Arquivo; no Arquivo aparece **Reabrir ↺**. Em produção aparece **Concluir ✓**.
+- **Desfazer exclusão:** por até 15 segundos após confirmar exclusão, no próprio aparelho; restaura o estado que o card tinha.
+- **Backup visível:** um painel exibe a quantidade de alterações locais e oferece um botão **Fazer backup**. O download inclui todas as referências do aparelho e dossiês.
+- **Sem servidor:** nenhuma mudança exige login nem Supabase. Os 31 cards iniciais seguem no HTML e em `data/cards.json`. Os registros locais usam `acervo.local.edits.v10` para compatibilidade.
+
+**Atenção:** editar ou excluir no aparelho NÃO altera automaticamente `data/cards.json` no repositório. Para consolidar uma nova versão no GitHub, exporte o JSON no app e envie nesta conversa pedindo atualização do arquivo. Limpar os dados do site antes de exportar pode causar perda de edições e exclusões não publicadas.
+
+O Sprint 8 foi desenvolvido separadamente, testado por execução simulada dos eventos do mural e depois publicado na raiz; a versão anterior `acervo-direto.html` permaneceu inalterada.
