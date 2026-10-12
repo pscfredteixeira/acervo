@@ -850,6 +850,9 @@
   const clone=x=>JSON.parse(JSON.stringify(x));
   const user={id:'local',email:'Neste aparelho'};
   let seed=[];
+  let seedProjects=null;
+  let seedDossiers=null;
+  let onReadyCallback=null;
   let loaded=false;
   let warning='';
   let overrides={cards:{},deleted:[]};
@@ -870,20 +873,88 @@
       deleted:Array.isArray(raw.deleted)?raw.deleted.filter(x=>typeof x==='string'):[]
     };
   }
-  function embeddedCards(){
+  function embeddedSnapshot(){
     const node=document.getElementById('acervoSeedJSON');
-    if(!node)return [];
+    if(!node)return null;
     try {
       const parsed=JSON.parse(node.textContent);
-      return Array.isArray(parsed.cards)?parsed.cards.filter(x=>x?.id&&x?.title):[];
-    }catch(error){console.warn('Falha no JSON incorporado ao aplicativo.',error);return [];}
+      return Array.isArray(parsed.cards)?parsed:null;
+    }catch(error){console.warn('Falha no JSON incorporado ao aplicativo.',error);return null;}
+  }
+  function canonical(value){
+    if(Array.isArray(value))return '['+value.map(canonical).join(',')+']';
+    if(value&&typeof value==='object')return '{'+Object.keys(value).sort().map(k=>JSON.stringify(k)+':'+canonical(value[k])).join(',')+'}';
+    return JSON.stringify(value);
+  }
+  function same(a,b){return canonical(a)===canonical(b);}
+  function reconcileLocalEdits(){
+    const remoteById=new Map(seed.map(c=>[String(c.id),c]));
+    const next=clone(overrides);
+    let cleared=0;
+    for(const [id,card] of Object.entries(next.cards)) {
+      if(remoteById.has(id) && same(card,remoteById.get(id))){
+        delete next.cards[id];cleared++;
+      }
+    }
+    // Uma exclusão que já foi publicada deixa de precisar de uma marcação local.
+    next.deleted=next.deleted.filter(id=>{
+      if(!remoteById.has(id)){cleared++;return false;}
+      return true;
+    });
+    if(cleared){
+      try{write(KEY,next);overrides=next;}
+      catch(error){console.warn('Não foi possível reconciliar as alterações locais.',error);}
+    }
+    for(const [storageKey,published] of [[PROJECTS_KEY,seedProjects],[DOSSIERS_KEY,seedDossiers]]){
+      if(!Array.isArray(published))continue;
+      try{
+        const saved=read(storageKey,null);
+        if(Array.isArray(saved)&&same(saved,published))localStorage.removeItem(storageKey);
+      }catch(error){console.warn('Não foi possível reconciliar preferências locais.',error);}
+    }
+    return cleared;
+  }
+  function pendingChanges(){
+    return Object.keys(overrides.cards).length+overrides.deleted.length;
+  }
+  function snapshotMatches(){
+    const a=currentCards().map(c=>clone(c)).sort((x,y)=>String(x.id).localeCompare(String(y.id)));
+    const b=seed.map(c=>clone(c)).sort((x,y)=>String(x.id).localeCompare(String(y.id)));
+    return same(a,b);
+  }
+  function useSnapshot(data){
+    if(!data||!Array.isArray(data.cards)||data.cards.some(c=>!c||typeof c.id!=='string'||typeof c.title!=='string'))throw Error('JSON inválido.');
+    seed=data.cards.map(clone);
+    seedProjects=Array.isArray(data.projects)?clone(data.projects):null;
+    seedDossiers=Array.isArray(data.dossiers)?clone(data.dossiers):null;
+    const reconciled=reconcileLocalEdits();
+    try{write(SEED_CACHE,{cards:seed,projects:seedProjects,dossiers:seedDossiers});}catch(error){console.warn(error);}
+    return reconciled;
+  }
+  async function checkPublished(){
+    const response=await fetch('./data/cards.json?verify='+Date.now(),{cache:'no-store'});
+    if(!response.ok)throw Error('Não foi possível consultar o JSON no GitHub (HTTP '+response.status+').');
+    const json=await response.json();
+    if(!Array.isArray(json.cards))throw Error('O arquivo publicado não contém uma lista de cards válida.');
+    const previous={cards:seed,projects:seedProjects,dossiers:seedDossiers};
+    const changed=!same(previous.cards,json.cards) || !same(previous.projects,json.projects||null) ||
+      !same(previous.dossiers,json.dossiers||null);
+    const reconciled=useSnapshot(json);
+    if(changed&&onReadyCallback)await onReadyCallback(user);
+    return {matches:snapshotMatches(),remoteCount:seed.length,localCount:currentCards().length,
+      pending:pendingChanges(),reconciled};
   }
   async function boot(callbacks={}){
     overrides=sanitized(read(KEY,null));
-    const embedded=embeddedCards();
+    onReadyCallback=callbacks.onReady;
+    const embedded=embeddedSnapshot();
     const cached=read(SEED_CACHE,null);
-    // Exibe o mural ANTES de consultar a rede. Os 31 cards já acompanham o HTML.
-    seed=embedded.length?embedded:(Array.isArray(cached?.cards)?cached.cards:[]);
+    // A versão incorporada ao HTML aparece imediatamente, mesmo sem rede.
+    const initial=embedded||(Array.isArray(cached?.cards)?cached:{cards:[]});
+    seed=initial.cards.filter(x=>x?.id&&x?.title).map(clone);
+    seedProjects=Array.isArray(initial.projects)?clone(initial.projects):null;
+    seedDossiers=Array.isArray(initial.dossiers)?clone(initial.dossiers):null;
+    reconcileLocalEdits();
     loaded=true;
     try {
       await callbacks.onReady?.(user);
@@ -893,23 +964,13 @@
       if(status)status.textContent='Falha no mural: '+(error?.message||error);
       return;
     }
-    // Em segundo plano, confere se o JSON do GitHub foi alterado. Uma falha
-    // de conexão jamais impede a exibição dos cards incorporados.
-    fetch('./data/cards.json',{cache:'no-store'}).then(async response=>{
-      if(!response.ok)throw Error('HTTP '+response.status);
-      const json=await response.json();
-      if(!Array.isArray(json.cards))throw Error('Arquivo JSON inválido.');
-      const remote=json.cards.filter(x=>x?.id&&x?.title);
-      if(!remote.length)return;
-      const changed=JSON.stringify(remote)!==JSON.stringify(seed);
-      seed=remote;
-      try{write(SEED_CACHE,{cards:seed});}catch(error){console.warn(error);}
-      if(changed)await callbacks.onReady?.(user);
-    }).catch(error=>{
+    // A conferência posterior não bloqueia a abertura do mural.
+    checkPublished().catch(error=>{
       console.warn('JSON remoto indisponível; mantendo dados incorporados no app.',error);
       if(!seed.length){
-        warning='Não foi possível obter as referências. Verifique o arquivo JSON.';
-        document.getElementById('syncStatus').textContent=warning;
+        warning='Não foi possível obter as referências. Verifique o JSON.';
+        const status=document.getElementById('syncStatus');
+        if(status)status.textContent=warning;
       }
     });
   }
@@ -956,6 +1017,7 @@
   async function fetchProjects(){
     const projects=read(PROJECTS_KEY,null);
     if(Array.isArray(projects)&&projects.length)return projects;
+    if(Array.isArray(seedProjects)&&seedProjects.length)return clone(seedProjects);
     return [...new Set([...DEFAULT_PROJECTS,...currentCards().map(c=>c.project).filter(Boolean)])];
   }
   async function saveProjects(projects){
@@ -963,8 +1025,9 @@
     write(PROJECTS_KEY,clone(projects));
   }
   async function fetchDossiers(){
-    const dossiers=read(DOSSIERS_KEY,[]);
-    return Array.isArray(dossiers)?clone(dossiers):[];
+    const dossiers=read(DOSSIERS_KEY,null);
+    return Array.isArray(dossiers)?clone(dossiers):
+      (Array.isArray(seedDossiers)?clone(seedDossiers):[]);
   }
   async function saveDossier(input){
     const cardIds=[...new Set(input.cardIds||[])].filter(id=>currentCards().some(c=>c.id===id));
@@ -990,7 +1053,7 @@
     return {url:url.href,title:'',description:'',site:url.hostname,contentType:''};
   }
   window.AcervoCloud={
-    boot,fetchCards,save,saveMany,remove,restoreSnapshot,fetchProjects,saveProjects,
+    boot,checkPublished,fetchCards,save,saveMany,remove,restoreSnapshot,fetchProjects,saveProjects,
     fetchDossiers,saveDossier,removeDossier,lookupMetadata,
     get user(){return user;},
     get warning(){return warning;}
