@@ -238,7 +238,7 @@
     if (!data?.length) throw new Error('Card não encontrado. Atualize o mural.');
   }
   async function logout() {
-    const {error}=await client.auth.signOut();
+    const {error}=await client.auth.signOut({scope:'local'});
     if (error) throw error;
   }
   window.AcervoCloud={boot,fetchCards,save,saveMany,fetchProjects,saveProjects,fetchChatgptSettings,setChatgptEnabled,lookupMetadata,fetchDossiers,saveDossier,removeDossier,remove,logout, get user(){return user}};
