@@ -342,6 +342,8 @@
 }
 
 /* Sprint 9 — publicar o JSON via conversa, com revisão e reconciliação segura */
+.sprint9-header-btn{background:#f4eae0;color:#2e5341;border:1px solid #e3d4c6;border-radius:8px;padding:9px 11px;font-size:11px;font-weight:800;white-space:nowrap}
+@media(max-width:720px){.sprint9-header-btn{min-width:38px;min-height:38px;padding:8px}.sprint9-header-btn span{display:none}}
 .sprint9-actions{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
 .sprint9-actions #sprint9OpenPublish{background:#c57753;color:#fff}
 .sprint9-dialog{max-width:610px}
@@ -401,7 +403,7 @@
           <span id="userEmail" class="user-email" hidden></span>
           <button id="refreshBtn" class="cloud-action" type="button" title="Recarregar o JSON inicial" aria-label="Recarregar referências">↻</button>
         </div>
-        <button type="button" class="icon-button" id="backupBtn" aria-label="Exportar dados" title="Exportar backup JSON">⇩</button><button type="button" class="button button-primary top-add" id="addBtn"><span>＋</span> Novo card</button></div></header>
+        <button type="button" class="sprint9-header-btn" id="sprint9TopPublish" title="Preparar publicação no GitHub">⇧ <span>Publicar</span></button><button type="button" class="icon-button" id="backupBtn" aria-label="Exportar dados" title="Exportar backup JSON">⇩</button><button type="button" class="button button-primary top-add" id="addBtn"><span>＋</span> Novo card</button></div></header>
       <main class="main-content">
         <section class="hero"><div><div class="eyebrow"><span class="small-spark">✳</span> UM LUGAR PARA AS IDEIAS</div><h1 id="pageTitle">Tudo o que merece <em>ficar.</em></h1><p id="pageSubtitle">Uma boa matéria, uma provocação, uma pauta para depois. Guarde aqui e encontre quando precisar.</p></div><div class="hero-mark" aria-hidden="true"><span>✳</span><i></i></div></section>
         <section id="pwaInstallBanner" class="pwa-install-banner" aria-label="Instalar aplicativo" hidden>
@@ -1342,6 +1344,7 @@
     $('#refreshBtn').addEventListener('click',()=>location.reload());
     $('#sprint8BackupNow').addEventListener('click',exportData);
     $('#sprint9OpenPublish').addEventListener('click',sprint9OpenDialog);
+    $('#sprint9TopPublish').addEventListener('click',sprint9OpenDialog);
     $('#sprint9Close').addEventListener('click',()=>$('#sprint9PublishDialog').close());
     $('#sprint9Download').addEventListener('click',async()=>{
       const btn=$('#sprint9Download');
