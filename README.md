@@ -8,7 +8,7 @@ Aplicativo web para reunir matérias, links, referências e pautas encontradas e
 - ✅ Sprint 3: painel Fluxo editorial, transição de etapas (menu/arrastar), ficha detalhada, criação/renomeação/exclusão de projetos e gerenciamento de tags.
 - ✅ Sprint 4: integração opt-in com ChatGPT via conector Supabase, origem identificável nos cards e procedimento de captura mediante comando explícito.
 - ✅ Sprint 5: colagem rápida, busca de metadados com Edge Function autenticada, revisão antes de salvar e captura via parâmetro de link.
-- ⏳ Sprint 6: PWA para iPhone.
+- ✅ Sprint 6: PWA instalável para iPhone e outros dispositivos, ícones nativos, navegação mobile e atualização de versão.
 - ⏳ Sprint 7: inteligência editorial.
 
 ## Aplicativo
@@ -76,3 +76,34 @@ Procedimento SQL e validações: [docs/CAPTURA_CHATGPT.md](docs/CAPTURA_CHATGPT.
 Ao abrir o ACERVO, a URL é removida da barra de endereços e, após login, o link é levado à captura rápida. Esse parâmetro **não salva automaticamente**: o usuário ainda revisa e confirma. A instalação como PWA não garante que o aplicativo apareça nativamente no menu Compartilhar do iOS; usar o app Atalhos é uma opção.
 
 **Backend:** Edge Function autenticada `acervo-link-preview`, fonte em `supabase/functions/acervo-link-preview/index.ts`. Extrai apenas Open Graph, Twitter Cards, descrição HTML ou `<title>`; não tenta resumir o texto completo da matéria. Inclui verificações de URLs públicas e DNS, limitação de tamanho/tempo e redirecionamentos verificados. Não existe chave secreta no cliente. A autenticação do gateway exige JWT de sessão.
+
+
+## Sprint 6 — instalação no iPhone
+
+O ACERVO agora é uma **Progressive Web App (PWA)**. Ele abre em janela própria com ícone na tela inicial, sem necessidade de publicação na App Store.
+
+1. Abra **https://pscfredteixeira.github.io/acervo/** no **Safari** do iPhone.
+2. Toque no botão **Compartilhar** (quadrado com seta para cima).
+3. Procure **Adicionar à Tela de Início** e confirme **Adicionar**. A redação dos menus pode variar conforme a versão do iOS.
+4. Abra o novo ícone **ACERVO** e entre na conta usada no site. Os cards continuam no Supabase.
+5. Use o novo atalho **Capturar** da navegação inferior para chegar diretamente ao campo de links.
+
+Há também um aviso de instalação no próprio site (em navegadores compatíveis). No Android/Chrome a instalação pode ser oferecida pelo navegador. A PWA não aparece automaticamente na folha de compartilhamento de outros apps no iPhone; a captura por Atalhos segue sendo uma opção.
+
+### Como funciona sem internet
+
+O Service Worker `sw.js` armazena **apenas os arquivos públicos da interface** (HTML, CSS, JavaScript, manifesto e ícones). Ao tentar reabrir o aplicativo sem rede, apresenta a página `offline.html` com instruções de reconexão. **Não armazena notas, referências privadas, senhas nem respostas da API Supabase.** Consultar/salvar cards e autenticar-se exige conexão. A edição offline e a sincronização posterior ficam para outra etapa, caso desejadas, e exigiriam proteção adequada do armazenamento local.
+
+Quando há uma nova versão do aplicativo, o navegador pode mostrar uma faixa **Atualizar agora**. O cache interno é versionado para substituir os arquivos públicos sem afetar os dados do banco. Após futuras alterações, atualizar a versão do cache em `sw.js`.
+
+### Componentes PWA
+
+- `manifest.webmanifest`: nome, rota `/acervo/`, escopo, cores, ícones e atalho para captura.
+- `icons/icon-180.png`: ícone Apple Touch.
+- `icons/icon-192.png`, `icons/icon-512.png`: ícones de instalação.
+- `icons/icon.svg`: favicon.
+- `assets/pwa.js`: comportamento de instalação, avisos de rede e atualização.
+- `sw.js`: armazenamento em cache do shell público.
+- `offline.html`: página que não acessa dados privados.
+
+**Para verificar:** abrir o site no Safari, instalar na tela inicial, efetuar login e abrir uma referência; desconectar a rede e reiniciar o app para visualizar a página offline; reconectar e testar o botão Atualizar caso apareça.
