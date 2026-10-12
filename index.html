@@ -14,19 +14,17 @@
   <link rel="apple-touch-icon" sizes="180x180" href="./icons/icon-180.png">
   <meta name="description" content="ACERVO — um lugar para guardar referências, organizar ideias e acompanhar pautas.">
   <title>ACERVO — Seu arquivo de ideias</title>
-  <link rel="stylesheet" href="assets/style.css?v=9">
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.3" defer></script>
-  <script src="assets/cloud.js?v=9" defer></script>
-  <script src="assets/app.js?v=9" defer></script>
-  <script src="assets/editorial.js?v=9" defer></script>
-  <script src="assets/chatgpt.js?v=9" defer></script>
-  <script src="assets/capture.js?v=9" defer></script>
-  <script src="assets/pwa.js?v=9" defer></script>
-  <script src="assets/insights-core.js?v=9" defer></script>
-  <script src="assets/insights.js?v=9" defer></script>
+  <link rel="stylesheet" href="assets/style.css?v=10">
+  <script src="assets/local-store-v10.js" defer></script>
+  <script src="assets/mural-v10.js" defer></script>
+  <script src="assets/editorial.js?v=10" defer></script>
+  <script src="assets/capture-v10.js" defer></script>
+  <script src="assets/pwa.js?v=10" defer></script>
+  <script src="assets/insights-core.js?v=10" defer></script>
+  <script src="assets/insights-v10.js" defer></script>
 </head>
 <body>
-  <div id="offlineIndicator" class="pwa-offline-banner" role="status" hidden>Sem conexão. O ACERVO precisa da internet para carregar ou salvar referências.</div>
+  <div id="offlineIndicator" class="pwa-offline-banner" role="status" hidden>Sem conexão. Sem internet: você pode usar dados já carregados neste aparelho. Para buscar o JSON mais recente, conecte-se.</div>
   <div class="app-shell">
     <aside class="sidebar" aria-label="Navegação principal">
       <div class="brand"><div class="brand-symbol" aria-hidden="true">A<span>•</span></div><div class="brand-text">ACERVO <small>Seu arquivo de ideias</small></div></div>
@@ -43,11 +41,10 @@
     </aside>
     <div class="content-shell">
       <header class="topbar"><div class="topbar-path"><span class="topbar-dot"></span> BIBLIOTECA DE REFERÊNCIAS <span class="divider">/</span> <span id="breadcrumb">TODO O ACERVO</span></div><div class="topbar-actions">
-        <div class="cloud-controls" aria-label="Sincronização e sessão">
-          <span id="syncStatus" class="sync-status">Conectando…</span>
-          <span id="userEmail" class="user-email"></span>
-          <button id="refreshBtn" class="cloud-action" type="button" title="Atualizar cards" aria-label="Atualizar cards">↻</button>
-          <button id="logoutBtn" class="cloud-action" type="button" title="Sair da conta">Sair</button>
+        <div class="cloud-controls" aria-label="Armazenamento local">
+          <span id="syncStatus" class="sync-status">Lendo JSON…</span>
+          <span id="userEmail" class="user-email" hidden></span>
+          <button id="refreshBtn" class="cloud-action" type="button" title="Recarregar o JSON inicial" aria-label="Recarregar referências">↻</button>
         </div>
         <button type="button" class="icon-button" id="backupBtn" aria-label="Exportar dados" title="Exportar backup JSON">⇩</button><button type="button" class="button button-primary top-add" id="addBtn"><span>＋</span> Novo card</button></div></header>
       <main class="main-content">
@@ -67,7 +64,7 @@
             <div class="quick-capture-symbol" aria-hidden="true">↗</div>
             <div><div class="section-overline">SPRINT 5 · CAPTURA RÁPIDA</div>
               <h2 id="quickCaptureTitle">Encontrou algo interessante? <em>Guarde.</em></h2>
-              <p>Cole o endereço de uma matéria, vídeo ou página. Tentaremos preencher o card para você revisar antes de salvar.</p>
+              <p>Cole o endereço de uma matéria, vídeo ou página. Prepare o link e complete título e resumo no formulário. Não precisamos de banco de dados.</p>
             </div>
           </div>
           <form id="quickCaptureForm" class="quick-capture-form">
@@ -75,28 +72,13 @@
             <input id="quickCaptureUrl" type="text" inputmode="url" autocomplete="url" autocapitalize="off"
               spellcheck="false" placeholder="https://site.com.br/materia..." maxlength="3000" required>
             <button id="quickPasteBtn" class="quick-paste" type="button">Colar</button>
-            <button id="quickFetchBtn" type="submit" class="quick-fetch">Buscar dados ↗</button>
+            <button id="quickFetchBtn" type="submit" class="quick-fetch">Preparar link ↗</button>
           </form>
-          <div id="quickCaptureStatus" role="status" aria-live="polite" class="quick-capture-status">No iPhone, copie o link da matéria e toque em Colar. Você também pode usar um atalho para abrir links no ACERVO.</div>
+          <div id="quickCaptureStatus" role="status" aria-live="polite" class="quick-capture-status">No iPhone, copie o endereço da matéria e toque em Colar. Depois, revise o card antes de guardar.</div>
           <div id="quickCaptureResult" class="quick-capture-result" hidden>
             <div><span id="quickResultSite" class="quick-site"></span><h3 id="quickResultTitle"></h3><p id="quickResultDescription"></p>
               <small id="quickResultHint"></small></div>
             <button id="quickReviewBtn" type="button" class="button button-primary">Revisar card ↗</button>
-          </div>
-        </section>
-        <section class="chatgpt-integration" aria-label="Integração com o ChatGPT" id="chatgptIntegration">
-          <div class="chatgpt-intro">
-            <div class="chatgpt-symbol" aria-hidden="true">✳</div>
-            <div><div class="section-overline">CAPTURA A PARTIR DAS CONVERSAS</div>
-              <h2>Do ChatGPT para o seu <em>ACERVO.</em></h2>
-              <p>Ative o recebimento e, quando encontrar uma matéria interessante, peça no ChatGPT para guardá-la. Título, link, resumo, abordagem e tags podem vir juntos.</p>
-              <div class="chatgpt-example">“Guarde esta matéria no ACERVO para o projeto Psicaótica.”</div>
-              <small>O envio é feito sob seu comando, em conversas com acesso à sua conexão Supabase. A integração não monitora todas as conversas automaticamente.</small>
-            </div>
-          </div>
-          <div class="chatgpt-connect">
-            <span id="chatgptStatus" class="chatgpt-status" role="status">Verificando configuração…</span>
-            <button id="chatgptToggle" type="button" class="chatgpt-connect-btn" disabled>Verificando…</button>
           </div>
         </section>
         <section class="insights-lab" id="insightsLab" aria-labelledby="insightsTitle">
@@ -138,7 +120,7 @@
         <section class="board-section" aria-label="Mural de referências"><div class="board-heading"><div><div class="section-overline">SEU ESPAÇO DE DESCOBERTAS</div><h2 id="boardTitle">Mural de referências <span id="resultCount">0</span></h2></div><div class="board-header-actions"><button class="quiet-button organize-open" id="manageBtn" type="button">⚙ <span>Organizar</span></button><button class="quiet-button" id="exportBtn" type="button">⇩ <span>Exportar</span></button><button class="quiet-button" id="importBtn" type="button">⇧ <span>Importar</span></button><input type="file" id="fileInput" accept=".json,application/json" hidden></div></div>
           <div class="toolbar"><label class="searchbox"><span aria-hidden="true">⌕</span><input id="searchInput" type="search" placeholder="Busque por assunto, ideia, tag..." autocomplete="off" aria-label="Pesquisar referências"><kbd>/</kbd></label><select id="projectFilter" aria-label="Filtrar por projeto"><option value="">Todos os projetos</option></select><select id="typeFilter" aria-label="Filtrar por formato"><option value="">Todos os formatos</option></select><select id="sortSelect" aria-label="Ordenar itens"><option value="recent">Mais recentes</option><option value="oldest">Mais antigos</option><option value="az">Título A–Z</option></select></div>
           <div class="tag-strip"><span class="tag-prefix">TAGS</span><div id="tagFilters" class="tag-scroll"></div><button class="clear-filters" type="button" id="clearFilters" hidden>Limpar filtros ×</button></div>
-          <div class="notice" id="localNotice"><div class="notice-icon">ⓘ</div><div><strong>ACERVO sincronizado</strong> — As referências são salvas na nuvem, vinculadas à sua conta. Você ainda pode exportar um backup em JSON.</div><button id="noticeClose" type="button" aria-label="Fechar aviso">×</button></div>
+          <div class="notice" id="localNotice"><div class="notice-icon">ⓘ</div><div><strong>Sem login, sem banco de dados.</strong> As referências iniciais vêm do JSON no GitHub. As alterações feitas aqui ficam neste aparelho. Exporte um backup JSON para não perder o trabalho ao limpar os dados do navegador.</div><button id="noticeClose" type="button" aria-label="Fechar aviso">×</button></div>
           <div class="view-switch" aria-label="Visualização do acervo">
             <button type="button" class="view-toggle is-active" id="muralToggle" aria-pressed="true">▦ Mural</button>
             <button type="button" class="view-toggle" id="flowToggle" aria-pressed="false">▥ Fluxo editorial</button>
