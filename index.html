@@ -397,6 +397,35 @@
 .sprint10-more{min-height:43px}
 .sprint10-project-select{min-height:42px;max-width:100%;font-size:12px}
 }
+
+/* Sprint 11 — seleção e organização em lote, com áreas de toque amplas */
+.sprint11-toolbar{margin:0 0 15px;border:1px solid #cadbcc;border-radius:14px;padding:16px 18px;background:#f2f7ef}
+.sprint11-topline{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.sprint11-topline strong{font-size:13px;color:#23523d}
+.sprint11-top-buttons{display:flex;gap:7px;flex-wrap:wrap}
+.sprint11-toolbar button{min-height:38px;border:1px solid #b9d1bf;background:#fff;color:#315b40;border-radius:8px;font-size:11px;font-weight:800;padding:9px 12px;cursor:pointer}
+.sprint11-toolbar button:disabled{opacity:.45;cursor:default}
+.sprint11-toolbar p{font-size:11px;color:#728574;line-height:1.5;margin:9px 0 13px}
+.sprint11-commands{display:flex;align-items:flex-end;gap:8px;flex-wrap:wrap}
+.sprint11-commands label{display:flex;flex-direction:column;gap:5px;font-size:11px;color:#43624d;font-weight:800}
+.sprint11-commands select{min-width:134px;min-height:39px;border:1px solid #cfded1;border-radius:8px;background:#fff;color:#2a5340;padding:8px;font-size:12px}
+.sprint11-commands #sprint11Archive{background:#dcebe0;color:#2b6848;border-color:#a9ccb1}
+.sprint11-commands .sprint11-delete{color:#9e423d;border-color:#edc7bf;background:#fff7f4}
+.reference-card.sprint11-is-selected{outline:2px solid #68a37c;outline-offset:-2px;background:#fcfefa}
+.sprint11-pick{display:flex;gap:10px;align-items:center;min-height:42px;margin:0 0 9px;padding:6px 9px;border:1px solid #d9e7d9;border-radius:8px;background:#edf4ea;color:#34654c;font-size:11px;font-weight:800;cursor:pointer}
+.sprint11-pick input{width:20px;height:20px;accent-color:#2a6748;flex:none}
+.sprint11-mode .reference-card .sprint11-pick{display:flex}
+#sprint11Toggle[aria-pressed="true"]{background:#dcebdc;color:#285941;border-color:#8ab799}
+@media(max-width:720px){
+.sprint11-toolbar{padding:13px}
+.sprint11-top-buttons{width:100%}
+.sprint11-top-buttons button{flex:1;padding:10px 7px}
+.sprint11-commands{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:9px}
+.sprint11-commands label,.sprint11-commands button{min-width:0;width:100%}
+.sprint11-commands select{min-width:0;width:100%;font-size:13px}
+.sprint11-commands .sprint11-delete{grid-column:1/-1;min-height:44px}
+.sprint11-pick{min-height:47px}
+}
 </style>
   <!-- Backup inicial embutido: garante os cards mesmo se o pedido a data/cards.json falhar. -->
   <script type="application/json" id="acervoSeedJSON">{"app":"ACERVO","version":10,"source":"Referências recuperadas e selecionadas de pesquisas anteriores","cards":[{"id":"db12b46f-18e7-5105-b100-9f3ef93a6cf5","title":"Constituição Federal de 1988 — Estado laico e liberdade religiosa","url":"https://www.planalto.gov.br/ccivil_03/constituicao/constituicao.htm","description":"Texto constitucional brasileiro usado como referência sobre liberdade de crença e as relações entre Estado e organizações religiosas.","angle":"Quais são os limites entre liberdade religiosa, participação política e laicidade?","tags":["Religião","Política","Estado laico","Fontes","Histórico ChatGPT"],"project":"Mundo Aberto","type":"Artigo","status":"entrada","favorite":false,"notes":"Fonte primária jurídica; não é uma reportagem.\nRecuperado de pesquisas anteriores no ChatGPT e de documentos de referência. Confira os dados editoriais e a acessibilidade do link antes de publicar.","demo":false,"origin":"chatgpt","createdAt":"2026-10-12T15:23:31.361697Z","updatedAt":"2026-10-12T15:23:31.361697Z"},{"id":"3ed19be5-a1c0-58fa-ae8d-ad678066ee63","title":"Teologia do domínio é mais perigosa para democracia que bolsonarismo, diz historiador","url":"https://apublica.org/2024/03/teologia-do-dominio-e-mais-perigosa-para-democracia-que-bolsonarismo-diz-historiador/","description":"Entrevista/reportagem da Agência Pública sobre Teologia do Domínio e implicações para a democracia.","angle":"Distinguir crença religiosa, participação cívica e projetos de domínio político.","tags":["Religião","Política","Dominionismo","Histórico ChatGPT"],"project":"Mundo Aberto","type":"Reportagem","status":"entrada","favorite":false,"notes":"Recuperado de pesquisas anteriores no ChatGPT e de documentos de referência. Confira os dados editoriais e a acessibilidade do link antes de publicar.","demo":false,"origin":"chatgpt","createdAt":"2026-10-12T15:23:31.361697Z","updatedAt":"2026-10-12T15:23:31.361697Z"},{"id":"c02f36cc-b275-5546-806e-c33138cb882d","title":"Pentecostalismo, batalha espiritual e política brasileira — pesquisa SciELO","url":"https://www.scielo.br/scielo.php?lng=pt&nrm=iso&pid=S2176-87572020000300607&script=sci_arttext&tlng=pt","description":"Artigo acadêmico citado na pesquisa sobre circulação de ideias religiosas e participação política brasileira.","angle":"Como diferentes correntes religiosas se relacionam com poder e eleições?","tags":["Religião","Política","Pesquisa","Histórico ChatGPT"],"project":"Mundo Aberto","type":"Artigo","status":"entrada","favorite":false,"notes":"Título de identificação provisório: conferir o título acadêmico original.\nRecuperado de pesquisas anteriores no ChatGPT e de documentos de referência. Confira os dados editoriais e a acessibilidade do link antes de publicar.","demo":false,"origin":"chatgpt","createdAt":"2026-10-12T15:23:31.361697Z","updatedAt":"2026-10-12T15:23:31.361697Z"},{"id":"3a9b58ac-9a5a-53ee-aa50-75508d0e4ba2","title":"What is Christian reconstructionism — and why it matters in US politics?","url":"https://religionnews.com/2026/01/13/what-is-christian-reconstructionism-%E2%88%92-and-why-it-matters-in-us-politics/","description":"Texto de Religion News Service / The Conversation sobre reconstrucionismo cristão e política nos Estados Unidos.","angle":"Diferenciar reconstrucionismo cristão, teonomia e outras correntes políticas religiosas.","tags":["Religião","Política","Estados Unidos","Histórico ChatGPT"],"project":"Mundo Aberto","type":"Artigo","status":"entrada","favorite":false,"notes":"Recuperado de pesquisas anteriores no ChatGPT e de documentos de referência. Confira os dados editoriais e a acessibilidade do link antes de publicar.","demo":false,"origin":"chatgpt","createdAt":"2026-10-12T15:23:31.361697Z","updatedAt":"2026-10-12T15:23:31.361697Z"},{"id":"d57f4cf5-111b-5365-a5d3-3c240c48df68","title":"Seven Mountains Mandate — referência acadêmica","url":"https://journals.sagepub.com/doi/10.1177/00084298251392087","description":"Estudo acadêmico citado na investigação sobre o chamado Mandato dos Sete Montes.","angle":"Como a ideia de influência nas instituições circula nas narrativas de domínio religioso?","tags":["Religião","Política","Sete Montes","Pesquisa","Histórico ChatGPT"],"project":"Mundo Aberto","type":"Artigo","status":"entrada","favorite":false,"notes":"Título de identificação provisório: conferir o título acadêmico original.\nRecuperado de pesquisas anteriores no ChatGPT e de documentos de referência. Confira os dados editoriais e a acessibilidade do link antes de publicar.","demo":false,"origin":"chatgpt","createdAt":"2026-10-12T15:23:31.361697Z","updatedAt":"2026-10-12T15:23:31.361697Z"},{"id":"7ac02d63-c8fd-553a-9a93-2085f47f7f5b","title":"Flávio Bolsonaro reforça voto evangélico com declaração sobre Jesus Cristo","url":"https://www.infomoney.com.br/politica/decretar-que-o-brasil-e-do-senhor-jesus-cristo-flavio-reforca-voto-evangelico/","description":"Reportagem sobre declaração política envolvendo religião, mencionada no roteiro de Mundo Aberto.","angle":"Analisar o peso simbólico da linguagem religiosa na disputa eleitoral, sem atribuir intenções não verificadas.","tags":["Religião","Política","Eleições","Histórico ChatGPT"],"project":"Mundo Aberto","type":"Reportagem","status":"entrada","favorite":false,"notes":"Recuperado de pesquisas anteriores no ChatGPT e de documentos de referência. Confira os dados editoriais e a acessibilidade do link antes de publicar.","demo":false,"origin":"chatgpt","createdAt":"2026-10-12T15:23:31.361697Z","updatedAt":"2026-10-12T15:23:31.361697Z"},{"id":"835246fb-9d52-51f9-a0ed-b918a53ed67f","title":"Decretar Brasil para Cristo é apenas simbólico, diz Flávio após polêmica","url":"https://www1.folha.uol.com.br/poder/2026/09/decretar-brasil-para-cristo-e-apenas-simbolico-diz-flavio-apos-polemica-de-nossa-senhora.shtml","description":"Matéria da Folha usada como contraponto explicativo à declaração política.","angle":"Comparar declaração, esclarecimento posterior e discussão pública sobre Estado laico.","tags":["Religião","Política","Eleições","Histórico ChatGPT"],"project":"Mundo Aberto","type":"Reportagem","status":"entrada","favorite":false,"notes":"Pode exigir assinatura/paywall.\nRecuperado de pesquisas anteriores no ChatGPT e de documentos de referência. Confira os dados editoriais e a acessibilidade do link antes de publicar.","demo":false,"origin":"chatgpt","createdAt":"2026-10-12T15:23:31.361697Z","updatedAt":"2026-10-12T15:23:31.361697Z"},{"id":"df3b0070-1c26-5c3f-9fec-1b928c69f579","title":"Checagem sobre Nossa Senhora Aparecida e a eleição de 2026","url":"https://noticias.uol.com.br/comprova/ultimas-noticias/2026/09/29/desinformacao-flavio-bolsonaro-padroeira-nossa-senhora-aparecida-eleicoes.ghtm","description":"Checagem do Projeto Comprova sobre uma alegação envolvendo Nossa Senhora Aparecida e a campanha eleitoral.","angle":"Discutir desinformação e afetos religiosos sem reproduzir alegações falsas.","tags":["Religião","Política","Checagem","Histórico ChatGPT"],"project":"Mundo Aberto","type":"Reportagem","status":"entrada","favorite":false,"notes":"Título resumido do item do roteiro; conferir a manchete original.\nRecuperado de pesquisas anteriores no ChatGPT e de documentos de referência. Confira os dados editoriais e a acessibilidade do link antes de publicar.","demo":false,"origin":"chatgpt","createdAt":"2026-10-12T15:23:31.361697Z","updatedAt":"2026-10-12T15:23:31.361697Z"},{"id":"485aeea3-fb96-50cf-9743-299c29bf49af","title":"Teologia da Libertação e redes de fé e política no Brasil — SciELO","url":"https://www.scielo.br/j/rh/a/hmwYFhFcpq8kSpg6yZ9TXvH/?format=html&lang=pt","description":"Artigo sobre redes da Teologia da Libertação, CESEEP e Movimento Fé e Política.","angle":"Contrapor usos políticos distintos de referências cristãs.","tags":["Religião","Teologia da Libertação","História","Histórico ChatGPT"],"project":"Mundo Aberto","type":"Artigo","status":"entrada","favorite":false,"notes":"Título de identificação provisório; conferir original.\nRecuperado de pesquisas anteriores no ChatGPT e de documentos de referência. Confira os dados editoriais e a acessibilidade do link antes de publicar.","demo":false,"origin":"chatgpt","createdAt":"2026-10-12T15:23:31.361697Z","updatedAt":"2026-10-12T15:23:31.361697Z"},{"id":"0eb8e013-e507-5f58-958c-613e65da7727","title":"Nacionalismo cristão e seus efeitos sobre a democracia no Brasil e nos Estados Unidos","url":"https://religiaoepoder.org.br/artigo/nacionalismo-cristao-e-seus-efeitos-sobre-a-democracia-no-brasil-e-nos-estados-unidos","description":"Artigo sobre nacionalismo cristão e democracia em Brasil e Estados Unidos.","angle":"Distinguir nacionalismo cristão de Teologia do Domínio e de participação religiosa comum.","tags":["Religião","Política","Nacionalismo cristão","Histórico ChatGPT"],"project":"Mundo Aberto","type":"Artigo","status":"entrada","favorite":false,"notes":"Recuperado de pesquisas anteriores no ChatGPT e de documentos de referência. Confira os dados editoriais e a acessibilidade do link antes de publicar.","demo":false,"origin":"chatgpt","createdAt":"2026-10-12T15:23:31.361697Z","updatedAt":"2026-10-12T15:23:31.361697Z"},{"id":"05a391df-fec4-5c37-9391-b5404f4c39fd","title":"Presença de grupos religiosos na política coloca em debate separação entre Igreja e Estado","url":"https://jornal.usp.br/noticias/presenca-de-grupos-religiosos-na-politica-coloca-em-debate-separacao-entre-igreja-e-estado/","description":"Jornal da USP, 2/10/2026. Debate sobre separação entre instituições religiosas e poder público.","angle":"Como manter a cidadania de quem não compartilha a crença majoritária?","tags":["Religião","Política","Estado laico","Histórico ChatGPT"],"project":"Mundo Aberto","type":"Reportagem","status":"entrada","favorite":false,"notes":"Recuperado de pesquisas anteriores no ChatGPT e de documentos de referência. Confira os dados editoriais e a acessibilidade do link antes de publicar.","demo":false,"origin":"chatgpt","createdAt":"2026-10-12T15:23:31.361697Z","updatedAt":"2026-10-12T15:23:31.361697Z"},{"id":"6648cd12-e318-5aa9-9fcf-c9ea82c7a69b","title":"Teologia do domínio ganha força no Brasil com avanço político evangélico; entenda","url":"https://www1.folha.uol.com.br/poder/2026/10/teologia-do-dominio-ganha-forca-no-brasil-com-avanco-politico-evangelico-entenda.shtml","description":"Reportagem da Folha de S.Paulo, 1/10/2026, mencionada no roteiro do Mundo Aberto.","angle":"Avaliar em que medida o conceito ajuda a interpretar disputas políticas sem generalizar grupos evangélicos.","tags":["Religião","Política","Dominionismo","Histórico ChatGPT"],"project":"Mundo Aberto","type":"Reportagem","status":"entrada","favorite":false,"notes":"Possível paywall.\nRecuperado de pesquisas anteriores no ChatGPT e de documentos de referência. Confira os dados editoriais e a acessibilidade do link antes de publicar.","demo":false,"origin":"chatgpt","createdAt":"2026-10-12T15:23:31.361697Z","updatedAt":"2026-10-12T15:23:31.361697Z"},{"id":"1b544fad-db81-56be-b166-cc9ee4114637","title":"Mourning the loss of AI companions","url":"https://www.nature.com/articles/s41562-026-02569-3","description":"Publicação em Nature Human Behaviour discutida em pesquisa sobre vínculo humano com companheiros de inteligência artificial.","angle":"O que significa fazer luto de um vínculo com uma entidade artificial?","tags":["Inteligência artificial","Luto","Vínculos","Histórico ChatGPT"],"project":"Psicaótica","type":"Artigo","status":"entrada","favorite":false,"notes":"Recuperado de pesquisas anteriores no ChatGPT e de documentos de referência. Confira os dados editoriais e a acessibilidade do link antes de publicar.","demo":false,"origin":"chatgpt","createdAt":"2026-10-12T15:23:31.361697Z","updatedAt":"2026-10-12T15:23:31.361697Z"},{"id":"698d45ec-6ca1-5e66-bdda-c74a150f32a1","title":"Psychological correlates of problematic pornography use: systematic review and meta-analysis","url":"https://pmc.ncbi.nlm.nih.gov/articles/PMC13546883/","description":"Revisão sistemática/metanálise sobre correlatos psicológicos do uso problemático de pornografia e diferenças de conceituação e medida.","angle":"Distinguir perda de controle, sofrimento subjetivo e avaliação moral.","tags":["Pornografia","Sexualidade","Pesquisa","Histórico ChatGPT"],"project":"Psicaótica","type":"Artigo","status":"entrada","favorite":false,"notes":"Recuperado de pesquisas anteriores no ChatGPT e de documentos de referência. Confira os dados editoriais e a acessibilidade do link antes de publicar.","demo":false,"origin":"chatgpt","createdAt":"2026-10-12T15:23:31.361697Z","updatedAt":"2026-10-12T15:23:31.361697Z"},{"id":"89cde36b-6ea7-5e06-956b-ec241d4482d1","title":"A global investigation of the Moral Incongruence Model of Pornography Use","url":"https://pmc.ncbi.nlm.nih.gov/articles/PMC13371739/","description":"Estudo internacional sobre incongruência moral e percepção do uso de pornografia.","angle":"Como vergonha, culpa e valores religiosos interferem na interpretação da experiência sexual?","tags":["Pornografia","Culpa","Religião","Pesquisa","Histórico ChatGPT"],"project":"Psicaótica","type":"Artigo","status":"entrada","favorite":false,"notes":"Recuperado de pesquisas anteriores no ChatGPT e de documentos de referência. Confira os dados editoriais e a acessibilidade do link antes de publicar.","demo":false,"origin":"chatgpt","createdAt":"2026-10-12T15:23:31.361697Z","updatedAt":"2026-10-12T15:23:31.361697Z"},{"id":"f73db9ab-ef1d-549d-9ceb-b7c9e31e6d9f","title":"Pornografia, verificação de idade e impactos sociais — estudo PubMed","url":"https://pubmed.ncbi.nlm.nih.gov/42545457/","description":"Referência acadêmica associada à busca anterior sobre restrições de acesso à pornografia e verificação etária.","angle":"Distinguir políticas de proteção, privacidade, controle e efeitos indesejados.","tags":["Pornografia","Tecnologia","Legislação","Histórico ChatGPT"],"project":"Psicaótica","type":"Artigo","status":"entrada","favorite":false,"notes":"Título provisório: consultar o registro PubMed para confirmar o objeto exato do estudo.\nRecuperado de pesquisas anteriores no ChatGPT e de documentos de referência. Confira os dados editoriais e a acessibilidade do link antes de publicar.","demo":false,"origin":"chatgpt","createdAt":"2026-10-12T15:23:31.361697Z","updatedAt":"2026-10-12T15:23:31.361697Z"},{"id":"c491d9be-c0fc-568a-80b1-779613fedaa5","title":"Teen sexting: Why 'just say no' fails","url":"https://phys.org/news/2026-10-teen-sexting.html","description":"Notícia baseada em pesquisa da University of Surrey sobre educação, intimidade digital, consentimento e abuso sexual por imagem entre jovens.","angle":"Como abordar proteção e responsabilidade sem deslocar a culpa para vítimas?","tags":["Sexualidade","Adolescência","Tecnologia","Histórico ChatGPT"],"project":"Psicaótica","type":"Reportagem","status":"entrada","favorite":false,"notes":"Recuperado de pesquisas anteriores no ChatGPT e de documentos de referência. Confira os dados editoriais e a acessibilidade do link antes de publicar.","demo":false,"origin":"chatgpt","createdAt":"2026-10-12T15:23:31.361697Z","updatedAt":"2026-10-12T15:23:31.361697Z"},{"id":"957d93e3-b3e6-55a3-a542-367b0777fdd7","title":"Most long-term singles stay satisfied with their lives over 11 years, study finds","url":"https://www.psypost.org/most-long-term-singles-stay-satisfied-with-their-lives-over-11-years-study-finds/","description":"Divulgação de pesquisa longitudinal sobre satisfação com a vida de pessoas solteiras por longo período.","angle":"Como discutir solteirice e desejo sem tratar casamento como destino obrigatório?","tags":["Relacionamentos","Solidão","Pesquisa","Histórico ChatGPT"],"project":"Psicaótica","type":"Reportagem","status":"entrada","favorite":false,"notes":"Recuperado de pesquisas anteriores no ChatGPT e de documentos de referência. Confira os dados editoriais e a acessibilidade do link antes de publicar.","demo":false,"origin":"chatgpt","createdAt":"2026-10-12T15:23:31.361697Z","updatedAt":"2026-10-12T15:23:31.361697Z"},{"id":"7940e9ac-1137-5681-a077-cc2598eec924","title":"CrossFit: Uma nova estética de satisfação?","url":"https://revistacult.uol.com.br/home/crossfit-uma-nova-estetica-de-satisfacao/","description":"Artigo da Revista CULT de Antônio Trevisan sobre corpo, pulsão, prazer, satisfação e a prática do CrossFit.","angle":"O que o treino intenso expressa sobre formas contemporâneas de satisfação?","tags":["Corpo","Psicanálise","Cultura","Histórico ChatGPT"],"project":"Psicaótica","type":"Artigo","status":"entrada","favorite":false,"notes":"Recuperado de pesquisas anteriores no ChatGPT e de documentos de referência. Confira os dados editoriais e a acessibilidade do link antes de publicar.","demo":false,"origin":"chatgpt","createdAt":"2026-10-12T15:23:31.361697Z","updatedAt":"2026-10-12T15:23:31.361697Z"},{"id":"256fb7d4-5381-567e-9473-50ffc7cbb871","title":"Achar um analista é match de Tinder","url":"https://mundoaberto.substack.com/p/achar-um-analista-e-match-de-tinder","description":"Publicação do Mundo Aberto sobre escolher um psicanalista, identificação e transferência.","angle":"Cruzar plataformas de encontros, desejo e escolha de analista.","tags":["Psicanálise","Relacionamentos","Tinder","Histórico ChatGPT"],"project":"Mundo Aberto","type":"Artigo","status":"entrada","favorite":false,"notes":"Publicação autoral recuperada de pesquisa anterior; já pode estar publicada.\nRecuperado de pesquisas anteriores no ChatGPT e de documentos de referência. Confira os dados editoriais e a acessibilidade do link antes de publicar.","demo":false,"origin":"chatgpt","createdAt":"2026-10-12T15:23:31.361697Z","updatedAt":"2026-10-12T15:23:31.361697Z"},{"id":"118b5942-e1a8-595a-b0ad-4765ca07eb8e","title":"Who's Lila?","url":"https://store.steampowered.com/app/1697700/Whos_Lila/","description":"Videogame explorado nas conversas como referência para temas de subjetividade e expressão emocional.","angle":"A interação e a ambiguidade narrativa podem render uma análise psicanalítica?","tags":["Videogames","Subjetividade","Cultura","Histórico ChatGPT"],"project":"Mundo Aberto","type":"Jogo","status":"entrada","favorite":false,"notes":"Recuperado de pesquisas anteriores no ChatGPT e de documentos de referência. Confira os dados editoriais e a acessibilidade do link antes de publicar.","demo":false,"origin":"chatgpt","createdAt":"2026-10-12T15:23:31.361697Z","updatedAt":"2026-10-12T15:23:31.361697Z"},{"id":"e17bfa01-b282-5ebe-897f-16a6b9e2577f","title":"Disco Elysium","url":"","description":"RPG narrativo sugerido em pesquisa sobre games, identidade e conflito subjetivo.","angle":"Investigar a obra diretamente antes de definir a pauta editorial.","tags":["Videogames","Identidade","Narrativa","Histórico ChatGPT"],"project":"Mundo Aberto","type":"Jogo","status":"entrada","favorite":false,"notes":"Título recuperado de recomendações em conversa; link específico não foi preservado.\nRecuperado de pesquisas anteriores no ChatGPT e de documentos de referência. Confira os dados editoriais e a acessibilidade do link antes de publicar.","demo":false,"origin":"chatgpt","createdAt":"2026-10-12T15:23:31.361697Z","updatedAt":"2026-10-12T15:23:31.361697Z"},{"id":"1ee6b4bc-2229-57d3-a1b3-927ef49d20b0","title":"Silent Hill 2","url":"","description":"Jogo de horror psicológico sugerido para leitura de culpa, trauma e elaboração.","angle":"Investigar a obra diretamente antes de definir a pauta editorial.","tags":["Videogames","Culpa","Horror","Histórico ChatGPT"],"project":"Mundo Aberto","type":"Jogo","status":"entrada","favorite":false,"notes":"Título recuperado de recomendações em conversa; link específico não foi preservado.\nRecuperado de pesquisas anteriores no ChatGPT e de documentos de referência. Confira os dados editoriais e a acessibilidade do link antes de publicar.","demo":false,"origin":"chatgpt","createdAt":"2026-10-12T15:23:31.361697Z","updatedAt":"2026-10-12T15:23:31.361697Z"},{"id":"1cf40435-9278-559e-ae56-5dd78c8d783a","title":"Mouthwashing","url":"","description":"Horror narrativo citado como referência cultural para episódios.","angle":"Investigar a obra diretamente antes de definir a pauta editorial.","tags":["Videogames","Horror","Narrativa","Histórico ChatGPT"],"project":"Mundo Aberto","type":"Jogo","status":"entrada","favorite":false,"notes":"Título recuperado de recomendações em conversa; link específico não foi preservado.\nRecuperado de pesquisas anteriores no ChatGPT e de documentos de referência. Confira os dados editoriais e a acessibilidade do link antes de publicar.","demo":false,"origin":"chatgpt","createdAt":"2026-10-12T15:23:31.361697Z","updatedAt":"2026-10-12T15:23:31.361697Z"},{"id":"2525da1e-c323-511d-9d22-0d29d44dddea","title":"SOMA","url":"","description":"Jogo de ficção científica e horror sugerido para questões sobre identidade e consciência.","angle":"Investigar a obra diretamente antes de definir a pauta editorial.","tags":["Videogames","Identidade","Tecnologia","Histórico ChatGPT"],"project":"Mundo Aberto","type":"Jogo","status":"entrada","favorite":false,"notes":"Título recuperado de recomendações em conversa; link específico não foi preservado.\nRecuperado de pesquisas anteriores no ChatGPT e de documentos de referência. Confira os dados editoriais e a acessibilidade do link antes de publicar.","demo":false,"origin":"chatgpt","createdAt":"2026-10-12T15:23:31.361697Z","updatedAt":"2026-10-12T15:23:31.361697Z"},{"id":"6be476ba-83fe-5908-8d5b-270cedb9af88","title":"Immortality","url":"","description":"Obra interativa citada em pesquisa sobre jogos e subjetividade.","angle":"Investigar a obra diretamente antes de definir a pauta editorial.","tags":["Videogames","Narrativa","Cinema","Histórico ChatGPT"],"project":"Mundo Aberto","type":"Jogo","status":"entrada","favorite":false,"notes":"Título recuperado de recomendações em conversa; link específico não foi preservado.\nRecuperado de pesquisas anteriores no ChatGPT e de documentos de referência. Confira os dados editoriais e a acessibilidade do link antes de publicar.","demo":false,"origin":"chatgpt","createdAt":"2026-10-12T15:23:31.361697Z","updatedAt":"2026-10-12T15:23:31.361697Z"},{"id":"d3c5183f-768d-52a2-aa3f-341e1e3ef263","title":"GrindrPlus — repositório","url":"https://github.com/ElJaviLuki/GrindrPlus","description":"Projeto de software cuja página foi pesquisada e discutida em conversa.","angle":"Referência técnica; avaliar funcionalidade, segurança e aplicação ao projeto.","tags":["GitHub","Software","Relacionamentos","Histórico ChatGPT"],"project":"Pessoal","type":"Outro","status":"entrada","favorite":false,"notes":"Registro de pesquisa técnica anterior, não é endosso ao software.\nRecuperado de pesquisas anteriores no ChatGPT e de documentos de referência. Confira os dados editoriais e a acessibilidade do link antes de publicar.","demo":false,"origin":"chatgpt","createdAt":"2026-10-12T15:23:31.361697Z","updatedAt":"2026-10-12T15:23:31.361697Z"},{"id":"a014076d-c6e9-5fc2-9660-85b821938482","title":"Open Grind — repositório","url":"https://git.opengrind.org/open-grind/open-grind","description":"Repositório de software cuja proposta foi analisada em conversa.","angle":"Referência técnica; avaliar funcionalidade, segurança e aplicação ao projeto.","tags":["GitHub","Software","Histórico ChatGPT"],"project":"Pessoal","type":"Outro","status":"entrada","favorite":false,"notes":"Registro de pesquisa técnica anterior, não é endosso ao software.\nRecuperado de pesquisas anteriores no ChatGPT e de documentos de referência. Confira os dados editoriais e a acessibilidade do link antes de publicar.","demo":false,"origin":"chatgpt","createdAt":"2026-10-12T15:23:31.361697Z","updatedAt":"2026-10-12T15:23:31.361697Z"},{"id":"b8bc0f88-4c83-5df9-9987-addb80339e03","title":"grindr-web-unlock — repositório","url":"https://github.com/VityaSchel/grindr-web-unlock","description":"Repositório de software mencionado em pesquisa técnica anterior.","angle":"Referência técnica; avaliar funcionalidade, segurança e aplicação ao projeto.","tags":["GitHub","Software","Histórico ChatGPT"],"project":"Pessoal","type":"Outro","status":"entrada","favorite":false,"notes":"Registro de pesquisa técnica anterior, não é endosso ao software.\nRecuperado de pesquisas anteriores no ChatGPT e de documentos de referência. Confira os dados editoriais e a acessibilidade do link antes de publicar.","demo":false,"origin":"chatgpt","createdAt":"2026-10-12T15:23:31.361697Z","updatedAt":"2026-10-12T15:23:31.361697Z"},{"id":"f953be4d-81cc-5d8c-b792-25586d2f34fe","title":"Video Shotcraft — repositório","url":"https://github.com/Vincentwei1021/video-shotcraft","description":"Ferramenta de vídeo pesquisada para fluxo de edição e storyboard.","angle":"Referência técnica; avaliar funcionalidade, segurança e aplicação ao projeto.","tags":["GitHub","Audiovisual","Histórico ChatGPT"],"project":"Pessoal","type":"Outro","status":"entrada","favorite":false,"notes":"Registro de pesquisa técnica anterior, não é endosso ao software.\nRecuperado de pesquisas anteriores no ChatGPT e de documentos de referência. Confira os dados editoriais e a acessibilidade do link antes de publicar.","demo":false,"origin":"chatgpt","createdAt":"2026-10-12T15:23:31.361697Z","updatedAt":"2026-10-12T15:23:31.361697Z"},{"id":"417a4baf-3944-548f-9efc-7df86681a7e5","title":"Hyperframes — HeyGen","url":"https://github.com/heygen-com/hyperframes","description":"Projeto de vídeo/ferramenta criativa analisado anteriormente.","angle":"Referência técnica; avaliar funcionalidade, segurança e aplicação ao projeto.","tags":["GitHub","Audiovisual","Histórico ChatGPT"],"project":"Pessoal","type":"Outro","status":"entrada","favorite":false,"notes":"Registro de pesquisa técnica anterior, não é endosso ao software.\nRecuperado de pesquisas anteriores no ChatGPT e de documentos de referência. Confira os dados editoriais e a acessibilidade do link antes de publicar.","demo":false,"origin":"chatgpt","createdAt":"2026-10-12T15:23:31.361697Z","updatedAt":"2026-10-12T15:23:31.361697Z"},{"id":"c6b4f8a1-8d7e-4b53-9f21-0e7a6c5d4b31","title":"The Lost Civic Life of Movie Rental Stores","url":"https://thereader.mitpress.mit.edu/the-lost-civic-life-of-movie-rental-stores/","description":"Ensaio do MIT Press Reader sobre como as videolocadoras funcionavam também como espaços informais de convivência, conversa e encontro — uma forma de terceiro espaço que desapareceu com a mudança para o streaming.","angle":"O streaming substituiu a função comercial da locadora, mas o que aconteceu com sua função social e com os encontros cotidianos que ela produzia?","tags":["Solidão","Terceiro espaço","Convivência","Streaming","Histórico ChatGPT"],"project":"Mundo Aberto","type":"Artigo","status":"entrada","favorite":false,"notes":"Separada para o episódio do Mundo Aberto sobre solidão contemporânea, terceiros espaços e transformação da convivência.","demo":false,"origin":"chatgpt","createdAt":"2026-10-12T16:45:05Z","updatedAt":"2026-10-12T16:45:05Z"},{"id":"7f2a1d98-3c64-4e5b-a871-9b0c2d3e4f56","title":"“Influenciadores da solidão” não têm amigos, mas dizem ser felizes","url":"https://www.cnnbrasil.com.br/saude/influenciadores-da-solidao-nao-tem-amigos-mas-dizem-ser-felizes/","description":"Reportagem da CNN Brasil sobre criadores que transformam uma vida com poucos ou nenhum amigo em conteúdo, discutindo autonomia, solitude, isolamento social e o risco de romantizar a hiperindependência.","angle":"Quando estar sozinho deixa de ser apenas circunstância e vira identidade e conteúdo, onde fica a fronteira entre solitude escolhida e isolamento?","tags":["Solidão","Solitude","Redes sociais","Relacionamentos","Histórico ChatGPT"],"project":"Mundo Aberto","type":"Reportagem","status":"entrada","favorite":false,"notes":"Separada para o episódio do Mundo Aberto sobre solidão contemporânea, junto às pautas de terceiros espaços e Lonely Generation.","demo":false,"origin":"chatgpt","createdAt":"2026-10-12T16:45:05Z","updatedAt":"2026-10-12T16:45:05Z"},{"id":"a3d9e7c2-5b18-4f60-8a42-6c1d0e9f7b35","title":"‘There’s a lot of silence’: have we created a new ‘Lonely Generation’?","url":"https://www.theguardian.com/society/ng-interactive/2026/oct/04/young-generation-lonely-silence","description":"Reportagem do The Guardian sobre níveis elevados de solidão entre jovens e os fatores sociais associados, como desaparecimento de terceiros espaços, mudanças no trabalho e estudo, custo de vida, pandemia e mediação tecnológica das relações.","angle":"Estamos diante de uma geração que escolheu o isolamento ou de uma sociedade que reduziu as oportunidades cotidianas de convivência e tornou o encontro mais difícil?","tags":["Solidão","Juventude","Terceiro espaço","Tecnologia","Histórico ChatGPT"],"project":"Mundo Aberto","type":"Reportagem","status":"entrada","favorite":false,"notes":"Separada para fechar o episódio do Mundo Aberto sobre solidão contemporânea e conectar os casos individuais às mudanças estruturais da vida social.","demo":false,"origin":"chatgpt","createdAt":"2026-10-12T16:45:05Z","updatedAt":"2026-10-12T16:45:05Z"}]}</script>
@@ -519,7 +548,7 @@
           </div>
           <div id="insightsRelated" class="insights-related" hidden></div>
         </section>
-        <section class="board-section" aria-label="Mural de referências"><div class="board-heading"><div><div class="section-overline">SEU ESPAÇO DE DESCOBERTAS</div><h2 id="boardTitle">Mural de referências <span id="resultCount">34</span></h2></div><div class="board-header-actions"><button class="quiet-button organize-open" id="manageBtn" type="button">⚙ <span>Organizar</span></button><button class="quiet-button" id="exportBtn" type="button">⇩ <span>Exportar</span></button><button class="quiet-button" id="importBtn" type="button">⇧ <span>Importar</span></button><input type="file" id="fileInput" accept=".json,application/json" hidden></div></div>
+        <section class="board-section" aria-label="Mural de referências"><div class="board-heading"><div><div class="section-overline">SEU ESPAÇO DE DESCOBERTAS</div><h2 id="boardTitle">Mural de referências <span id="resultCount">34</span></h2></div><div class="board-header-actions"><button class="quiet-button sprint11-toggle" id="sprint11Toggle" type="button" aria-pressed="false">☑ <span>Selecionar</span></button><button class="quiet-button organize-open" id="manageBtn" type="button">⚙ <span>Organizar</span></button><button class="quiet-button" id="exportBtn" type="button">⇩ <span>Exportar</span></button><button class="quiet-button" id="importBtn" type="button">⇧ <span>Importar</span></button><input type="file" id="fileInput" accept=".json,application/json" hidden></div></div>
           <div class="toolbar"><label class="searchbox"><span aria-hidden="true">⌕</span><input id="searchInput" type="search" placeholder="Busque por assunto, ideia, tag..." autocomplete="off" aria-label="Pesquisar referências"><kbd>/</kbd></label><select id="projectFilter" aria-label="Filtrar por projeto"><option value="">Todos os projetos</option></select><select id="typeFilter" aria-label="Filtrar por formato"><option value="">Todos os formatos</option></select><select id="sortSelect" aria-label="Ordenar itens"><option value="recent">Mais recentes</option><option value="oldest">Mais antigos</option><option value="az">Título A–Z</option></select></div>
           <div class="tag-strip"><span class="tag-prefix">TAGS</span><div id="tagFilters" class="tag-scroll"></div><button class="clear-filters" type="button" id="clearFilters" hidden>Limpar filtros ×</button></div>
           <div class="notice" id="localNotice"><div class="notice-icon">ⓘ</div><div><strong>Sem login, sem banco de dados.</strong> As referências iniciais vêm do JSON no GitHub. As alterações feitas aqui ficam neste aparelho. Exporte um backup JSON para não perder o trabalho ao limpar os dados do navegador.</div><button id="noticeClose" type="button" aria-label="Fechar aviso">×</button></div>
@@ -529,6 +558,29 @@
   </div>
   <div class="sprint9-actions"><button type="button" id="sprint8BackupNow">⇩ Fazer backup</button>
 <button type="button" id="sprint9OpenPublish">↗ Publicar no GitHub</button></div>
+</section>
+<section id="sprint11Toolbar" class="sprint11-toolbar" hidden aria-label="Ações para referências selecionadas">
+  <div class="sprint11-topline">
+    <strong id="sprint11Count" aria-live="polite">0 referências selecionadas</strong>
+    <div class="sprint11-top-buttons">
+      <button type="button" id="sprint11Visible">Selecionar visíveis</button>
+      <button type="button" id="sprint11Clear">Limpar seleção</button>
+      <button type="button" id="sprint11Done">Fechar</button>
+    </div>
+  </div>
+  <p>Escolha referências no mural e organize todas de uma vez. Só os itens marcados serão alterados.</p>
+  <div class="sprint11-commands">
+    <label>Etapa <select id="sprint11Stage" aria-label="Nova etapa das referências">
+      <option value="selecionado">Selecionados</option><option value="pauta">Pautas</option>
+      <option value="producao">Em produção</option><option value="arquivo">Arquivo (concluídas)</option>
+      <option value="entrada">Caixa de entrada</option>
+    </select></label>
+    <button type="button" id="sprint11ApplyStage">Aplicar etapa</button>
+    <label>Projeto <select id="sprint11Project" aria-label="Novo projeto das referências"></select></label>
+    <button type="button" id="sprint11ApplyProject">Aplicar projeto</button>
+    <button type="button" id="sprint11Archive">✓ Arquivar selecionados</button>
+    <button type="button" class="sprint11-delete" id="sprint11Delete">Excluir selecionados</button>
+  </div>
 </section>
 <div class="view-switch" aria-label="Visualização do acervo">
             <button type="button" class="view-toggle is-active" id="muralToggle" aria-pressed="true">▦ Mural</button>
@@ -1079,6 +1131,16 @@
     next.deleted=next.deleted.filter(id=>!ids.has(id));
     write(KEY,next);overrides=next;
   }
+
+  async function removeMany(ids){
+    if(!Array.isArray(ids)||!ids.length)return;
+    const unique=[...new Set(ids.map(String))];
+    const next=clone(overrides);
+    const deleted=new Set(next.deleted);
+    for(const id of unique){delete next.cards[id];deleted.add(id);}
+    next.deleted=[...deleted];
+    write(KEY,next);overrides=next;
+  }
   async function remove(id){
     const next=clone(overrides);
     delete next.cards[id];
@@ -1135,7 +1197,7 @@
     return {url:url.href,title:'',description:'',site:url.hostname,contentType:''};
   }
   window.AcervoCloud={
-    boot,checkPublished,pendingChanges,fetchCards,save,saveMany,remove,restoreSnapshot,fetchProjects,saveProjects,
+    boot,checkPublished,pendingChanges,fetchCards,save,saveMany,remove,removeMany,restoreSnapshot,fetchProjects,saveProjects,
     fetchDossiers,saveDossier,removeDossier,lookupMetadata,
     get user(){return user;},
     get warning(){return warning;}
@@ -1196,12 +1258,15 @@
     if(q&&!([x.title,x.url,x.description,x.angle,x.project,x.type,x.notes,...x.tags].join(' ').toLocaleLowerCase('pt-BR').includes(q)))return false;
     return true;
   });return items.sort((a,b)=>state.sort==='oldest'?new Date(a.createdAt)-new Date(b.createdAt):state.sort==='az'?a.title.localeCompare(b.title,'pt-BR'):new Date(b.createdAt)-new Date(a.createdAt))}
-  function makeCard(x){const safeUrl=secureUrl(x.url);return `<article class="reference-card" data-id="${esc(x.id)}">${x.demo?'<span class="demo-badge">EXEMPLO</span>':''}<div class="card-top"><span class="category-dot"></span><span class="format-label">${esc(x.type)}</span>${x.origin==="chatgpt"?'<span class="chat-origin">CHATGPT</span>':""}<span class="card-date">${fmtDate(x.createdAt)}</span><button class="favorite-button ${x.favorite?'on':''}" title="${x.favorite?'Retirar dos favoritos':'Marcar favorito'}" aria-label="${x.favorite?'Retirar dos favoritos':'Marcar favorito'}" data-action="favorite">${x.favorite?'★':'☆'}</button></div><h3>${esc(x.title)}</h3>${x.description?`<p class="card-description">${esc(x.description)}</p>`:''}${x.angle?`<div class="angle"><b>POSSÍVEL ABORDAGEM</b><br>${esc(x.angle)}</div>`:''}<div class="card-tags">${x.tags.map(t=>`<span>${esc(t)}</span>`).join('')}</div><div class="card-divider"></div><div class="card-footer"><label class="sprint10-project-label"><span>Projeto</span>
+  let sprint11Active=false;
+  let sprint11Busy=false;
+  const sprint11Selected=new Set();
+  function makeCard(x){const safeUrl=secureUrl(x.url);return `<article class="reference-card ${sprint11Active&&sprint11Selected.has(x.id)?'sprint11-is-selected':''}" data-id="${esc(x.id)}">${sprint11Active?`<label class="sprint11-pick"><input type="checkbox" data-sprint11-card="${esc(x.id)}" ${sprint11Selected.has(x.id)?'checked':''} aria-label="Selecionar ${esc(x.title)}"><span>Selecionar este card</span></label>`:''}${x.demo?'<span class="demo-badge">EXEMPLO</span>':''}<div class="card-top"><span class="category-dot"></span><span class="format-label">${esc(x.type)}</span>${x.origin==="chatgpt"?'<span class="chat-origin">CHATGPT</span>':""}<span class="card-date">${fmtDate(x.createdAt)}</span><button class="favorite-button ${x.favorite?'on':''}" title="${x.favorite?'Retirar dos favoritos':'Marcar favorito'}" aria-label="${x.favorite?'Retirar dos favoritos':'Marcar favorito'}" data-action="favorite">${x.favorite?'★':'☆'}</button></div><h3>${esc(x.title)}</h3>${x.description?`<p class="card-description">${esc(x.description)}</p>`:''}${x.angle?`<div class="angle"><b>POSSÍVEL ABORDAGEM</b><br>${esc(x.angle)}</div>`:''}<div class="card-tags">${x.tags.map(t=>`<span>${esc(t)}</span>`).join('')}</div><div class="card-divider"></div><div class="card-footer"><label class="sprint10-project-label"><span>Projeto</span>
     <select class="sprint10-project-select" data-quick-project="${esc(x.id)}" aria-label="Projeto da referência ${esc(x.title)}">
       ${[...new Set([...state.projects,x.project])].map(p=>`<option value="${esc(p)}" ${p===x.project?'selected':''}>${esc(p)}</option>`).join('')}
     </select></label><span class="stage-badge ${esc(x.status)}">${esc(STAGES[x.status])}</span></div><div class="card-footer" style="margin-top:10px"><span></span><div class="card-actions">${safeUrl?`<a href="${esc(safeUrl)}" target="_blank" rel="noopener noreferrer">Abrir ↗</a>`:''}<button class="edit-btn" data-action="details" title="Abrir ficha completa">Detalhes</button><button class="edit-btn sprint8-advance" data-action="advance" title="Mover para a próxima etapa editorial">${x.status==='arquivo'?'Reabrir ↺':x.status==='producao'?'Concluir ✓':'Avançar →'}</button><button class="edit-btn" data-action="edit" title="Editar card">Editar</button><button class="delete-btn" data-action="delete" title="Excluir card">Excluir</button></div></div></article>`}
   function render(){updateNav();updateFilters();const items=visibleCards();$('#board').innerHTML=items.map(makeCard).join('');$('#resultCount').textContent=items.length;$('#emptyState').hidden=items.length!==0;$('#board').hidden=items.length===0;$('#emptyMessage').textContent=state.cards.length?'Não encontramos cards com os filtros escolhidos.':'Quando você salvar uma ideia, ela aparecerá neste espaço.';$('#clearFilters').hidden=!(state.q||state.tag||state.project||state.type);$('#demoToolbar').hidden=!state.cards.some(c=>c.demo);window.AcervoInsights?.onCardsChanged?.();
-    window.AcervoEditorial?.afterRender?.(items,state);sprint8BackupInfo();}
+    window.AcervoEditorial?.afterRender?.(items,state);sprint8BackupInfo();sprint11RefreshToolbar();}
   function openForm(id=null){state.editingId=id;const x=state.cards.find(c=>c.id===id);
     const projects=[...new Set([...state.projects,...state.cards.map(c=>c.project)])].filter(Boolean);
     $('#fieldProject').innerHTML=projects.map(p=>`<option value="${esc(p)}">${esc(p)}</option>`).join('');
@@ -1429,31 +1494,100 @@
       touched+' alteração(ões) pendentes neste aparelho. Faça um backup ou prepare o JSON para publicar pelo ChatGPT.':
       'Sem diferenças locais em relação ao último JSON consultado. O GitHub continua sendo sua cópia publicada.';
   }
-  function sprint8ShowUndo(card){
-    sprint8LastDeleted={...card,tags:[...(card.tags||[])]};
+  function sprint8ShowUndo(cards){
+    const arr=Array.isArray(cards)?cards:[cards];
+    sprint8LastDeleted=arr.map(c=>({...c,tags:[...(c.tags||[])]}));
     const bar=$('#sprint8UndoBar');
+    bar.querySelector('span').textContent=arr.length===1?
+      'Referência excluída deste aparelho.':
+      arr.length+' referências excluídas deste aparelho.';
     bar.hidden=false;
     clearTimeout(sprint8UndoTimer);
     sprint8UndoTimer=setTimeout(()=>{
-      sprint8LastDeleted=null;
-      bar.hidden=true;
+      sprint8LastDeleted=null;bar.hidden=true;
     },15000);
   }
   async function sprint8UndoDelete(){
-    if(!sprint8LastDeleted)return;
-    const card=sprint8LastDeleted;
-    clearTimeout(sprint8UndoTimer);
-    try{
-      await Cloud.save(card);
+    if(!sprint8LastDeleted?.length)return;
+    const cards=sprint8LastDeleted;
+    try {
+      await Cloud.saveMany(cards);
+      clearTimeout(sprint8UndoTimer);
       sprint8LastDeleted=null;
       $('#sprint8UndoBar').hidden=true;
-      state.cards.unshift(normalizeCard(card));
+      const map=new Map(state.cards.map(c=>[c.id,c]));
+      for(const card of cards)map.set(card.id,normalizeCard(card));
+      state.cards=[...map.values()];
       render();
-      toast('Exclusão desfeita. Referência recuperada.');
-    }catch(error){
-      toast('Não foi possível recuperar: '+error.message);
-    }
+      toast(cards.length===1?'Exclusão desfeita. Referência recuperada.':
+        'Exclusão desfeita: '+cards.length+' referências recuperadas.');
+    }catch(error){toast('Não foi possível recuperar: '+error.message);}
   }
+  function sprint11Items(){
+    return state.cards.filter(c=>sprint11Selected.has(c.id));
+  }
+  function sprint11RefreshToolbar(){
+    const all=new Set(state.cards.map(c=>c.id));
+    for(const id of sprint11Selected)if(!all.has(id))sprint11Selected.delete(id);
+    const count=sprint11Selected.size;
+    $('#sprint11Count').textContent=count+' referência'+(count===1?' selecionada':'s selecionadas');
+    $('#sprint11Toggle').setAttribute('aria-pressed',String(sprint11Active));
+    $('#sprint11Toggle').innerHTML=sprint11Active?'☑ <span>Concluir seleção</span>':'☑ <span>Selecionar</span>';
+    $('#sprint11Toolbar').hidden=!sprint11Active;
+    const projects=[...new Set(state.projects.filter(Boolean))];
+    const dropdown=$('#sprint11Project');
+    const old=dropdown.value;
+    dropdown.innerHTML=projects.map(p=>`<option value="${esc(p)}">${esc(p)}</option>`).join('');
+    if(projects.includes(old))dropdown.value=old;
+    for(const id of ['sprint11ApplyStage','sprint11ApplyProject','sprint11Archive','sprint11Delete'])
+      $('#'+id).disabled=sprint11Busy||count===0;
+    for(const id of ['sprint11Visible','sprint11Clear','sprint11Done'])
+      $('#'+id).disabled=sprint11Busy;
+  }
+  function sprint11Toggle(force=null){
+    if(sprint11Busy)return;
+    sprint11Active=force===null?!sprint11Active:!!force;
+    if(!sprint11Active)sprint11Selected.clear();
+    if(sprint11Active && $('#muralToggle'))$('#muralToggle').click();
+    render();
+    if(sprint11Active)$('#sprint11Toolbar').scrollIntoView({behavior:'smooth',block:'nearest'});
+  }
+  async function sprint11Run(action,value){
+    if(sprint11Busy)return;
+    const cards=sprint11Items();
+    if(!cards.length)return toast('Marque pelo menos uma referência.');
+    if(action==='stage'&&!(value in STAGES||value==='entrada') || action==='stage'&&value==='todos')
+      return toast('Etapa inválida.');
+    if(action==='project'&&!state.projects.includes(value))return toast('Projeto inválido.');
+    if(action==='delete'){
+      const msg='Excluir '+cards.length+' referência(s) selecionada(s) deste aparelho?'+
+        '\\n\\nVocê poderá desfazer por 15 segundos. A exclusão só será publicada no GitHub quando enviar o JSON atualizado.';
+      if(!confirm(msg))return;
+      if(cards.length>=10 && !confirm('Confirme novamente: excluir '+cards.length+
+        ' cards deste aparelho?'))return;
+    }
+    sprint11Busy=true;sprint11RefreshToolbar();
+    try{
+      if(action==='delete'){
+        await Cloud.removeMany(cards.map(c=>c.id));
+        const gone=new Set(cards.map(c=>c.id));
+        state.cards=state.cards.filter(c=>!gone.has(c.id));
+        sprint11ShowUndoCards(cards);
+      }else{
+        const now=new Date().toISOString();
+        const updated=cards.map(c=>({...c,[action==='stage'?'status':'project']:value,updatedAt:now}));
+        await Cloud.saveMany(updated);
+        const changed=new Map(updated.map(c=>[c.id,c]));
+        state.cards=state.cards.map(c=>changed.get(c.id)||c);
+      }
+      sprint11Selected.clear();
+      render();
+      if(action==='delete')toast(cards.length+' referência(s) excluída(s). Use Desfazer se necessário.');
+      else toast(cards.length+' referência(s) atualizada(s).');
+    }catch(error){toast('Não foi possível concluir a operação: '+error.message);}
+    finally{sprint11Busy=false;sprint11RefreshToolbar();}
+  }
+  function sprint11ShowUndoCards(cards){sprint8ShowUndo(cards);}
   function init(){state.cards=[];$('#localNotice').hidden=false;/* Manter 31 cards pré-renderizados até que o JSON carregue. */
     Cloud.boot({onReady:readyForUser}).catch(error=>{
       console.error('ACERVO: erro ao iniciar',error);
@@ -1480,6 +1614,26 @@
       try{await changeQuickProject(input.dataset.quickProject,input.value);}
       catch(error){toast('Não foi possível alterar o projeto: '+error.message);render();}
       finally{input.disabled=false;}
+    });
+    $('#sprint11Toggle').addEventListener('click',()=>sprint11Toggle());
+    $('#sprint11Done').addEventListener('click',()=>sprint11Toggle(false));
+    $('#sprint11Clear').addEventListener('click',()=>{sprint11Selected.clear();render();});
+    $('#sprint11Visible').addEventListener('click',()=>{
+      for(const c of visibleCards())sprint11Selected.add(c.id);
+      render();
+    });
+    $('#sprint11ApplyStage').addEventListener('click',()=>sprint11Run('stage',$('#sprint11Stage').value));
+    $('#sprint11ApplyProject').addEventListener('click',()=>sprint11Run('project',$('#sprint11Project').value));
+    $('#sprint11Archive').addEventListener('click',()=>sprint11Run('stage','arquivo'));
+    $('#sprint11Delete').addEventListener('click',()=>sprint11Run('delete'));
+    $('#board').addEventListener('change',e=>{
+      const el=e.target.closest('input[data-sprint11-card]');
+      if(!el||!sprint11Active||sprint11Busy)return;
+      if(el.checked)sprint11Selected.add(el.dataset.sprint11Card);
+      else sprint11Selected.delete(el.dataset.sprint11Card);
+      const tile=el.closest('article.reference-card');
+      tile?.classList.toggle('sprint11-is-selected',el.checked);
+      sprint11RefreshToolbar();
     });
     $('#sprint8BackupNow').addEventListener('click',exportData);
     $('#sprint9OpenPublish').addEventListener('click',sprint9OpenDialog);
@@ -1525,7 +1679,7 @@
     if(b.dataset.action==='details')window.AcervoEditorial?.showDetails?.(x.id);if(b.dataset.action==='favorite'){const next={...x,favorite:!x.favorite,updatedAt:new Date().toISOString()};
       try{await Cloud.save(next);Object.assign(x,next);render();toast(x.favorite?'Referência favoritada.':'Favorito removido.');}
       catch(error){toast('Erro ao atualizar: '+error.message);}
-    }if(b.dataset.action==='delete'&&confirm(`Excluir "${x.title}"?\n\nEssa ação não poderá ser desfeita.`)){try{await Cloud.remove(x.id);state.cards=state.cards.filter(c=>c.id!==x.id);render();sprint8ShowUndo(x);toast('Referência removida. Você pode desfazer por 15 segundos.');}
+    }if(b.dataset.action==='delete'&&confirm(`Excluir "${x.title}"?\n\nVocê pode desfazer nos próximos 15 segundos.`)){try{await Cloud.remove(x.id);state.cards=state.cards.filter(c=>c.id!==x.id);render();sprint8ShowUndo(x);toast('Referência removida. Você pode desfazer por 15 segundos.');}
       catch(error){toast('Falha ao excluir: '+error.message)}}});
     $('#closeDialog').addEventListener('click',closeForm);$('#cancelDialog').addEventListener('click',closeForm);$('#cardForm').addEventListener('submit',saveForm);$('#cardDialog').addEventListener('click',e=>{if(e.target===$('#cardDialog'))closeForm()});
     $('#clearDemos').addEventListener('click',async()=>{if(!confirm('Remover os cards de exemplo?'))return;
