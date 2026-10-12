@@ -1,6 +1,6 @@
-/* ACERVO — Service Worker v6.
+/* ACERVO — Service Worker v7.
    Cache apenas da interface pública. Dados privados, sessões e respostas do Supabase não são armazenados aqui. */
-const CACHE = 'acervo-shell-v6-20261012-1';
+const CACHE = 'acervo-shell-v7-20261012-1';
 const CORE = [
   './',
   './index.html',
@@ -13,6 +13,8 @@ const CORE = [
   './assets/chatgpt.js',
   './assets/capture.js',
   './assets/pwa.js',
+  './assets/insights-core.js',
+  './assets/insights.js',
   './icons/icon.svg',
   './icons/icon-180.png',
   './icons/icon-192.png',
