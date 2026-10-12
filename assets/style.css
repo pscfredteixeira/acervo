@@ -301,3 +301,7 @@
 .insights-source-item small{font-size:10px;color:#9cae9d}
 @media(max-width:980px){.insights-heading{flex-direction:column;gap:0}.insights-method{margin-bottom:15px}}
 @media(max-width:760px){.insights-lab{padding:19px 16px;border-radius:13px;margin-bottom:24px}.insights-heading h2{font-size:27px}.insights-heading p{font-size:12px}.insights-method{font-size:9px}.insights-search-form{gap:7px}.insights-search-form input{font-size:16px}.insights-search-form button{padding:12px 11px;font-size:11px}.insights-hits{grid-template-columns:1fr;max-height:unset}.insights-two-col{grid-template-columns:1fr;gap:19px}.insights-selection{gap:8px}.insights-selection>span{width:100%}.insights-subhead h3{font-size:22px}.insights-subhead small{font-size:9px}.insights-results-head{flex-wrap:wrap}.insights-dossier-form{padding:5px 18px 19px}.insights-related-list article{flex-wrap:wrap}.insights-related-list article>div{width:100%;flex-basis:100%}}
+
+/* Recuperação de sessão quando a consulta remota falhar */
+.auth-retry{display:block;width:100%;margin:4px 0 12px;padding:12px;background:#eef4ef;color:#315f48;border:1px solid #cddfcf;border-radius:9px;font-size:12px;font-weight:800}
+.auth-retry[hidden]{display:none!important}
