@@ -183,3 +183,48 @@
  .quick-capture-result{padding:15px;gap:12px}
  .quick-capture-result .button{align-self:stretch}
 }
+
+
+/* Sprint 6 — app instalável no iPhone */
+.pwa-offline-banner{position:sticky;top:0;z-index:70;padding:12px 18px;background:#f5e9df;border-bottom:1px solid #e4cdbb;color:#81583a;text-align:center;font-size:12px;font-weight:700;line-height:1.5}
+.pwa-install-banner{display:flex;align-items:center;gap:15px;margin:-12px 0 28px;border-radius:14px;padding:15px 16px;background:#e9f1e8;border:1px solid #d9e6d9;position:relative}
+.pwa-install-banner>img{height:53px;width:53px;flex-shrink:0;border-radius:12px;box-shadow:0 3px 12px #13392b21}
+.pwa-install-copy{flex:1;min-width:0}
+.pwa-install-copy strong{font-size:13px;color:#254e3e;font-weight:800;display:block}
+.pwa-install-copy p{margin:5px 0 0;color:#607c69;font-size:11px;line-height:1.5}
+.pwa-install-action{border:0;border-radius:9px;background:#254c3e;color:#fff;min-height:42px;padding:10px 13px;font-size:11px;font-weight:800;white-space:nowrap}
+.pwa-dismiss{align-self:flex-start;border:0;background:transparent;font-size:22px;line-height:1;color:#799284;min-height:27px;min-width:27px}
+.pwa-footer-link{border:0;background:transparent;color:#537763;font-size:11px;font-weight:800;white-space:nowrap;padding:8px}
+.pwa-install-dialog{padding:25px;width:min(440px,calc(100vw - 30px));border:0;border-radius:18px;box-shadow:0 25px 80px #142f3065;color:#254738}
+.pwa-dialog-top{display:flex;justify-content:space-between;align-items:flex-start}
+.pwa-dialog-top img{border-radius:15px;box-shadow:0 6px 19px #13392b22}
+.pwa-dialog-top button{border:0;background:#f0f3ed;border-radius:8px;font-size:22px;color:#587667;width:33px;height:33px}
+.pwa-install-dialog h2{font:normal 30px/1.2 'DM Serif Display',Georgia,serif;margin:25px 0 15px;color:#254b3c}
+.pwa-install-dialog>p{font-size:13px;line-height:1.8;color:#607768;margin:0 0 20px}
+.pwa-steps{display:flex;align-items:center;flex-wrap:wrap;gap:8px;background:#ecf3ea;border:1px solid #dce8da;border-radius:11px;padding:11px 13px;color:#436c56;font-size:11px;font-weight:800;margin-bottom:17px}
+.pwa-steps b{font-size:18px;color:#bb7659}
+.pwa-install-dialog .pwa-install-note{font-size:11px;color:#849586}
+.pwa-install-dialog>.button{width:100%;margin-top:8px}
+.pwa-update-bar{position:fixed;left:50%;bottom:calc(16px + env(safe-area-inset-bottom));transform:translateX(-50%);z-index:94;display:flex;align-items:center;justify-content:space-between;gap:14px;width:min(440px,calc(100% - 25px));box-shadow:0 12px 40px #153b3270;background:#1f4539;color:#fff;border-radius:13px;padding:12px 14px;font-size:11px;font-weight:700;line-height:1.5}
+.pwa-update-bar button{flex:none;background:#f2ecde;color:#1f4939;border:0;padding:10px 11px;border-radius:8px;font-weight:800;font-size:11px}
+.pwa-offline-banner[hidden],.pwa-update-bar[hidden],.pwa-install-banner[hidden],.pwa-footer-link[hidden]{display:none!important}
+@media (display-mode:standalone){
+ .topbar{height:calc(78px + env(safe-area-inset-top));padding-top:env(safe-area-inset-top)}
+ .app-shell{min-height:100dvh}
+}
+@media(max-width:720px){
+ .pwa-install-banner{margin:0 0 21px;display:grid;grid-template-columns:42px minmax(0,1fr) 22px;gap:9px;padding:14px 12px}
+ .pwa-install-banner>img{width:42px;height:42px;border-radius:10px}
+ .pwa-install-copy strong{font-size:12px}
+ .pwa-install-copy p{font-size:10px}
+ .pwa-dismiss{grid-column:3;grid-row:1;min-width:22px;min-height:22px;font-size:19px}
+ .pwa-install-action{grid-column:2;grid-row:2;width:max-content;min-height:37px;padding:8px 12px}
+ .pwa-install-dialog{padding:20px;border-radius:16px;max-height:90dvh;overflow:auto}
+ .pwa-install-dialog h2{font-size:28px}
+ .pwa-update-bar{bottom:calc(81px + env(safe-area-inset-bottom))}
+ .field input,.field textarea,.field select,.auth-panel input,.manage-add input{font-size:16px}
+ .field textarea{min-height:96px}
+ .mobile-item{min-height:44px}
+ .mobile-item small{font-size:10px}
+ .fab{width:56px;height:56px}
+}
