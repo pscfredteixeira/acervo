@@ -1498,7 +1498,7 @@
     finally{$('#fileInput').value='';}
   }
   function resetFilters(){state.project='';state.type='';state.tag='';state.q='';$('#searchInput').value='';state.sort='recent';$('#sortSelect').value='recent';render()}
-  function changeView(v){if(!(v in STAGES))return;state.view=v;render();if(innerWidth<721)window.scrollTo({top:0,behavior:'smooth'})}
+  function changeView(v){if(!(v in STAGES))return;if(v!=='todos')sprint12FocusOnly=false;state.view=v;render();if(innerWidth<721)window.scrollTo({top:0,behavior:'smooth'})}
   async function syncFromCloud(){
     $('#syncStatus').textContent='Lendo JSON…';
     try{
@@ -1612,7 +1612,6 @@
     $('#sprint12InboxCount').textContent='('+active.filter(c=>c.status==='entrada').length+')';
     const total=starred.length,items=starred.slice(0,5);
     const stages={entrada:'Na entrada',selecionado:'Selecionada',pauta:'Em pauta',producao:'Em produção'};
-    const nextStage={entrada:'selecionado',selecionado:'pauta',pauta:'producao',producao:'arquivo'};
     const nextText={entrada:'Selecionar →',selecionado:'Virar pauta →',pauta:'Produzir →',producao:'Concluir ✓'};
     $('#sprint12Priorities').innerHTML=total?items.map(c=>`
       <article class="sprint12-focus-row" data-sprint12-id="${esc(c.id)}">
