@@ -32,4 +32,4 @@
 .auth-bottom span{color:#ccd5cc}
 .auth-foot{display:block;text-align:center;font-size:10px;color:#97a59b;line-height:1.6}
 @media(max-width:980px){.user-email{display:none}.cloud-controls{gap:6px;margin-right:4px}}
-@media(max-width:720px){.topbar-actions{gap:6px}.cloud-controls{margin-right:0}.sync-status{font-size:9px}.cloud-action{font-size:10px;padding:7px}.cloud-controls #logoutBtn{display:none}.auth-panel{padding:30px 24px}}
+@media(max-width:720px){.topbar-path{font-size:0}.topbar-path::before{content:'ACERVO';font-size:10px;letter-spacing:.1em;font-weight:800}.topbar-actions{gap:6px}.cloud-controls{margin-right:0}.sync-status{font-size:9px}.cloud-action{font-size:10px;padding:7px}.auth-panel{padding:30px 24px}}
