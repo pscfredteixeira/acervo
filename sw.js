@@ -1,6 +1,6 @@
-/* ACERVO — Service Worker v7.
+/* ACERVO — Service Worker v8.
    Cache apenas da interface pública. Dados privados, sessões e respostas do Supabase não são armazenados aqui. */
-const CACHE = 'acervo-shell-v7-20261012-1';
+const CACHE = 'acervo-shell-v8-20261012-1';
 const CORE = [
   './',
   './index.html',
