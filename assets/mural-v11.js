@@ -167,7 +167,7 @@
     window.AcervoCapture?.onReady?.();
     window.AcervoInsights?.onReady?.();
   }
-  function init(){state.cards=[];$('#localNotice').hidden=false;render();
+  function init(){state.cards=[];$('#localNotice').hidden=false;/* Manter 31 cards pré-renderizados até que o JSON carregue. */
     Cloud.boot({onReady:readyForUser}).catch(error=>{
       console.error('ACERVO: erro ao iniciar',error);
       $('#syncStatus').textContent='Falha ao carregar cards';
