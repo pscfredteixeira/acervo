@@ -6,7 +6,7 @@ Aplicativo web para reunir matérias, links, referências e pautas encontradas e
 - ✅ Sprint 1: mural, cadastro manual, edição, busca, filtros, tags, favoritos e backup JSON.
 - ✅ Sprint 2: autenticação, persistência no Supabase, políticas RLS por usuário, sincronização ao abrir/retornar ao aplicativo e migração opcional dos cards locais.
 - ✅ Sprint 3: painel Fluxo editorial, transição de etapas (menu/arrastar), ficha detalhada, criação/renomeação/exclusão de projetos e gerenciamento de tags.
-- ⏳ Sprint 4: integração com ChatGPT para salvar por comando.
+- ✅ Sprint 4: integração opt-in com ChatGPT via conector Supabase, origem identificável nos cards e procedimento de captura mediante comando explícito.
 - ⏳ Sprint 5: captura rápida de links.
 - ⏳ Sprint 6: PWA para iPhone.
 - ⏳ Sprint 7: inteligência editorial.
@@ -35,7 +35,7 @@ Na primeira entrada, o aplicativo detecta os cards antigos guardados em `localSt
 
 Se a página do GitHub Pages não abrir, confirme em **Settings → Pages → Deploy from a branch → main → /(root)**.
 
-> O Sprint 4 de captura via ChatGPT ainda não está implementado. Os cards protegidos não ficam no repositório público.
+> O recebimento do ChatGPT exige autorização no painel do ACERVO e conexão Supabase disponível na conversa. Nenhuma referência privada é publicada no repositório.
 
 ## Sprint 3 — como usar
 
@@ -48,3 +48,18 @@ Se a página do GitHub Pages não abrir, confirme em **Settings → Pages → De
 ## Cuidados
 
 Antes de renomear ou excluir categorias com muitas referências, faça um backup JSON. Essas ações atualizam os cards remotamente e requerem conexão. A preferência de projetos fica em tabela própria protegida; nenhuma informação privada é incluída nos arquivos do repositório.
+
+## Sprint 4 — receber matérias pelo ChatGPT
+
+1. Abra o ACERVO, entre na sua conta e ative **Recebimento pelo ChatGPT**.
+2. Na conversa do ChatGPT, com o conector Supabase disponível, diga por exemplo: **"Guarde esta matéria no meu ACERVO, projeto Psicaótica, tag Cultura"**.
+3. O assistente deve confirmar a única conta autorizada no projeto Supabase, registrar a referência na tabela protegida `acervo_cards` e conferir o resultado da operação antes de afirmar que salvou.
+4. Volte ao aplicativo e clique no ícone de atualizar (ou retorne à aba). Os cards aparecem marcados como `CHATGPT`.
+
+A integração **não** recebe automaticamente cada resposta nem atua sobre todos os agendamentos. O comando explícito do usuário e o acesso ao conector na conversa são necessários. A ativação é reversível e não concede acesso a contas externas ou ao público.
+
+Procedimento SQL e validações: [docs/CAPTURA_CHATGPT.md](docs/CAPTURA_CHATGPT.md).
+
+### Segurança
+
+`acervo_chatgpt_settings` mantém uma autorização por usuário; seu índice parcial exclusivo permite **uma conta ativa por projeto Supabase**. O navegador só utiliza chave publicável e autenticação com RLS. A operação enviada pelo ChatGPT utiliza a conexão administrativa do Supabase já autorizada pelo usuário, nunca credenciais no HTML. A consulta deve parar sem salvar caso não exista exatamente um destino ativo.
