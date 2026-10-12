@@ -87,6 +87,9 @@
   });
   async function openUser(nextUser) {
     if (!nextUser?.id || readyFor === nextUser.id) return;
+    if(openingFor===nextUser.id && openingPromise)return openingPromise;
+    openingFor=nextUser.id;
+    const work=(async()=>{
     const token = ++bootToken;
     user = nextUser;
     gate.hidden = false;
@@ -101,6 +104,10 @@
       console.error('Erro ao carregar ACERVO', error);
       element('authError').textContent = 'Erro ao carregar seus cards: ' + error.message + '. Atualize a página.';
     } finally {busy(false);}
+    })();
+    openingPromise=work;
+    try{return await work;}
+    finally{if(openingPromise===work){openingFor=null;openingPromise=null;}}
   }
   async function boot(callbacks) {
     handlers = callbacks;
