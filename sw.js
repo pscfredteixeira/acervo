@@ -1,20 +1,19 @@
-/* ACERVO — Service Worker v9.
-   Cache apenas da interface pública. Dados privados, sessões e respostas do Supabase não são armazenados aqui. */
-const CACHE = 'acervo-shell-v9-20261012-1';
+/* ACERVO — Service Worker v10. Interface e JSON inicial públicos. Alterações locais ficam no navegador. */
+const CACHE = 'acervo-shell-v10-20261012-1';
 const CORE = [
   './',
   './index.html',
   './offline.html',
   './manifest.webmanifest',
   './assets/style.css',
-  './assets/cloud.js',
-  './assets/app.js',
+  './assets/local-store-v10.js',
+  './assets/mural-v10.js',
   './assets/editorial.js',
-  './assets/chatgpt.js',
-  './assets/capture.js',
+  './assets/capture-v10.js',
   './assets/pwa.js',
   './assets/insights-core.js',
-  './assets/insights.js',
+  './assets/insights-v10.js',
+  './data/cards.json',
   './icons/icon.svg',
   './icons/icon-180.png',
   './icons/icon-192.png',
@@ -64,6 +63,21 @@ self.addEventListener('fetch', event => {
     return;
   }
 
+  // Sempre consultar o JSON mais recente no GitHub.
+  if(url.pathname===new URL('./data/cards.json',SCOPE).pathname){
+    event.respondWith((async()=>{
+      const cache=await caches.open(CACHE);
+      try{
+        const response=await fetch(req,{cache:'no-store'});
+        if(response.ok)await cache.put('./data/cards.json',response.clone());
+        return response;
+      }catch{
+        return await cache.match('./data/cards.json') ||
+          new Response('{"cards":[]}',{status:503,headers:{'Content-Type':'application/json'}});
+      }
+    })());
+    return;
+  }
   const allowed=new Set(CORE.map(p=>new URL(p,SCOPE).pathname));
   if(!allowed.has(url.pathname))return;
   event.respondWith((async()=>{
