@@ -123,13 +123,13 @@
   function fromRow(row) {
     return {id:row.id,title:row.title,url:row.url,description:row.description,
       angle:row.angle,tags:row.tags,project:row.project,type:row.type,status:row.status,
-      favorite:row.favorite,notes:row.notes,demo:row.demo,createdAt:row.created_at,updatedAt:row.updated_at};
+      favorite:row.favorite,notes:row.notes,demo:row.demo,origin:row.origin||'manual',createdAt:row.created_at,updatedAt:row.updated_at};
   }
   function toRow(card) {
     return {user_id:requireUser(),id:card.id,title:card.title,url:card.url||'',description:card.description||'',
       angle:card.angle||'',tags:card.tags||[],project:card.project||'Outros',
       type:card.type||'Outro',status:card.status||'entrada',favorite:!!card.favorite,
-      notes:card.notes||'',demo:!!card.demo,created_at:card.createdAt||new Date().toISOString(),
+      notes:card.notes||'',demo:!!card.demo,origin:card.origin==='chatgpt'?'chatgpt':'manual',created_at:card.createdAt||new Date().toISOString(),
       updated_at:card.updatedAt||new Date().toISOString()};
   }
   async function fetchCards() {
@@ -171,6 +171,20 @@
     },{onConflict:'user_id'});
     if(error)throw error;
   }
+  async function fetchChatgptSettings() {
+    const {data,error}=await client.from('acervo_chatgpt_settings')
+      .select('enabled,linked_at').eq('user_id',requireUser()).maybeSingle();
+    if(error)throw error;
+    return {enabled:!!data?.enabled,linkedAt:data?.linked_at||null};
+  }
+  async function setChatgptEnabled(enabled) {
+    const now=new Date().toISOString();
+    const {error}=await client.from('acervo_chatgpt_settings').upsert({
+      user_id:requireUser(),enabled:!!enabled,linked_at:enabled?now:null,updated_at:now
+    },{onConflict:'user_id'});
+    if(error)throw error;
+    return {enabled:!!enabled,linkedAt:enabled?now:null};
+  }
   async function remove(id) {
     const {data,error}=await client.from(DB).delete().eq('user_id',requireUser()).eq('id',id).select('id');
     if (error) throw error;
@@ -180,6 +194,6 @@
     const {error}=await client.auth.signOut();
     if (error) throw error;
   }
-  window.AcervoCloud={boot,fetchCards,save,saveMany,fetchProjects,saveProjects,remove,logout, get user(){return user}};
+  window.AcervoCloud={boot,fetchCards,save,saveMany,fetchProjects,saveProjects,fetchChatgptSettings,setChatgptEnabled,remove,logout, get user(){return user}};
   showGate();
 })();
