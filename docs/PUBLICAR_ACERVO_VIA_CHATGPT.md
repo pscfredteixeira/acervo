@@ -36,7 +36,7 @@ Para tornar essas alterações duráveis no GitHub, o usuário usa **⇧ Publica
 - Não inserir novas matérias de pesquisas anteriores não incluídas no backup se o pedido for simplesmente publicar o estado do acervo.
 - Não sobrescrever o estado completo com uma lista mesclada que ressuscite cards excluídos.
 - Não apagar mudanças locais do navegador. A reconciliação ocorre no próprio aplicativo comparando a publicação com cada card.
-- Não editar `acervo-sprint10.html`, `acervo-sprint9.html`, `acervo-sprint8.html` e `acervo-direto.html` (versões de recuperação), salvo se o usuário pedir.
+- Não editar `acervo-sprint11.html`, `acervo-sprint10.html`, `acervo-sprint9.html`, `acervo-sprint8.html` e `acervo-direto.html` (versões de recuperação), salvo se o usuário pedir.
 
 ## Testes específicos realizados no Sprint 9
 
