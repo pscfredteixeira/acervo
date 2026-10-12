@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#173b36">
+  <meta name="description" content="ACERVO — um lugar para guardar referências, organizar ideias e acompanhar pautas.">
+  <title>ACERVO — Seu arquivo de ideias</title>
+  <link rel="stylesheet" href="assets/style.css">
+  <script src="assets/app.js" defer></script>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" aria-label="Navegação principal">
+      <div class="brand"><div class="brand-symbol" aria-hidden="true">A<span>•</span></div><div class="brand-text">ACERVO <small>Seu arquivo de ideias</small></div></div>
+      <div class="sidebar-section"><div class="sidebar-label">ESPAÇOS</div><nav id="sideNav" class="side-nav">
+        <button class="nav-item is-active" data-view="todos"><span class="nav-icon">▦</span><span>Todo o acervo</span><b data-count="todos">0</b></button>
+        <button class="nav-item" data-view="entrada"><span class="nav-icon">↳</span><span>Caixa de entrada</span><b data-count="entrada">0</b></button>
+        <button class="nav-item" data-view="selecionado"><span class="nav-icon">✧</span><span>Selecionados</span><b data-count="selecionado">0</b></button>
+        <button class="nav-item" data-view="pauta"><span class="nav-icon">≡</span><span>Pautas</span><b data-count="pauta">0</b></button>
+        <button class="nav-item" data-view="producao"><span class="nav-icon">◴</span><span>Em produção</span><b data-count="producao">0</b></button>
+        <button class="nav-item" data-view="arquivo"><span class="nav-icon">▤</span><span>Arquivo</span><b data-count="arquivo">0</b></button>
+      </nav></div>
+      <div class="sidebar-section projects"><div class="sidebar-label">PROJETOS</div><div id="projectList" class="project-list"></div></div>
+      <div class="sidebar-bottom"><div class="bottom-decor">❝</div><p>Ideias não precisam ser usadas agora. Só precisam de um lugar para ficar.</p><span>ACERVO · 01</span></div>
+    </aside>
+    <div class="content-shell">
+      <header class="topbar"><div class="topbar-path"><span class="topbar-dot"></span> BIBLIOTECA DE REFERÊNCIAS <span class="divider">/</span> <span id="breadcrumb">TODO O ACERVO</span></div><div class="topbar-actions"><button type="button" class="icon-button" id="backupBtn" aria-label="Exportar dados" title="Exportar backup JSON">⇩</button><button type="button" class="button button-primary top-add" id="addBtn"><span>＋</span> Novo card</button></div></header>
+      <main class="main-content">
+        <section class="hero"><div><div class="eyebrow"><span class="small-spark">✳</span> UM LUGAR PARA AS IDEIAS</div><h1 id="pageTitle">Tudo o que merece <em>ficar.</em></h1><p id="pageSubtitle">Uma boa matéria, uma provocação, uma pauta para depois. Guarde aqui e encontre quando precisar.</p></div><div class="hero-mark" aria-hidden="true"><span>✳</span><i></i></div></section>
+        <section class="metrics" aria-label="Resumo do acervo"><div class="metric"><span>REFERÊNCIAS</span><strong id="metricTotal">0</strong><small>itens guardados</small></div><div class="metric"><span>PARA LER</span><strong id="metricInbox">0</strong><small>na caixa de entrada</small></div><div class="metric"><span>PAUTAS</span><strong id="metricPautas">0</strong><small>ideias em desenvolvimento</small></div><div class="metric metric-accent"><span>EM PRODUÇÃO</span><strong id="metricProducao">0</strong><small>em andamento ↗</small></div></section>
+        <section class="board-section" aria-label="Mural de referências"><div class="board-heading"><div><div class="section-overline">SEU ESPAÇO DE DESCOBERTAS</div><h2 id="boardTitle">Mural de referências <span id="resultCount">0</span></h2></div><div class="board-header-actions"><button class="quiet-button" id="exportBtn" type="button">⇩ <span>Exportar</span></button><button class="quiet-button" id="importBtn" type="button">⇧ <span>Importar</span></button><input type="file" id="fileInput" accept=".json,application/json" hidden></div></div>
+          <div class="toolbar"><label class="searchbox"><span aria-hidden="true">⌕</span><input id="searchInput" type="search" placeholder="Busque por assunto, ideia, tag..." autocomplete="off" aria-label="Pesquisar referências"><kbd>/</kbd></label><select id="projectFilter" aria-label="Filtrar por projeto"><option value="">Todos os projetos</option></select><select id="typeFilter" aria-label="Filtrar por formato"><option value="">Todos os formatos</option></select><select id="sortSelect" aria-label="Ordenar itens"><option value="recent">Mais recentes</option><option value="oldest">Mais antigos</option><option value="az">Título A–Z</option></select></div>
+          <div class="tag-strip"><span class="tag-prefix">TAGS</span><div id="tagFilters" class="tag-scroll"></div><button class="clear-filters" type="button" id="clearFilters" hidden>Limpar filtros ×</button></div>
+          <div class="notice" id="localNotice"><div class="notice-icon">ⓘ</div><div><strong>Versão de testes</strong> — Nesta primeira etapa, novos cards ficam armazenados neste navegador. Use <b>Exportar</b> para criar um backup. A sincronização entre dispositivos virá nos próximos sprints.</div><button id="noticeClose" type="button" aria-label="Fechar aviso">×</button></div>
+          <div id="board" class="card-grid"></div>
+          <div id="emptyState" class="empty-state" hidden><div class="empty-symbol">✳</div><h3>Nenhuma referência por aqui.</h3><p id="emptyMessage">Quando você salvar uma ideia, ela aparecerá neste espaço.</p><button type="button" class="button button-primary" id="emptyAdd">＋ Adicionar referência</button></div>
+          <div class="demo-toolbar" id="demoToolbar"><span>✺ Alguns cards de exemplo ajudam a explorar o protótipo.</span><button id="clearDemos" type="button">Remover exemplos ↗</button></div>
+        </section>
+      </main>
+      <footer class="footer"><span>ACERVO © 2026</span><span>COLECIONE IDEIAS, NÃO ABAS ABERTAS.</span></footer>
+    </div>
+  </div>
+  <nav class="mobile-nav" aria-label="Navegação no celular"><button class="mobile-item is-active" data-view="todos"><span>▦</span><small>Mural</small></button><button class="mobile-item" data-view="entrada"><span>↳</span><small>Entrada</small></button><button class="mobile-item" data-view="pauta"><span>≡</span><small>Pautas</small></button><button class="mobile-item" data-view="arquivo"><span>▤</span><small>Arquivo</small></button></nav>
+  <button type="button" class="fab" id="mobileAdd" aria-label="Novo card">＋</button>
+  <dialog id="cardDialog" aria-labelledby="dialogTitle"><form id="cardForm" method="dialog" novalidate><div class="dialog-head"><div><div class="section-overline">ACERVO / REFERÊNCIAS</div><h2 id="dialogTitle">Guardar nova referência</h2><p>O essencial agora. Você pode completar depois.</p></div><button type="button" id="closeDialog" class="dialog-close" aria-label="Fechar">×</button></div><div class="dialog-body"><div class="field"><label for="fieldTitle">Título da referência <span>*</span></label><input id="fieldTitle" maxlength="180" required placeholder="O que você encontrou?"></div><div class="field"><label for="fieldUrl">Link de origem</label><input id="fieldUrl" type="url" inputmode="url" placeholder="https://..." autocomplete="url"><small>Opcional. Se houver, guardamos para você abrir depois.</small></div><div class="field"><label for="fieldDescription">Resumo</label><textarea id="fieldDescription" rows="3" maxlength="1500" placeholder="Sobre o que é este material?"></textarea></div><div class="field"><label for="fieldAngle">Possível abordagem / ideia de pauta</label><textarea id="fieldAngle" rows="2" maxlength="1200" placeholder="Qual o gancho interessante aqui?"></textarea></div><div class="field-grid"><div class="field"><label for="fieldProject">Projeto</label><select id="fieldProject"><option>Psicaótica</option><option>Mundo Aberto</option><option>Formação</option><option>Pessoal</option><option>Outros</option></select></div><div class="field"><label for="fieldType">Formato</label><select id="fieldType"><option>Reportagem</option><option>Artigo</option><option>Vídeo</option><option>Podcast</option><option>Livro</option><option>Jogo</option><option>Filme</option><option>Música</option><option>Outro</option></select></div></div><div class="field-grid"><div class="field"><label for="fieldStatus">Etapa</label><select id="fieldStatus"><option value="entrada">Caixa de entrada</option><option value="selecionado">Selecionados</option><option value="pauta">Pautas</option><option value="producao">Em produção</option><option value="arquivo">Arquivo</option></select></div><div class="field"><label for="fieldTags">Tags</label><input id="fieldTags" placeholder="Freud, Cultura, Religião"><small>Separe por vírgulas.</small></div></div><div class="field"><label for="fieldNotes">Anotações pessoais</label><textarea id="fieldNotes" rows="2" maxlength="2500" placeholder="Uma frase, um lembrete, uma conexão..."></textarea></div></div><div class="dialog-actions"><button type="button" class="button button-light" id="cancelDialog">Cancelar</button><button type="submit" class="button button-primary" id="saveCard">Guardar referência ↗</button></div></form></dialog>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+</body>
+</html>
