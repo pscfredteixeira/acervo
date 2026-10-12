@@ -150,9 +150,26 @@
   async function saveMany(cards) {
     const rows=cards.map(toRow);
     for (let i=0;i<rows.length;i+=100) {
-      const {error}=await client.from(DB).upsert(rows.slice(i,i+100),{onConflict:'user_id,id',ignoreDuplicates:true});
+      const {error}=await client.from(DB).upsert(rows.slice(i,i+100),{onConflict:'user_id,id'});
       if (error) throw error;
     }
+  }
+  async function fetchProjects() {
+    const {data,error}=await client.from('acervo_preferences')
+      .select('projects').eq('user_id',requireUser()).maybeSingle();
+    if(error)throw error;
+    return data?.projects ?? null;
+  }
+  async function saveProjects(projects) {
+    requireUser();
+    if(!Array.isArray(projects)||!projects.length||projects.length>60 ||
+      projects.some(p=>typeof p!=='string'||!p.trim()||p.length>70) ||
+      new Set(projects.map(p=>p.toLocaleLowerCase('pt-BR'))).size!==projects.length)
+      throw new Error('Confira os nomes dos projetos.');
+    const {error}=await client.from('acervo_preferences').upsert({
+      user_id:requireUser(),projects,updated_at:new Date().toISOString()
+    },{onConflict:'user_id'});
+    if(error)throw error;
   }
   async function remove(id) {
     const {data,error}=await client.from(DB).delete().eq('user_id',requireUser()).eq('id',id).select('id');
@@ -163,6 +180,6 @@
     const {error}=await client.auth.signOut();
     if (error) throw error;
   }
-  window.AcervoCloud={boot,fetchCards,save,saveMany,remove,logout, get user(){return user}};
+  window.AcervoCloud={boot,fetchCards,save,saveMany,fetchProjects,saveProjects,remove,logout, get user(){return user}};
   showGate();
 })();
