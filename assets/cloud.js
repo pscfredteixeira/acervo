@@ -5,7 +5,7 @@
   const KEY = 'sb_publishable_oiMRhiFJk9gulUGDP1IIow_mod9TALs';
   const DB = 'acervo_cards';
   const sdk = window.supabase;
-  const client = sdk?.createClient(URL, KEY, { auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true } });
+  const client = sdk?.createClient(URL, KEY, { auth: { storageKey: 'acervo-sessao-v1', persistSession: true, autoRefreshToken: true, detectSessionInUrl: true } });
   let user = null;
   let readyFor = null;
   let handlers = {};
