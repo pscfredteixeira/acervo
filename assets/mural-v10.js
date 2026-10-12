@@ -129,7 +129,7 @@
       state.projects=projects||[...new Set([...DEFAULT_PROJECTS,...state.cards.map(c=>c.project)])];
       render();$('#syncStatus').textContent='● JSON + aparelho';
     }
-    catch(error){$('#syncStatus').textContent='Falha na conexão';toast('Erro ao sincronizar: '+error.message);}
+    catch(error){$('#syncStatus').textContent='Falha na conexão';toast('Erro ao ler o JSON local: '+error.message);}
   }
   async function readyForUser(user){
     $('#syncStatus').textContent='Lendo referências do GitHub…';
@@ -149,14 +149,14 @@
     if(localRaw!==null&&!alreadyImported){
       let oldCards=[];
       try{const parsed=JSON.parse(localRaw);if(Array.isArray(parsed))oldCards=parsed.filter(validCard).map(normalizeCard).filter(c=>!c.demo);}
-      catch(error){console.warn('Backup antigo inválido e preservado',error);}
+      catch(error){console.warn('Backup anterior inválido e preservado',error);}
       const existing=new Set(state.cards.map(c=>c.id));
       const pending=oldCards.filter(c=>!existing.has(c.id));
       if(!pending.length){try{localStorage.setItem(migrationFlag,'1');}catch{}}
-      else if(confirm(`Encontramos ${pending.length} card(s) que estavam salvos somente neste navegador.\n\nDeseja importar para o ACERVO sincronizado? Os dados locais originais serão preservados.`)){
+      else if(confirm(`Encontramos ${pending.length} card(s) que estavam salvos somente neste navegador.\n\nDeseja importar esses cards para este aparelho? Os dados originais serão preservados.`)){
         await Cloud.saveMany(pending);try{localStorage.setItem(migrationFlag,'1');}catch{}
         state.cards=(await Cloud.fetchCards()).map(normalizeCard);
-        toast(`${pending.length} referência(s) migrada(s) para a nuvem.`);
+        toast(`${pending.length} referência(s) recuperada(s) neste aparelho.`);
       }
     }
     $('#userEmail').textContent='';
@@ -178,7 +178,7 @@
     $('#tagFilters').addEventListener('click',e=>{const b=e.target.closest('[data-tag]');if(b){state.tag=state.tag===b.dataset.tag?'':b.dataset.tag;render()}});
     $('#board').addEventListener('click',async e=>{const b=e.target.closest('[data-action]');const card=e.target.closest('[data-id]');if(!b||!card)return;const x=state.cards.find(c=>c.id===card.dataset.id);if(!x)return;if(b.dataset.action==='edit')openForm(x.id);if(b.dataset.action==='details')window.AcervoEditorial?.showDetails?.(x.id);if(b.dataset.action==='favorite'){const next={...x,favorite:!x.favorite,updatedAt:new Date().toISOString()};
       try{await Cloud.save(next);Object.assign(x,next);render();toast(x.favorite?'Referência favoritada.':'Favorito removido.');}
-      catch(error){toast('Erro ao sincronizar: '+error.message);}
+      catch(error){toast('Erro ao atualizar: '+error.message);}
     }if(b.dataset.action==='delete'&&confirm(`Excluir "${x.title}"?\n\nEssa ação não poderá ser desfeita.`)){try{await Cloud.remove(x.id);state.cards=state.cards.filter(c=>c.id!==x.id);render();toast('Referência removida deste aparelho.');}
       catch(error){toast('Falha ao excluir: '+error.message)}}});
     $('#closeDialog').addEventListener('click',closeForm);$('#cancelDialog').addEventListener('click',closeForm);$('#cardForm').addEventListener('submit',saveForm);$('#cardDialog').addEventListener('click',e=>{if(e.target===$('#cardDialog'))closeForm()});
