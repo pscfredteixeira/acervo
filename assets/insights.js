@@ -96,7 +96,7 @@
       </article>`;
     }).join('');
   }
-  function showRelated(id){
+  function showRelated(id,shouldScroll=true){
     const c=cardById(id);
     if(!c)return;
     relatedId=id;
@@ -110,19 +110,14 @@
        <button type="button" data-insight-open="${esc(x.card.id)}">Ficha ↗</button>
        </article>`).join('')}</div>`:caption('Nenhuma conexão forte por enquanto.','Adicione tags e abordagens aos seus cards para revelar mais relações.'));
     el.hidden=false;
-    el.scrollIntoView({block:'nearest',behavior:'smooth'});
+    if(shouldScroll)el.scrollIntoView({block:'nearest',behavior:'smooth'});
   }
   function paint(){
     showResults();showThemes();showDossiers();updateSelection();
     if(relatedId&&cardById(relatedId))showRelatedContents(relatedId);
     else $('#insightsRelated').hidden=true;
   }
-  function showRelatedContents(id){
-    // Evita rolagem automática a cada atualização de cartões.
-    const old=Element.prototype.scrollIntoView;
-    try{Element.prototype.scrollIntoView=function(){};showRelated(id);}
-    finally{Element.prototype.scrollIntoView=old;}
-  }
+  function showRelatedContents(id){showRelated(id,false);}
   function openDraft(options={}){
     const ids=options.cardIds||[...selected];
     const unique=[...new Set(ids)].filter(id=>!!cardById(id)).slice(0,24);
