@@ -409,6 +409,7 @@
 .sprint11-commands{display:flex;align-items:flex-end;gap:8px;flex-wrap:wrap}
 .sprint11-commands label{display:flex;flex-direction:column;gap:5px;font-size:11px;color:#43624d;font-weight:800}
 .sprint11-commands select{min-width:134px;min-height:39px;border:1px solid #cfded1;border-radius:8px;background:#fff;color:#2a5340;padding:8px;font-size:12px}
+.sprint11-commands #sprint11Archive{background:#dcebe0;color:#2b6848;border-color:#a9ccb1}
 .sprint11-commands .sprint11-delete{color:#9e423d;border-color:#edc7bf;background:#fff7f4}
 .reference-card.sprint11-is-selected{outline:2px solid #68a37c;outline-offset:-2px;background:#fcfefa}
 .sprint11-pick{display:flex;gap:10px;align-items:center;min-height:42px;margin:0 0 9px;padding:6px 9px;border:1px solid #d9e7d9;border-radius:8px;background:#edf4ea;color:#34654c;font-size:11px;font-weight:800;cursor:pointer}
@@ -577,6 +578,7 @@
     <button type="button" id="sprint11ApplyStage">Aplicar etapa</button>
     <label>Projeto <select id="sprint11Project" aria-label="Novo projeto das referências"></select></label>
     <button type="button" id="sprint11ApplyProject">Aplicar projeto</button>
+    <button type="button" id="sprint11Archive">✓ Arquivar selecionados</button>
     <button type="button" class="sprint11-delete" id="sprint11Delete">Excluir selecionados</button>
   </div>
 </section>
@@ -1537,7 +1539,7 @@
     const old=dropdown.value;
     dropdown.innerHTML=projects.map(p=>`<option value="${esc(p)}">${esc(p)}</option>`).join('');
     if(projects.includes(old))dropdown.value=old;
-    for(const id of ['sprint11ApplyStage','sprint11ApplyProject','sprint11Delete'])
+    for(const id of ['sprint11ApplyStage','sprint11ApplyProject','sprint11Archive','sprint11Delete'])
       $('#'+id).disabled=sprint11Busy||count===0;
     for(const id of ['sprint11Visible','sprint11Clear','sprint11Done'])
       $('#'+id).disabled=sprint11Busy;
@@ -1622,6 +1624,7 @@
     });
     $('#sprint11ApplyStage').addEventListener('click',()=>sprint11Run('stage',$('#sprint11Stage').value));
     $('#sprint11ApplyProject').addEventListener('click',()=>sprint11Run('project',$('#sprint11Project').value));
+    $('#sprint11Archive').addEventListener('click',()=>sprint11Run('stage','arquivo'));
     $('#sprint11Delete').addEventListener('click',()=>sprint11Run('delete'));
     $('#board').addEventListener('change',e=>{
       const el=e.target.closest('input[data-sprint11-card]');
@@ -1676,7 +1679,7 @@
     if(b.dataset.action==='details')window.AcervoEditorial?.showDetails?.(x.id);if(b.dataset.action==='favorite'){const next={...x,favorite:!x.favorite,updatedAt:new Date().toISOString()};
       try{await Cloud.save(next);Object.assign(x,next);render();toast(x.favorite?'Referência favoritada.':'Favorito removido.');}
       catch(error){toast('Erro ao atualizar: '+error.message);}
-    }if(b.dataset.action==='delete'&&confirm(`Excluir "${x.title}"?\n\nEssa ação não poderá ser desfeita.`)){try{await Cloud.remove(x.id);state.cards=state.cards.filter(c=>c.id!==x.id);render();sprint8ShowUndo(x);toast('Referência removida. Você pode desfazer por 15 segundos.');}
+    }if(b.dataset.action==='delete'&&confirm(`Excluir "${x.title}"?\n\nVocê pode desfazer nos próximos 15 segundos.`)){try{await Cloud.remove(x.id);state.cards=state.cards.filter(c=>c.id!==x.id);render();sprint8ShowUndo(x);toast('Referência removida. Você pode desfazer por 15 segundos.');}
       catch(error){toast('Falha ao excluir: '+error.message)}}});
     $('#closeDialog').addEventListener('click',closeForm);$('#cancelDialog').addEventListener('click',closeForm);$('#cardForm').addEventListener('submit',saveForm);$('#cardDialog').addEventListener('click',e=>{if(e.target===$('#cardDialog'))closeForm()});
     $('#clearDemos').addEventListener('click',async()=>{if(!confirm('Remover os cards de exemplo?'))return;
