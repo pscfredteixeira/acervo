@@ -752,6 +752,31 @@
       "origin": "chatgpt",
       "createdAt": "2026-10-12T16:45:05Z",
       "updatedAt": "2026-10-12T16:45:05Z"
+    },
+    {
+      "id": "0e1faed8-d3c8-4d1c-a733-5c8b9f40d721",
+      "title": "Como a literatura pode nos ajudar a perdoar",
+      "url": "https://phys.org/news/2026-10-literature.html",
+      "description": "Estudo da Universidade Estadual de Ohio, com três experimentos e 1.563 participantes, mostrou que ter acesso aos pensamentos e ao arrependimento de um personagem de ficção pode aumentar a empatia e a disposição para perdoá-lo. Em certas condições experimentais, o efeito também se estendeu à avaliação de ofensas da vida real. A técnica narrativa estudada é a focalização interna.",
+      "angle": "Será que é mais fácil perdoar alguém quando conhecemos a história que essa pessoa conta para si mesma? A literatura nos permite acessar conflitos internos que raramente conhecemos nas relações reais; compreender não significa justificar ou obrigar alguém a perdoar.",
+      "tags": [
+        "Psicanálise",
+        "Literatura",
+        "Perdão",
+        "Empatia",
+        "Narrativas",
+        "Giro",
+        "Cultura"
+      ],
+      "project": "Psicaótica",
+      "type": "Reportagem",
+      "status": "entrada",
+      "favorite": false,
+      "notes": "Matéria publicada em 13/10/2026 no Phys.org (texto original em inglês); título, resumo e ângulo editorial apresentados aqui em português. Pesquisa original publicada em 01/10/2026 na Frontiers in Psychology: 'Internal focalization influences real-life empathy: a literary contribution to wellbeing' (DOI: 10.3389/fpsyg.2026.1968457). Resultados experimentais não demonstram perdão duradouro nem se aplicam automaticamente a situações de abuso ou violência.",
+      "demo": false,
+      "origin": "chatgpt",
+      "createdAt": "2026-10-14T11:35:26Z",
+      "updatedAt": "2026-10-14T11:35:26Z"
     }
   ]
 }
