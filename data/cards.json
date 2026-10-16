@@ -1,6 +1,6 @@
 {
   "app": "ACERVO",
-  "version": 11,
+  "version": 12,
   "source": "Referências recuperadas e selecionadas de pesquisas anteriores",
   "cards": [
     {
@@ -801,6 +801,121 @@
       "origin": "chatgpt",
       "createdAt": "2026-10-16T15:13:33Z",
       "updatedAt": "2026-10-16T15:13:33Z"
+    },
+    {
+      "id": "b62a74e0-e271-4a31-8b56-ccf0d8a9e100",
+      "title": "Pornografia na adolescência: quais fatores estão associados ao consumo?",
+      "url": "https://phys.org/news/2026-10-main-factors-pornography-adolescents.html",
+      "description": "Estudo da Universitat Rovira i Virgili analisou respostas de 33.543 adolescentes na Espanha. Sexo, uso problemático da internet, consumo de álcool e cannabis e conflitos familiares estiveram associados ao relato de consumo recente de pornografia.",
+      "angle": "O que os adolescentes estão aprendendo sobre sexo com a pornografia que não encontram em outros espaços?",
+      "tags": [
+        "Sexualidade",
+        "Adolescência",
+        "Pornografia",
+        "Pesquisa",
+        "Giro"
+      ],
+      "project": "Psicaótica",
+      "type": "Reportagem",
+      "status": "entrada",
+      "favorite": false,
+      "notes": "Phys.org / Universitat Rovira i Virgili, 14/10/2026. Associações estatísticas não demonstram causalidade; o estudo não autoriza diagnosticar indivíduos.",
+      "demo": false,
+      "origin": "chatgpt",
+      "createdAt": "2026-10-16T15:21:40Z",
+      "updatedAt": "2026-10-16T15:21:40Z"
+    },
+    {
+      "id": "b62a74e1-e271-4a31-8b56-ccf0d8a9e101",
+      "title": "Pais que discordam: diferenças na educação dos filhos são necessariamente ruins?",
+      "url": "https://phys.org/news/2026-10-parents-dont-eye-differences-parenting.html",
+      "description": "Análise de Trevor Mazzucchelli discute estilos parentais e aponta que divergências não são necessariamente prejudiciais. O modo como adultos negociam regras, evitam desautorizações e resolvem conflitos pode importar mais do que agir de forma idêntica.",
+      "angle": "Uma criança precisa de pais que pensem igual ou de adultos capazes de lidar com suas diferenças?",
+      "tags": [
+        "Família",
+        "Parentalidade",
+        "Infância",
+        "Comportamento",
+        "Giro"
+      ],
+      "project": "Psicaótica",
+      "type": "Reportagem",
+      "status": "entrada",
+      "favorite": false,
+      "notes": "Phys.org / The Conversation, 14/10/2026. Artigo de análise baseado em literatura existente, não um novo experimento.",
+      "demo": false,
+      "origin": "chatgpt",
+      "createdAt": "2026-10-16T15:21:40Z",
+      "updatedAt": "2026-10-16T15:21:40Z"
+    },
+    {
+      "id": "b62a74e2-e271-4a31-8b56-ccf0d8a9e102",
+      "title": "Psicologia deve autorizar a mudança de gênero no registro civil?",
+      "url": "https://www.ordemdospsicologos.pt/pt/noticia/6463",
+      "description": "Em audiência parlamentar em Portugal, a Ordem dos Psicólogos defendeu a autodeterminação da identidade de gênero sem diagnóstico obrigatório para alteração do registro civil e distinguiu apoio clínico de autorização de direitos.",
+      "angle": "Qual é o limite entre oferecer cuidado psicológico e transformar a psicologia em instrumento de autorização sobre a vida das pessoas?",
+      "tags": [
+        "Identidade de gênero",
+        "Direitos",
+        "Psicologia",
+        "Política",
+        "Giro"
+      ],
+      "project": "Psicaótica",
+      "type": "Artigo",
+      "status": "entrada",
+      "favorite": false,
+      "notes": "Ordem dos Psicólogos Portugueses, 15/10/2026. Posicionamento institucional em discussão legislativa, não estudo experimental.",
+      "demo": false,
+      "origin": "chatgpt",
+      "createdAt": "2026-10-16T15:21:40Z",
+      "updatedAt": "2026-10-16T15:21:40Z"
+    },
+    {
+      "id": "b62a74e3-e271-4a31-8b56-ccf0d8a9e103",
+      "title": "O que a música que odiamos revela sobre nós?",
+      "url": "https://phys.org/news/2026-10-music.html",
+      "description": "Pesquisa com 1.078 participantes de Austrália, China, Singapura e Estados Unidos investigou rejeições musicais em 49 gêneros e identificou cinco dimensões de aversão, incluindo desagrado imediato e incongruência com a identidade social.",
+      "angle": "O que a música que odiamos revela sobre quem acreditamos ser?",
+      "tags": [
+        "Música",
+        "Identidade",
+        "Cultura",
+        "Psicologia",
+        "Giro"
+      ],
+      "project": "Psicaótica",
+      "type": "Reportagem",
+      "status": "entrada",
+      "favorite": false,
+      "notes": "Phys.org / James Cook University, 13/10/2026. Padrões estatísticos não permitem interpretar individualmente toda rejeição musical como preconceito.",
+      "demo": false,
+      "origin": "chatgpt",
+      "createdAt": "2026-10-16T15:21:40Z",
+      "updatedAt": "2026-10-16T15:21:40Z"
+    },
+    {
+      "id": "b62a74e4-e271-4a31-8b56-ccf0d8a9e104",
+      "title": "O amor contemporâneo está em ruínas? O paradoxo do romance moderno",
+      "url": "https://phys.org/news/2026-10-paradox-modern-romance.html",
+      "description": "Pesquisa sociológica acompanhou 41 adultos de 18 a 35 anos em Montreal, Paris e Nova York. Apesar do pessimismo sobre aplicativos e compromisso, seus relatos amorosos frequentemente descreviam encontros inesperados, coragem para se vulnerabilizar e transformação pessoal.",
+      "angle": "Queremos viver um amor ou encontrar alguém que não atrapalhe a vida que já construímos?",
+      "tags": [
+        "Amor",
+        "Relacionamentos",
+        "Cultura",
+        "Subjetividade",
+        "Giro"
+      ],
+      "project": "Psicaótica",
+      "type": "Reportagem",
+      "status": "entrada",
+      "favorite": false,
+      "notes": "Phys.org / Université de Montréal, 12/10/2026. Pesquisa qualitativa com amostra pequena; não representa toda uma geração.",
+      "demo": false,
+      "origin": "chatgpt",
+      "createdAt": "2026-10-16T15:21:40Z",
+      "updatedAt": "2026-10-16T15:21:40Z"
     }
   ]
 }
