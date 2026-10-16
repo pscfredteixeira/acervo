@@ -154,3 +154,19 @@ O Sprint 11 está preservado em `acervo-sprint11.html`. A página principal e `a
 - Testes simulados: abertura com 34 cards; cancelar diálogo sem arquivar; salvar publicação com data/link/nota; filtrar por desfecho; reabrir e limpar resultado; arquivar 34 como descartadas em lote; simular falha no `localStorage` e confirmar ausência de alterações parciais.
 
 **Rollback:** `acervo-sprint12.html` e as versões anteriores ficam preservadas.
+
+## Correção de persistência e ordem do mural — Sprint 14 (16/10/2026)
+
+**Versão principal:** https://pscfredteixeira.github.io/acervo/
+
+**Versão isolada de teste:** https://pscfredteixeira.github.io/acervo/acervo-sprint14.html
+
+**Reparo 1 — exclusões locais não reaparecerem:** a reconciliação do JSON com o GitHub deixou de apagar marcas de exclusão (tombstones) quando uma referência não estiver mais na versão remota. Assim, uma publicação antiga não ressuscita cards já excluídos no mesmo navegador. O ACERVO também deixou de propor reimportação automática do `acervo.cards.v1` legado, que podia trazer de volta referências antigas. Cada gravação local agora é confirmada com leitura do `localStorage` e erros são informados ao usuário. O contador de alterações distingue exclusões ainda pendentes de publicação no GitHub.
+
+**Reparo 2 — ordenar por inclusão:** o mural usa `createdAt`, **mais recentes primeiro**. Para itens com a mesma data/hora, o último item acrescentado ao JSON fica primeiro. A opção de ordenação foi renomeada **“Incluídas: mais recentes primeiro”**, mas mantivemos as alternativas de ordem inversa e título.
+
+**Reparo 3 — HTML e JSON coerentes:** no momento do deploy existiam **41 referências** em `data/cards.json`, mas apenas **34** incorporadas no HTML. Atualizamos tanto o JSON incorporado quanto o fallback HTML pré-renderizado para 41 referências, na mesma ordem cronológica.
+
+**Limite arquitetural:** o ACERVO não possui login nem backend. Uma exclusão feita no navegador **não remove automaticamente a referência do arquivo público do GitHub**. Para tornar a exclusão durável entre dispositivos ou depois de limpar os dados do site, use **Publicar**, exporte o JSON com o estado atualizado e envie na conversa para publicação no repositório. Nunca incluir credenciais no site público. A antiga versão `acervo-sprint13.html` permanece intacta para recuperação.
+
+**Testes realizados:** delete e recarga simulados, mudança temporária do JSON remoto e reintrodução posterior do card (sem ressuscitar), ordem cronológica incluindo timestamps empatados, coerência entre os 41 cards estáticos/embutidos/remotos, sintaxe JavaScript e ausência de login/Supabase.
