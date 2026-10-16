@@ -1,6 +1,6 @@
 {
   "app": "ACERVO",
-  "version": 12,
+  "version": 13,
   "source": "Referências recuperadas e selecionadas de pesquisas anteriores",
   "cards": [
     {
@@ -916,6 +916,29 @@
       "origin": "chatgpt",
       "createdAt": "2026-10-16T15:21:40Z",
       "updatedAt": "2026-10-16T15:21:40Z"
+    },
+    {
+      "id": "9d1e48a2-7c6f-4b15-9e82-6a71d2c0f935",
+      "title": "Por que a solidão nem sempre precisa ser curada?",
+      "url": "https://www.psychologytoday.com/us/blog/being-human/202610/why-loneliness-doesnt-always-need-to-be-cured",
+      "description": "Em ensaio publicado na Psychology Today, o psicólogo Sam Carr questiona a ideia de tratar toda solidão como patologia. A experiência pode sinalizar luto, exclusão, mudanças de vida e necessidades afetivas; escutá-la em seu contexto evita acrescentar vergonha ao sofrimento. Solidão persistente, com prejuízo à vida, também pode exigir apoio e cuidado.",
+      "angle": "Será que estamos tentando curar sentimentos que, antes de tudo, precisam ser escutados?",
+      "tags": [
+        "Solidão",
+        "Saúde mental",
+        "Psicologia",
+        "Afetos",
+        "Giro"
+      ],
+      "project": "Psicaótica",
+      "type": "Artigo",
+      "status": "entrada",
+      "favorite": false,
+      "notes": "Psychology Today, Sam Carr, publicado em 14/10/2026. Texto original em inglês; título e resumo editorial traduzidos para português. Ensaio argumentativo, não estudo experimental.",
+      "demo": false,
+      "origin": "chatgpt",
+      "createdAt": "2026-10-16T15:58:18Z",
+      "updatedAt": "2026-10-16T15:58:18Z"
     }
   ]
 }
