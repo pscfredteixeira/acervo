@@ -1268,8 +1268,14 @@
     }catch(error){console.warn('ACERVO: dados locais indisponíveis',error);return fallback;}
   }
   function write(key,value){
-    try{localStorage.setItem(key,JSON.stringify(value));}
-    catch(error){throw Error('Não foi possível salvar neste aparelho. Verifique o armazenamento e exporte um backup JSON.');}
+    try{
+      const serialized=JSON.stringify(value);
+      localStorage.setItem(key,serialized);
+      if(localStorage.getItem(key)!==serialized)
+        throw Error('A gravação não foi confirmada pelo navegador.');
+    }catch(error){
+      throw Error('Não foi possível confirmar o salvamento neste aparelho. Faça um backup JSON e verifique o armazenamento.');
+    }
   }
   function sanitized(raw){
     if(!raw||typeof raw!=='object')return {cards:{},deleted:[]};
@@ -1317,6 +1323,10 @@
       }catch(error){console.warn('Não foi possível reconciliar preferências locais.',error);}
     }
     return cleared;
+  }
+  function pendingDeletionCount(){
+    const published=new Set(seed.map(c=>c.id));
+    return overrides.deleted.filter(id=>published.has(id)).length;
   }
   function pendingChanges(){
     // Exclusões já ausentes do JSON remoto continuam protegidas, mas não contam
@@ -1481,7 +1491,7 @@
     return {url:url.href,title:'',description:'',site:url.hostname,contentType:''};
   }
   window.AcervoCloud={
-    boot,checkPublished,pendingChanges,fetchCards,save,saveMany,remove,removeMany,restoreSnapshot,fetchProjects,saveProjects,
+    boot,checkPublished,pendingChanges,pendingDeletionCount,fetchCards,save,saveMany,remove,removeMany,restoreSnapshot,fetchProjects,saveProjects,
     fetchDossiers,saveDossier,removeDossier,lookupMetadata,
     get user(){return user;},
     get warning(){return warning;}
@@ -1796,8 +1806,11 @@
     const info=$('#sprint8BackupText');
     if(!banner||!info)return;
     banner.classList.toggle('has-changes',touched>0);
+    const excluded=Cloud.pendingDeletionCount();
     info.textContent=touched?
-      touched+' alteração(ões) pendentes neste aparelho. Faça um backup ou prepare o JSON para publicar pelo ChatGPT.':
+      touched+' alteração(ões) pendentes neste aparelho.'+
+        (excluded?' Destas, '+excluded+' exclusão(ões) ainda precisam ser publicadas no GitHub.':'')+
+        ' Para manter o mesmo acervo em outros acessos, toque em Publicar no GitHub e envie o JSON ao ChatGPT.':
       'Sem diferenças locais em relação ao último JSON consultado. O GitHub continua sendo sua cópia publicada.';
   }
   function sprint8ShowUndo(cards){
@@ -2067,7 +2080,7 @@
       }
       sprint11Selected.clear();
       render();
-      if(action==='delete')toast(cards.length+' referência(s) excluída(s). Use Desfazer se necessário.');
+      if(action==='delete')toast(cards.length+' excluída(s) neste aparelho. Para atualizar o GitHub, use Publicar.');
       else toast(cards.length+' referência(s) atualizada(s).');
     }catch(error){toast('Não foi possível concluir a operação: '+error.message);}
     finally{sprint11Busy=false;sprint11RefreshToolbar();}
@@ -2189,7 +2202,7 @@
     if(b.dataset.action==='details')window.AcervoEditorial?.showDetails?.(x.id);if(b.dataset.action==='favorite'){const next={...x,favorite:!x.favorite,updatedAt:new Date().toISOString()};
       try{await Cloud.save(next);Object.assign(x,next);render();toast(x.favorite?'Referência favoritada.':'Favorito removido.');}
       catch(error){toast('Erro ao atualizar: '+error.message);}
-    }if(b.dataset.action==='delete'&&confirm(`Excluir "${x.title}"?\n\nVocê pode desfazer nos próximos 15 segundos.`)){try{await Cloud.remove(x.id);state.cards=state.cards.filter(c=>c.id!==x.id);render();sprint8ShowUndo(x);toast('Referência removida. Você pode desfazer por 15 segundos.');}
+    }if(b.dataset.action==='delete'&&confirm(`Excluir "${x.title}"?\n\nVocê pode desfazer nos próximos 15 segundos.`)){try{await Cloud.remove(x.id);state.cards=state.cards.filter(c=>c.id!==x.id);render();sprint8ShowUndo(x);toast('Excluída deste aparelho. Para atualizar o GitHub, use Publicar. Desfazer: 15 segundos.');}
       catch(error){toast('Falha ao excluir: '+error.message)}}});
     $('#closeDialog').addEventListener('click',closeForm);$('#cancelDialog').addEventListener('click',closeForm);$('#cardForm').addEventListener('submit',saveForm);$('#cardDialog').addEventListener('click',e=>{if(e.target===$('#cardDialog'))closeForm()});
     $('#clearDemos').addEventListener('click',async()=>{if(!confirm('Remover os cards de exemplo?'))return;
