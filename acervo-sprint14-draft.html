@@ -1639,25 +1639,9 @@
     catch(error){console.warn('Falha ao carregar projetos; usando lista dos cards.',error);}
     state.cards=initialCards.map(normalizeCard);
     state.projects=savedProjects||[...new Set([...DEFAULT_PROJECTS,...state.cards.map(c=>c.project)])];
-    let localRaw=null;
-    try{localRaw=localStorage.getItem(KEY);}
-    catch(error){console.warn('Backup local inacessível; sincronização pela nuvem mantida.',error);}
-    const migrationFlag='acervo.cloud.imported.v1.'+user.id;
-    let alreadyImported=false;
-    try{alreadyImported=!!localStorage.getItem(migrationFlag);}catch{}
-    if(false && localRaw!==null&&!alreadyImported){
-      let oldCards=[];
-      try{const parsed=JSON.parse(localRaw);if(Array.isArray(parsed))oldCards=parsed.filter(validCard).map(normalizeCard).filter(c=>!c.demo);}
-      catch(error){console.warn('Backup anterior inválido e preservado',error);}
-      const existing=new Set(state.cards.map(c=>c.id));
-      const pending=oldCards.filter(c=>!existing.has(c.id));
-      if(!pending.length){try{localStorage.setItem(migrationFlag,'1');}catch{}}
-      else if(confirm(`Encontramos ${pending.length} card(s) que estavam salvos somente neste navegador.\n\nDeseja importar esses cards para este aparelho? Os dados originais serão preservados.`)){
-        await Cloud.saveMany(pending);try{localStorage.setItem(migrationFlag,'1');}catch{}
-        state.cards=(await Cloud.fetchCards()).map(normalizeCard);
-        toast(`${pending.length} referência(s) recuperada(s) neste aparelho.`);
-      }
-    }
+    // Nunca importar automaticamente o formato legado.
+    // Esse backup pré-Sprint 10 pode conter cards já excluídos, ressuscitando-os.
+    // Se necessário, o usuário pode usar o comando explícito Importar JSON.
     $('#userEmail').textContent='';
     $('#syncStatus').textContent=state.cards.length+' referências · sem login';
     render();
@@ -1950,7 +1934,7 @@
     finally{sprint11Busy=false;sprint11RefreshToolbar();}
   }
   function sprint11ShowUndoCards(cards){sprint8ShowUndo(cards);}
-  function init(){state.cards=[];$('#localNotice').hidden=false;/* Manter 31 cards pré-renderizados até que o JSON carregue. */
+  function init(){state.cards=[];$('#localNotice').hidden=false;/* Manter os cards pré-renderizados até o JSON carregar. */
     Cloud.boot({onReady:readyForUser}).catch(error=>{
       console.error('ACERVO: erro ao iniciar',error);
       $('#syncStatus').textContent='Falha ao carregar cards';
