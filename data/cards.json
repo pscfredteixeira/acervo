@@ -1,6 +1,6 @@
 {
   "app": "ACERVO",
-  "version": 13,
+  "version": 14,
   "source": "Referências recuperadas e selecionadas de pesquisas anteriores",
   "cards": [
     {
@@ -939,6 +939,29 @@
       "origin": "chatgpt",
       "createdAt": "2026-10-16T15:58:18Z",
       "updatedAt": "2026-10-16T15:58:18Z"
+    },
+    {
+      "id": "9f31c9e2-6d48-4f5b-8b25-1e3f0a9c6217",
+      "title": "O que caracteriza uma relação amorosa realmente satisfatória?",
+      "url": "https://greatergood.berkeley.edu/profile/barbara_fredrickson",
+      "description": "A psicóloga Barbara Fredrickson investiga como experiências breves de conexão, atenção recíproca e emoções positivas compartilhadas podem contribuir para a qualidade dos vínculos. A pauta propõe olhar além dos grandes gestos românticos e observar encontros cotidianos.",
+      "angle": "Estamos procurando um grande amor ou deixando de perceber os pequenos momentos em que o amor acontece?",
+      "tags": [
+        "Relacionamentos",
+        "Amor",
+        "Vínculos",
+        "Psicologia",
+        "Giro"
+      ],
+      "project": "Psicaótica",
+      "type": "Artigo",
+      "status": "entrada",
+      "favorite": false,
+      "notes": "Referência original: perfil e artigos de Barbara Fredrickson no Greater Good Science Center (UC Berkeley). Não foi possível confirmar a reportagem específica atribuída anteriormente à University of North Carolina em 11/10/2026. Link direciona à página de fontes da pesquisadora, não à reportagem citada. Título e resumo editoriais em português.",
+      "demo": false,
+      "origin": "chatgpt",
+      "createdAt": "2026-10-16T21:06:40Z",
+      "updatedAt": "2026-10-16T21:06:40Z"
     }
   ]
 }
