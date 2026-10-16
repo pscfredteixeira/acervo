@@ -1,6 +1,6 @@
 {
   "app": "ACERVO",
-  "version": 10,
+  "version": 11,
   "source": "Referências recuperadas e selecionadas de pesquisas anteriores",
   "cards": [
     {
@@ -777,6 +777,30 @@
       "origin": "chatgpt",
       "createdAt": "2026-10-14T11:35:26Z",
       "updatedAt": "2026-10-14T11:35:26Z"
+    },
+    {
+      "id": "f4d2a5c8-7e91-4e8b-9c2a-1d603f5b7a40",
+      "title": "Quando proteger vira censurar: educação sexual nas redes",
+      "url": "https://www.unsw.edu.au/newsroom/news/2026/10/how-the-digital-duty-of-care-bill-could-undermine-vital-sex-and-drug-education-online",
+      "description": "Análise de pesquisadores australianos discute como a moderação de plataformas pode remover conteúdos de educação sexual e redução de danos, incluindo informações de prevenção ao HIV, e como a proposta de Digital Duty of Care pode intensificar esse risco.",
+      "angle": "Quem decide quais conhecimentos sobre sexo podemos acessar? Quando a proteção se transforma em controle moral?",
+      "tags": [
+        "Sexualidade",
+        "Censura",
+        "Redes sociais",
+        "Educação sexual",
+        "Saúde pública",
+        "Giro"
+      ],
+      "project": "Psicaótica",
+      "type": "Artigo",
+      "status": "entrada",
+      "favorite": false,
+      "notes": "UNSW / The Conversation, 15/10/2026. Texto em inglês. Análise crítica de política pública, não estudo experimental; efeitos da proposta legislativa não foram demonstrados.",
+      "demo": false,
+      "origin": "chatgpt",
+      "createdAt": "2026-10-16T15:13:33Z",
+      "updatedAt": "2026-10-16T15:13:33Z"
     }
   ]
 }
