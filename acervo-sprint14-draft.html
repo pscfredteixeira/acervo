@@ -647,7 +647,7 @@
           <div id="insightsRelated" class="insights-related" hidden></div>
         </section>
         <section class="board-section" aria-label="Mural de referências"><div class="board-heading"><div><div class="section-overline">SEU ESPAÇO DE DESCOBERTAS</div><h2 id="boardTitle">Mural de referências <span id="resultCount">34</span></h2></div><div class="board-header-actions"><button class="quiet-button sprint12-only" id="sprint12ToggleFavorites" type="button" aria-pressed="false">☆ <span>Prioritárias</span></button><button class="quiet-button sprint11-toggle" id="sprint11Toggle" type="button" aria-pressed="false">☑ <span>Selecionar</span></button><button class="quiet-button organize-open" id="manageBtn" type="button">⚙ <span>Organizar</span></button><button class="quiet-button" id="exportBtn" type="button">⇩ <span>Exportar</span></button><button class="quiet-button" id="importBtn" type="button">⇧ <span>Importar</span></button><input type="file" id="fileInput" accept=".json,application/json" hidden></div></div>
-          <div class="toolbar"><label class="searchbox"><span aria-hidden="true">⌕</span><input id="searchInput" type="search" placeholder="Busque por assunto, ideia, tag..." autocomplete="off" aria-label="Pesquisar referências"><kbd>/</kbd></label><select id="projectFilter" aria-label="Filtrar por projeto"><option value="">Todos os projetos</option></select><select id="typeFilter" aria-label="Filtrar por formato"><option value="">Todos os formatos</option></select><select id="sortSelect" aria-label="Ordenar itens"><option value="recent">Mais recentes</option><option value="oldest">Mais antigos</option><option value="az">Título A–Z</option></select></div>
+          <div class="toolbar"><label class="searchbox"><span aria-hidden="true">⌕</span><input id="searchInput" type="search" placeholder="Busque por assunto, ideia, tag..." autocomplete="off" aria-label="Pesquisar referências"><kbd>/</kbd></label><select id="projectFilter" aria-label="Filtrar por projeto"><option value="">Todos os projetos</option></select><select id="typeFilter" aria-label="Filtrar por formato"><option value="">Todos os formatos</option></select><select id="sortSelect" aria-label="Ordenar itens"><option value="recent">Incluídas: mais recentes primeiro</option><option value="oldest">Mais antigos</option><option value="az">Título A–Z</option></select></div>
           <div class="tag-strip"><span class="tag-prefix">TAGS</span><div id="tagFilters" class="tag-scroll"></div><button class="clear-filters" type="button" id="clearFilters" hidden>Limpar filtros ×</button></div>
           <div class="notice" id="localNotice"><div class="notice-icon">ⓘ</div><div><strong>Sem login, sem banco de dados.</strong> As referências iniciais vêm do JSON no GitHub. As alterações feitas aqui ficam neste aparelho. Exporte um backup JSON para não perder o trabalho ao limpar os dados do navegador.</div><button id="noticeClose" type="button" aria-label="Fechar aviso">×</button></div>
           <section class="sprint8-backup" id="sprint8Backup" aria-label="Cópia de segurança">
@@ -1162,11 +1162,10 @@
         delete next.cards[id];cleared++;
       }
     }
-    // Uma exclusão que já foi publicada deixa de precisar de uma marcação local.
-    next.deleted=next.deleted.filter(id=>{
-      if(!remoteById.has(id)){cleared++;return false;}
-      return true;
-    });
+    // Exclusões devem sobreviver a mudanças do JSON publicado e a versões em cache.
+    // Um card ausente hoje pode reaparecer em um snapshot antigo amanhã.
+    // Apenas uma restauração explícita ou o botão Desfazer pode limpar a marcação.
+    next.deleted=[...new Set(next.deleted)];
     if(cleared){
       try{write(KEY,next);overrides=next;}
       catch(error){console.warn('Não foi possível reconciliar as alterações locais.',error);}
@@ -1181,7 +1180,11 @@
     return cleared;
   }
   function pendingChanges(){
-    let pending=Object.keys(overrides.cards).length+overrides.deleted.length;
+    // Exclusões já ausentes do JSON remoto continuam protegidas, mas não contam
+    // como pendência de publicação.
+    const remoteIds=new Set(seed.map(c=>c.id));
+    let pending=Object.keys(overrides.cards).length+
+      overrides.deleted.filter(id=>remoteIds.has(id)).length;
     const localProjects=read(PROJECTS_KEY,null);
     const localDossiers=read(DOSSIERS_KEY,null);
     if(Array.isArray(localProjects)&&!same(localProjects,seedProjects))pending++;
@@ -1399,6 +1402,22 @@
   }
   let sprint12FocusOnly=false;
   let sprint13Filter='todos';
+  // Ordenação da data de inclusão no ACERVO. Para itens inseridos no mesmo
+  // segundo, usar a ordem no snapshot: o último adicionado aparece primeiro.
+  function sortCards(items,sortMode=state.sort){
+    const positions=new Map(state.cards.map((card,index)=>[card.id,index]));
+    const created=card=>{
+      const date=Date.parse(card.createdAt||'');
+      return Number.isFinite(date)?date:0;
+    };
+    return items.sort((a,b)=>{
+      if(sortMode==='az')return a.title.localeCompare(b.title,'pt-BR');
+      const delta=sortMode==='oldest'?created(a)-created(b):created(b)-created(a);
+      if(delta!==0)return delta;
+      const x=positions.get(a.id)??0,y=positions.get(b.id)??0;
+      return sortMode==='oldest'?x-y:y-x;
+    });
+  }
   function visibleCards(){const q=state.q.trim().toLocaleLowerCase('pt-BR');let items=state.cards.filter(x=>{
     if(state.view==='arquivo'&&sprint13Filter!=='todos'&&
       (sprint13Filter==='pendente'?!!x.outcome:x.outcome!==sprint13Filter))return false;
@@ -1409,7 +1428,9 @@
     if(state.tag&&!x.tags.includes(state.tag))return false;
     if(q&&!([x.title,x.url,x.description,x.angle,x.project,x.type,x.notes,...x.tags].join(' ').toLocaleLowerCase('pt-BR').includes(q)))return false;
     return true;
-  });return items.sort((a,b)=>state.sort==='oldest'?new Date(a.createdAt)-new Date(b.createdAt):state.sort==='az'?a.title.localeCompare(b.title,'pt-BR'):new Date(b.createdAt)-new Date(a.createdAt))}
+  });
+    return sortCards(items);
+  }
   let sprint11Active=false;
   let sprint11Busy=false;
   const sprint11Selected=new Set();
@@ -1624,7 +1645,7 @@
     const migrationFlag='acervo.cloud.imported.v1.'+user.id;
     let alreadyImported=false;
     try{alreadyImported=!!localStorage.getItem(migrationFlag);}catch{}
-    if(localRaw!==null&&!alreadyImported){
+    if(false && localRaw!==null&&!alreadyImported){
       let oldCards=[];
       try{const parsed=JSON.parse(localRaw);if(Array.isArray(parsed))oldCards=parsed.filter(validCard).map(normalizeCard).filter(c=>!c.demo);}
       catch(error){console.warn('Backup anterior inválido e preservado',error);}
