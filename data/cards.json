@@ -1,6 +1,6 @@
 {
   "app": "ACERVO",
-  "version": 14,
+  "version": 15,
   "source": "Referências recuperadas e selecionadas de pesquisas anteriores",
   "cards": [
     {
@@ -962,6 +962,30 @@
       "origin": "chatgpt",
       "createdAt": "2026-10-16T21:06:40Z",
       "updatedAt": "2026-10-16T21:06:40Z"
+    },
+    {
+      "id": "b1e80ad4-11cd-44d2-9236-0a7e513c2a85",
+      "title": "Quem estará ao nosso lado na velhice?",
+      "url": "https://jornal.usp.br/radio-usp/quem-estara-ao-nosso-lado-na-velhice-pesquisa-investiga-redes-de-suporte-e-as-diferentes-formas-de-envelhecer/",
+      "description": "Reportagem do Jornal da USP sobre pesquisa em andamento do Programa de Pós-Graduação em Gerontologia da EACH-USP, que mapeia redes de suporte social de pessoas com 60 anos ou mais. O estudo prioriza participantes LGBTQIAPN+ e investiga quem oferece companhia, acolhimento emocional e ajuda prática, incluindo amigos, vizinhos e vínculos além da família de origem.",
+      "angle": "Quem cuida de nós quando envelhecemos? A família é necessariamente aquela em que nascemos?",
+      "tags": [
+        "Envelhecimento",
+        "LGBTQIA+",
+        "Família escolhida",
+        "Redes de apoio",
+        "Vínculos",
+        "Giro"
+      ],
+      "project": "Psicaótica",
+      "type": "Reportagem",
+      "status": "entrada",
+      "favorite": false,
+      "notes": "Jornal da USP / Rádio USP, 16/10/2026. Pesquisa em andamento; não apresenta resultados conclusivos sobre envelhecimento LGBTQIAPN+. Texto e áudio em português; link direto para a reportagem original.",
+      "demo": false,
+      "origin": "chatgpt",
+      "createdAt": "2026-10-17T16:30:47Z",
+      "updatedAt": "2026-10-17T16:30:47Z"
     }
   ]
 }
